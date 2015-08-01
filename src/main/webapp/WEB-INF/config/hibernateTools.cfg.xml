@@ -5,11 +5,10 @@
 <hibernate-configuration>
 	<session-factory>
 		<!-- 配置 hibernate 的基本信息 -->
-
-		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="hibernate.connection.password">root</property>
+       		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.password">lst</property>
 		<property name="hibernate.connection.url">jdbc:mysql://121.248.199.29:3306/Picloud</property>
-		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.username">lst</property>
 		<property name="hibernate.dialect">org.hibernate.dialect.MySQLInnoDBDialect</property>
 
 		<!-- hibernate 所使用的数据库方言 -->

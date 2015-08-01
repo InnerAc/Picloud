@@ -34,6 +34,7 @@ import com.Picloud.exception.PanoImageException;
 import com.Picloud.exception.ThreeDImageException;
 import com.Picloud.exception.UserException;
 import com.Picloud.hdfs.HdfsHandler;
+import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.GraphicMagick;
 import com.Picloud.image.ImageWriter;
 import com.Picloud.utils.ByteUtil;
@@ -43,7 +44,6 @@ import com.Picloud.web.dao.impl.LogDaoImpl;
 import com.Picloud.web.dao.impl.PanoImageDao;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PanoImage;
-import com.Picloud.web.model.User;
 import com.Picloud.utils.JspUtil;
 
 @Controller
@@ -77,7 +77,7 @@ public class PanoController {
 
 		User loginUser = (User) session.getAttribute("LoginUser");
 		System.out.println("user"+loginUser);
-		List<PanoImage> panoImages = panoImageDao.load(loginUser.getUid());
+		List<PanoImage> panoImages = panoImageDao.load(String.valueOf(loginUser.getUid()));
 		model.addAttribute("panoImages", panoImages);
 		return "pano/list";
 	}
@@ -110,12 +110,12 @@ public class PanoController {
 
 					ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
 					flag = imageWriter.uploadToHdfs(musicPath, item,
-							loginUser.getUid());
+					                String.valueOf(loginUser.getUid()));
 					
 					PanoImage panoImage=panoImageDao.find(panoKey);
 					panoImage.setMus_path(musicPath+item.getName());
 					panoImageDao.add(panoImage);
-					Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "上传全景图片"+panoImage.getName()+"的背景音乐");
+					Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "上传全景图片"+panoImage.getName()+"的背景音乐");
 					mLogDaoImpl.add(log);
 				}
 			
@@ -160,10 +160,10 @@ public class PanoController {
 		PanoImage panoImage = panoImageDao.find(panokey);
 		panoImageDao.delete(panokey);
 		
-		List<PanoImage> panoImages = panoImageDao.load(loginUser.getUid());
+		List<PanoImage> panoImages = panoImageDao.load(String.valueOf(loginUser.getUid()));
 		model.addAttribute("panoImages", panoImages);
 		
-		Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "删除全景图片"+panoImage.getName());
+		Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "删除全景图片"+panoImage.getName());
 		mLogDaoImpl.add(log);
 		return "pano/list";
 	}
@@ -252,7 +252,7 @@ public class PanoController {
 				}
 				panoImage.append(sceneName, sceneDesc);
 				panoImageDao.add(panoImage);
-				Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "上传全景图片"+panoImage.getName());
+				Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "上传全景图片"+panoImage.getName());
 				mLogDaoImpl.add(log);
 			} catch (Exception e) {
 				throw new PanoImageException(e.getMessage());
@@ -287,12 +287,12 @@ public class PanoController {
 			panoImage.setKey(key);
 			panoImage.setInfo(info);
 			panoImage.setName(panoName);
-			panoImage.setUid(loginUser.getUid());
+			panoImage.setUid(String.valueOf(loginUser.getUid()));
 			panoImage.setPath(hdfsPath+key);
 			String createTime=JspUtil.getCurrentDateStr();
 			panoImage.setCreateTime(createTime);
 			panoImageDao.add(panoImage);
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "创建全景图片"+panoImage.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "创建全景图片"+panoImage.getName());
 			mLogDaoImpl.add(log);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -322,7 +322,7 @@ public class PanoController {
 			panoImage.setName(panoName);
 			panoImageDao.add(panoImage);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "修改全景图片"+panoImage.getName()+"的信息");
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "修改全景图片"+panoImage.getName()+"的信息");
 			mLogDaoImpl.add(log);
 			
 		} catch (Exception e) {

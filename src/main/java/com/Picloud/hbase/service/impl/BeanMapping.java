@@ -18,7 +18,6 @@ import com.Picloud.web.model.PanoImage;
 import com.Picloud.web.model.PanoScene;
 import com.Picloud.web.model.Space;
 import com.Picloud.web.model.ThreeDImage;
-import com.Picloud.web.model.User;
 
 
 /**
@@ -130,56 +129,6 @@ public class BeanMapping {
 		return space;
 	}
 
-
-	/**
-	 * 将数据库读出的数据映射到User
-	 * @param rs
-	 * @param rowkey
-	 * @return
-	 */
-	public User UserMapping(Result rs,String uid){
-		User user = new User();
-		if (rs.isEmpty()) {
-			// 没有检索到，说明数据库中没有该图片，返回错误信息
-			return null;
-		} else {
-			user.setUid(uid);
-			for(Cell cell:rs.rawCells()){
-				String v = new String(CellUtil.cloneQualifier(cell));
-				String val = new String(CellUtil.cloneValue(cell));
-				if (v.equals("accountType")) {
-					user.setAccountType(val);
-				}
-				if (v.equals("email")) {
-					user.setEmail(val);
-				}
-				if (v.equals("lastLogin")) {
-					user.setLastLogin(val);
-				}
-				if (v.equals("website")) {
-					user.setWebsite(val);
-				}
-				if (v.equals("nickname")) {
-					user.setNickname(val);
-				}
-				if (v.equals("password")) {
-					user.setPassword(val);
-				}
-				if (v.equals("imageNum")) {
-					user.setImageNum(val);
-				}
-				if (v.equals("imageTotalSize")) {
-					user.setImageTotalSize(val);
-				}
-				if (v.equals("spaceNum")) {
-					user.setSpaceNum(val);
-				}
-			}
-		}
-		return user;
-		
-	}
-	
 	/**
 	 * 将数据库读出的数据映射到Mapfile
 	 * @param rs

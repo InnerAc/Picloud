@@ -20,12 +20,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Picloud.exception.UserException;
+import com.Picloud.hibernate.dao.impl.UserDaoImpl;
+import com.Picloud.hibernate.entities.User;
 import com.Picloud.utils.JspUtil;
 import com.Picloud.web.dao.impl.LogDaoImpl;
-import com.Picloud.web.dao.impl.UserDaoImpl;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PageInfo;
-import com.Picloud.web.model.User;
 
 @Controller
 @RequestMapping("/user")
@@ -40,7 +40,7 @@ public class UserController {
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public String login(String uid, String password, HttpSession session) {
-		User user = mUserDaoImpl.find(uid);
+		User user = mUserDaoImpl.find(Integer.parseInt(uid));
 		if (user == null) {
 			throw new UserException("用户名不存在");
 		} else if (!user.getPassword().equals(password)) {
@@ -49,7 +49,7 @@ public class UserController {
 
 		Log log = new Log(uid, user.getNickname() + "登录系统");
 		mLogDaoImpl.add(log);
-		user.setLastLogin(Long.toString(new Date().getTime()));
+		user.setLastLogin(new Date());
 
 		session.setAttribute("LoginUser", user);
 		session.removeAttribute("LOGIN_MSG");
@@ -74,7 +74,7 @@ public class UserController {
 		if (br.hasErrors()) {
 			return "register";
 		}
-		if (mUserDaoImpl.find(user.getUid()) != null) {
+		if (mUserDaoImpl.validate(user.getEmail()) == null) {
 			throw new UserException("用户名已被使用");
 		}
 		mUserDaoImpl.add(user);

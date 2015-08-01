@@ -24,14 +24,13 @@ import org.springframework.stereotype.Service;
 
 @Service
 public class HbaseCreateConfig {
-
+        
 	private HbaseTemplate mHbaseTemplate;
 	private List<String> mNameList;
 	private List<String> mColumnList;
 
 	public HbaseCreateConfig() {
 	}
-
 	public HbaseCreateConfig(HbaseTemplate mHbaseTemplate, List<String> mNameList,
 			List<String> mColumnList) {
 		super();
@@ -41,7 +40,7 @@ public class HbaseCreateConfig {
 		
 		createTables();
 	}
-
+	
 
 
 	/**
@@ -85,5 +84,6 @@ public class HbaseCreateConfig {
 			e.printStackTrace();
 		}
 	}
+	
 
 }

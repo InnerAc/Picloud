@@ -25,7 +25,6 @@ import com.Picloud.web.dao.impl.MapfileDaoImpl;
 import com.Picloud.web.model.Dustbin;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Mapfile;
-import com.Picloud.web.model.User;
 import com.Picloud.web.thread.MergeThread;
 import com.Picloud.web.thread.SyncThread;
 

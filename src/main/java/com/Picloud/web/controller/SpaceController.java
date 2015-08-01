@@ -31,6 +31,8 @@ import org.springframework.web.multipart.MultipartFile;
 import com.Picloud.config.SystemConfig;
 import com.Picloud.exception.SpaceException;
 import com.Picloud.exception.ThreeDImageException;
+import com.Picloud.hibernate.dao.impl.UserDaoImpl;
+import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.ImageWriter;
 import com.Picloud.utils.JspUtil;
 import com.Picloud.utils.EncryptUtil;
@@ -38,13 +40,11 @@ import com.Picloud.utils.PropertiesUtil;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.SpaceDaoImpl;
-import com.Picloud.web.dao.impl.UserDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PageInfo;
 import com.Picloud.web.model.Space;
 import com.Picloud.web.model.ThreeDImage;
-import com.Picloud.web.model.User;
 import com.Picloud.web.thread.SyncThread;
 
 @Controller
@@ -79,7 +79,7 @@ public class SpaceController {
 		model.addAttribute("action", "图片空间");
 
 		User LoginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(LoginUser.getUid());
+		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(String.valueOf(LoginUser.getUid())));
 		model.addAttribute("spaces", spaces);
 		return "space/list";
 	}
@@ -106,16 +106,16 @@ public class SpaceController {
 		}
 
 		String key = EncryptUtil.spaceEncryptKey(space.getName(),
-				LoginUser.getUid());
+		                String.valueOf(String.valueOf(LoginUser.getUid())));
 		if (mSpaceDaoImpl.find(key) != null) {
 			throw new SpaceException("该空间已存在！");
 		}
 		space.setKey(key);
-		space.setUid(LoginUser.getUid());
+		space.setUid(String.valueOf(String.valueOf(LoginUser.getUid())));
 		mSpaceDaoImpl.add(space);
 
-		String spaceNum = LoginUser.getSpaceNum();
-		LoginUser.setSpaceNum(Integer.toString(Integer.parseInt(spaceNum) + 1));
+		String spaceNum = String.valueOf(LoginUser.getSpaceNum());
+		LoginUser.setSpaceNum(Integer.parseInt(spaceNum) + 1);
 		mUserDaoImpl.update(LoginUser);
 		return "redirect:spaces";
 	}
@@ -137,7 +137,7 @@ public class SpaceController {
 
 		User loginUser = (User) session.getAttribute("LoginUser");
 		Space space = mSpaceDaoImpl.find(spaceKey);
-		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
+		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
 		PageInfo pi = (PageInfo) session.getAttribute("imagePagePnfo");
 		 if(pi == null){
 			 pi = new PageInfo();
@@ -146,7 +146,7 @@ public class SpaceController {
 			 pi.getStartKeys().add(" ");
 		 }
 		 pi.setPage(page);
-		 List<Image> images = mImageDaoImpl.imagePageByKey(loginUser.getUid(),
+		 List<Image> images = mImageDaoImpl.imagePageByKey(String.valueOf(loginUser.getUid()),
 		 pi.getStartKeys().get(pi.getPage()), spaceKey, pageNum);
 		 if(images == null ||images.size() < pageNum){
 			 pi.setIfHaveNext(false);
@@ -177,7 +177,7 @@ public class SpaceController {
 		model.addAttribute("action", "上传图片");
 
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
+		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
 		model.addAttribute("spaces", spaces);
 		return "space/upload";
 	}
@@ -201,7 +201,7 @@ public class SpaceController {
 		Iterator iter = items.iterator();
 		User loginUser = (User) session.getAttribute("LoginUser");
 		final String LocalPath = PropertiesUtil.getValue("localUploadPath") + "/"
-				+ loginUser.getUid() + '/' + spaceKey + '/';
+				+ String.valueOf(loginUser.getUid()) + '/' + spaceKey + '/';
 		try {
 			boolean flag = false;
 			while (iter.hasNext()) {
@@ -215,11 +215,11 @@ public class SpaceController {
 						spaceName = new String(spaceName.getBytes("iso8859-1"),
 								"utf-8");
 						spaceKey = EncryptUtil.spaceEncryptKey(spaceName,
-								loginUser.getUid());
+								String.valueOf(loginUser.getUid()));
 					}
 				} else {
 					ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
-					imageWriter.write(item, loginUser.getUid(), spaceKey,
+					imageWriter.write(item, String.valueOf(loginUser.getUid()), spaceKey,
 							LocalPath);
 				}
 			}
@@ -266,7 +266,7 @@ public class SpaceController {
 		Iterator iter = items.iterator();
 		User loginUser = (User) session.getAttribute("LoginUser");
 		final String LocalPath = PropertiesUtil.getValue("localUploadPath")+ "/"
-				+ loginUser.getUid() + '/' + spaceKey + '/';
+				+ String.valueOf(loginUser.getUid()) + '/' + spaceKey + '/';
 		boolean flag = false;
 		try {
 
@@ -278,7 +278,7 @@ public class SpaceController {
 					System.out.println(temp);
 				} else {
 					ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
-					flag = imageWriter.write(item, loginUser.getUid(),
+					flag = imageWriter.write(item, String.valueOf(loginUser.getUid()),
 							spaceKey, LocalPath);
 				}
 
@@ -304,10 +304,10 @@ public class SpaceController {
 		model.addAttribute("activeSpace", spaceName);
 
 		User LoginUser = (User) session.getAttribute("LoginUser");
-//		String key = spaceName + "_" + LoginUser.getUid();
+//		String key = spaceName + "_" + String.valueOf(LoginUser.getUid());
 		String key;
 		try {
-			key = EncryptUtil.spaceEncryptKey(spaceName, LoginUser.getUid());
+			key = EncryptUtil.spaceEncryptKey(spaceName, String.valueOf(LoginUser.getUid()));
 			mSpaceDaoImpl.delete(key);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -360,64 +360,64 @@ public class SpaceController {
 	@ResponseBody
 	public List<Space> getAllSpace(HttpSession session) {
 		User LoginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(LoginUser.getUid());
+		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(LoginUser.getUid()));
 		return spaces;
 	}
 
-	@RequestMapping(value = "/{spaceKey}/test", method = RequestMethod.POST)
-	public String uploadTest(@PathVariable String spaceKey,
-			HttpServletRequest request, HttpSession session)
-			throws FileUploadException {
-		FileItemFactory factory = new DiskFileItemFactory();
-		ServletFileUpload upload = new ServletFileUpload(factory);
-		@SuppressWarnings("rawtypes")
-		List items = upload.parseRequest(request);
-		@SuppressWarnings("rawtypes")
-		Iterator iter = items.iterator();
-		User loginUser = new User("test", "1", "", "", "", "test", "123456",
-				"0", "0", "0");
-		final String LocalPath = PropertiesUtil.getValue("localUploadPath")+ "/"
-				+ loginUser.getUid() + '/' + spaceKey + '/';
-		try {
-			boolean flag = false;
-			while (iter.hasNext()) {
-				FileItem item = (FileItem) iter.next();
-				ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
-				imageWriter
-						.write(item, loginUser.getUid(), spaceKey, LocalPath);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		// 同步线程
-		return "test";
-	}
-
-	@RequestMapping(value = "/{spaceKey}/test2", method = RequestMethod.POST)
-	public String test(@PathVariable String spaceKey, HttpSession session,
-			HttpServletRequest request) throws FileUploadException {
-		FileItemFactory factory = new DiskFileItemFactory();
-		ServletFileUpload upload = new ServletFileUpload(factory);
-		// User loginUser = (User) session.getAttribute("LoginUser");
-		User loginUser = new User("test", "", "", "", "", "test", "123456",
-				"0", "0", "0");
-		String hdfsPath = "/upload" + "/" + loginUser.getUid();
-		List items = upload.parseRequest(request);
-		Iterator iter = items.iterator();
-		try {
-			boolean flag = false;
-			while (iter.hasNext()) {
-				FileItem item = (FileItem) iter.next();
-				String filePath = hdfsPath + "/BigFile/";
-				ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
-				flag = imageWriter.uploadToHdfs(filePath, item,
-						loginUser.getUid());
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return "test";
-	}
+//	@RequestMapping(value = "/{spaceKey}/test", method = RequestMethod.POST)
+//	public String uploadTest(@PathVariable String spaceKey,
+//			HttpServletRequest request, HttpSession session)
+//			throws FileUploadException {
+//		FileItemFactory factory = new DiskFileItemFactory();
+//		ServletFileUpload upload = new ServletFileUpload(factory);
+//		@SuppressWarnings("rawtypes")
+//		List items = upload.parseRequest(request);
+//		@SuppressWarnings("rawtypes")
+//		Iterator iter = items.iterator();
+//		User loginUser = new User("test", "1", "", "", "", "test", "123456",
+//				"0", "0", "0");
+//		final String LocalPath = PropertiesUtil.getValue("localUploadPath")+ "/"
+//				+ String.valueOf(LoginUser.getUid()) + '/' + spaceKey + '/';
+//		try {
+//			boolean flag = false;
+//			while (iter.hasNext()) {
+//				FileItem item = (FileItem) iter.next();
+//				ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
+//				imageWriter
+//						.write(item, String.valueOf(LoginUser.getUid()), spaceKey, LocalPath);
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		// 同步线程
+//		return "test";
+//	}
+//
+//	@RequestMapping(value = "/{spaceKey}/test2", method = RequestMethod.POST)
+//	public String test(@PathVariable String spaceKey, HttpSession session,
+//			HttpServletRequest request) throws FileUploadException {
+//		FileItemFactory factory = new DiskFileItemFactory();
+//		ServletFileUpload upload = new ServletFileUpload(factory);
+//		// User loginUser = (User) session.getAttribute("LoginUser");
+//		User loginUser = new User("test", "", "", "", "", "test", "123456",
+//				"0", "0", "0");
+//		String hdfsPath = "/upload" + "/" + String.valueOf(LoginUser.getUid());
+//		List items = upload.parseRequest(request);
+//		Iterator iter = items.iterator();
+//		try {
+//			boolean flag = false;
+//			while (iter.hasNext()) {
+//				FileItem item = (FileItem) iter.next();
+//				String filePath = hdfsPath + "/BigFile/";
+//				ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
+//				flag = imageWriter.uploadToHdfs(filePath, item,
+//						String.valueOf(LoginUser.getUid()));
+//			}
+//		} catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//		return "test";
+//	}
 	
 	/**
 	 * 搜索空间下的图片
@@ -433,7 +433,7 @@ public class SpaceController {
 		model.addAttribute("module", module);
 		model.addAttribute("action", "图片空间");
 		User LoginUser = (User) session.getAttribute("LoginUser");
-		List<Image> images = mSpaceDaoImpl.search(LoginUser.getUid(), spaceKey, key);
+		List<Image> images = mSpaceDaoImpl.search(String.valueOf(LoginUser.getUid()), spaceKey, key);
 		Space space = mSpaceDaoImpl.find(spaceKey);
 		model.addAttribute("images", images);
 		model.addAttribute("space", space);

@@ -18,6 +18,8 @@ import org.springframework.stereotype.Service;
 import com.Picloud.config.SystemConfig;
 import com.Picloud.hdfs.HdfsHandler;
 import com.Picloud.hdfs.MapfileHandler;
+import com.Picloud.hibernate.dao.impl.UserDaoImpl;
+import com.Picloud.hibernate.entities.User;
 import com.Picloud.utils.JspUtil;
 import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.PropertiesUtil;
@@ -25,11 +27,9 @@ import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.LogDaoImpl;
 import com.Picloud.web.dao.impl.SpaceDaoImpl;
-import com.Picloud.web.dao.impl.UserDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.Space;
-import com.Picloud.web.model.User;
 import com.Picloud.web.thread.SyncTestThread;
 import com.Picloud.web.thread.SyncThread;
 
@@ -382,7 +382,7 @@ public class ImageWriter {
 		Log log = new Log(uid, operation);
 		mLogDaoImpl.add(log);
 
-		User user = mUserDaoImpl.find(uid);
+		User user = mUserDaoImpl.find(Integer.parseInt(uid));
 		Space space = mSpaceDaoImpl.find(spaceKey);
 
 		// 空间图片数量增加1
@@ -390,8 +390,8 @@ public class ImageWriter {
 		space.setNumber(String.valueOf(spaceNum + 1));
 
 		// 用户的图片数量加1
-		int imageNum = Integer.parseInt(user.getImageNum());
-		user.setImageNum(Integer.toString(imageNum + 1));
+		int imageNum = user.getImageNum();
+		user.setImageNum(imageNum + 1);
 
 		// 空间容量增加
 		double d1 = Double.parseDouble(space.getStorage());
@@ -399,8 +399,8 @@ public class ImageWriter {
 		space.setStorage(String.valueOf(d1 + d2));
 
 		// 用户的容量增加
-		d1 = Double.parseDouble(user.getImageTotalSize());
-		user.setImageTotalSize(Double.toString(d1 + d2));
+		d1 = user.getImageTotalSize();
+		user.setImageTotalSize(d1 + d2);
 
 		// 更新空间和用户信息
 		mUserDaoImpl.update(user);

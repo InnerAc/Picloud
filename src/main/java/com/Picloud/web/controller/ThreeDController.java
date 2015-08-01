@@ -29,6 +29,7 @@ import com.Picloud.exception.FileException;
 import com.Picloud.exception.ImageException;
 import com.Picloud.exception.ThreeDImageException;
 import com.Picloud.hdfs.HdfsHandler;
+import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.ImageWriter;
 import com.Picloud.utils.JspUtil;
 import com.Picloud.utils.EncryptUtil;
@@ -38,7 +39,6 @@ import com.Picloud.web.dao.impl.ThreeDImageDao;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PanoImage;
 import com.Picloud.web.model.ThreeDImage;
-import com.Picloud.web.model.User;
 
 @Controller
 @RequestMapping(value = "/threeD")
@@ -68,10 +68,10 @@ public class ThreeDController {
 		model.addAttribute("action", "3D图片");
 
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<ThreeDImage> threeDImages = threeDImageDao.load(loginUser.getUid());
+		List<ThreeDImage> threeDImages = threeDImageDao.load(String.valueOf(loginUser.getUid()));
 		model.addAttribute("threeDImages", threeDImages);
 		
-		Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "查看3D图片");
+		Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "查看3D图片");
 		mLogDaoImpl.add(log);
 		
 		return "threed/list";
@@ -90,7 +90,7 @@ public class ThreeDController {
 		ThreeDImage threeDImage=threeDImageDao.find(threeDkey);
 		threeDImageDao.delete(threeDImage);
 		
-		Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "删除3D图片"+threeDImage.getName());
+		Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "删除3D图片"+threeDImage.getName());
 		mLogDaoImpl.add(log);
 		
 		return "redirect:/threeD/list";
@@ -131,7 +131,7 @@ public class ThreeDController {
 						if(name.equals("threeDImageName")) {
 							threeDImageName = item.getString();
 							 key = EncryptUtil.tdEncryptKey(threeDImageName,
-										loginUser.getUid());
+							                 String.valueOf(loginUser.getUid()));
 							 //检查该图片名是否被使用过
 							ThreeDImage threeDImage = threeDImageDao.find(key);
 							if(threeDImage != null) {
@@ -142,7 +142,7 @@ public class ThreeDController {
 						String filePath = hdfsPath + threeDImageName + '/';
 						ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
 						flag = imageWriter.uploadToHdfs(filePath, item,
-								loginUser.getUid());
+						                String.valueOf(loginUser.getUid()));
 						totalSize += item.getSize();					
 					}
 				}
@@ -151,10 +151,10 @@ public class ThreeDController {
 				totalSize = totalSize/1024/1024 ;
 				String createTime = JspUtil.getCurrentDateStr();
 				ThreeDImage threeDImage = new ThreeDImage(key, threeDImageName,
-						loginUser.getUid(), createTime, Double.toString(totalSize), Integer.toString(items.size()-1));
+				                String.valueOf(loginUser.getUid()), createTime, Double.toString(totalSize), Integer.toString(items.size()-1));
 				threeDImageDao.add(threeDImage);
 				
-				Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "上传3D图片"+threeDImage.getName());
+				Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "上传3D图片"+threeDImage.getName());
 				mLogDaoImpl.add(log);
 			} catch (Exception e) {
 				throw new ThreeDImageException(e.getMessage());

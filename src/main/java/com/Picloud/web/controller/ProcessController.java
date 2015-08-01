@@ -26,6 +26,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.Picloud.config.SystemConfig;
 import com.Picloud.exception.ProcessException;
 import com.Picloud.exception.UserException;
+import com.Picloud.hibernate.dao.impl.UserDaoImpl;
+import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.GraphicMagick;
 import com.Picloud.image.ImageReader;
 import com.Picloud.image.ImageUpdate;
@@ -34,11 +36,9 @@ import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.LogDaoImpl;
 import com.Picloud.web.dao.impl.SpaceDaoImpl;
-import com.Picloud.web.dao.impl.UserDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.Space;
-import com.Picloud.web.model.User;
 
 @Controller
 @RequestMapping("/process")
@@ -74,7 +74,7 @@ public class ProcessController {
 		model.addAttribute("action", "缩放");
 
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
+		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
 		model.addAttribute("spaces",spaces);
 		return "process/scale";
 	}
@@ -85,7 +85,7 @@ public class ProcessController {
 		model.addAttribute("action", "裁剪");
 		
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
+		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
 		model.addAttribute("spaces",spaces);
 		return "process/crop";
 	}
@@ -96,7 +96,7 @@ public class ProcessController {
 		model.addAttribute("action", "图片水印");
 		
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
+		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
 		model.addAttribute("spaces",spaces);
 		return "process/watermark";
 	}
@@ -107,7 +107,7 @@ public class ProcessController {
 		model.addAttribute("action", "文字水印");
 		
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
+		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
 		model.addAttribute("spaces",spaces);
 		return "process/watermark";
 	}
@@ -220,8 +220,8 @@ public class ProcessController {
 		System.out.println(bufferOut.length);
 		if (bufferOut != null) {
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "按照宽度："+width+"高度："+
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "按照宽度："+width+"高度："+
 			height+"缩放了图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
@@ -295,9 +295,9 @@ public class ProcessController {
 
 		if (bufferOut != null) {
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "按照宽度："+width+"缩放了图片"+image.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "按照宽度："+width+"缩放了图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);
@@ -387,9 +387,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() + "起始坐标："+startX+"，"+
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() + "起始坐标："+startX+"，"+
 			startY+"按照宽度："+width+"高度："+height+"裁剪了图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
@@ -492,9 +492,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"按照Logo坐标："+startX+"，"+startY+ 
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"按照Logo坐标："+startX+"，"+startY+ 
 					"Logo宽度："+width+"Logo高度："+height+"透明度"+optical+"添加了水印图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
@@ -593,9 +593,9 @@ public class ProcessController {
 
 			
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"按照坐标："+startX+"，"+startY+ "大小："+fontSize+"颜色："+color+"添加了水印文字"+text);
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"按照坐标："+startX+"，"+startY+ "大小："+fontSize+"颜色："+color+"添加了水印文字"+text);
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);
@@ -666,9 +666,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"按照亮度："+brightness+"调节图片"+image.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"按照亮度："+brightness+"调节图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);
@@ -739,9 +739,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"按照角度："+angle+"旋转图片"+image.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"按照角度："+angle+"旋转图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);
@@ -820,9 +820,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"镜面翻转图片"+image.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"镜面翻转图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);
@@ -892,9 +892,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"Lomo处理了图片"+image.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"Lomo处理了图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);
@@ -962,9 +962,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"灰化图片"+image.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"灰化图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);
@@ -1033,9 +1033,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"使用素炭笔处理了图片"+image.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"使用素炭笔处理了图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);
@@ -1105,7 +1105,7 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
 			response.setStatus(200);
 		} else {
@@ -1173,9 +1173,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut,String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"锐化了图片"+image.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"锐化了图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);
@@ -1244,9 +1244,9 @@ public class ProcessController {
 			
 			Image image = mImageDaoImpl.find(imageKey);
 			ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-			imageUpdate.updateImage(bufferOut, loginUser.getUid(), image.getSpace(),imageKey);
+			imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),imageKey);
 			
-			Log log=new Log(loginUser.getUid(),loginUser.getNickname() +"模糊了图片"+image.getName());
+			Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"模糊了图片"+image.getName());
 			mLogDaoImpl.add(log);
 			
 			response.setStatus(200);

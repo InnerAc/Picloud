@@ -17,7 +17,6 @@ import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.LogDaoImpl;
 import com.Picloud.web.dao.impl.SpaceDaoImpl;
-import com.Picloud.web.dao.impl.UserDaoImpl;
 import com.Picloud.web.thread.SyncTestThread;
 
 public class TestImageWriter {

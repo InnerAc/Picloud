@@ -13,7 +13,6 @@ import com.Picloud.hbase.service.impl.ListMapping;
 import com.Picloud.web.dao.ISpaceDao;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Space;
-import com.Picloud.web.model.User;
 
 @Repository
 public class SpaceDaoImpl implements ISpaceDao {

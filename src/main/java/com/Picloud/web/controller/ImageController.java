@@ -29,6 +29,7 @@ import com.Picloud.exception.ImageException;
 import com.Picloud.exception.UserException;
 import com.Picloud.hdfs.HdfsHandler;
 import com.Picloud.hdfs.MapfileHandler;
+import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.ImageDeleter;
 import com.Picloud.image.ImageReader;
 import com.Picloud.utils.EncryptUtil;
@@ -37,7 +38,6 @@ import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.SpaceDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Space;
-import com.Picloud.web.model.User;
 
 @Controller
 @RequestMapping("/server")
@@ -105,7 +105,7 @@ public class ImageController {
 		//其他图片
 		List<Image> otherImages = imageDaoImpl.getOtherImages(image.getSpace(), image.getName(),6);
 		//所有空间
-		List<Space> spaces = spaceDaoImpl.load(LoginUser.getUid());
+		List<Space> spaces = spaceDaoImpl.load(String.valueOf(LoginUser.getUid()));
 		if(otherImages!=null){
 			model.addAttribute("otherImages",otherImages);
 		}

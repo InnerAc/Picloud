@@ -10,15 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
+import com.Picloud.hibernate.entities.User;
 import com.Picloud.utils.JspUtil;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.LogDaoImpl;
 import com.Picloud.web.dao.impl.SpaceDaoImpl;
-import com.Picloud.web.dao.impl.UserDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.Space;
-import com.Picloud.web.model.User;
 
 @Controller
 @RequestMapping("/")
@@ -39,11 +38,11 @@ public class IndexController {
 		String yesterday = JspUtil.getPereviousDayMS();
 		String today = JspUtil.getCurrentDateMS();
 		
-		List<Space> spaces = mSpaceDaoImpl.load(user.getUid());
-		List<Log> logs = mLogDaoImpl.getByTime(user.getUid(),yesterday ,today);
-		List<Image> recentImages = mImageDaoImpl.imagePageByTime(today, user.getUid(), 4);
+		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(user.getUid()));
+		List<Log> logs = mLogDaoImpl.getByTime(String.valueOf(user.getUid()), yesterday ,today);
+		List<Image> recentImages = mImageDaoImpl.imagePageByTime(today, String.valueOf(user.getUid()), 4);
 		
-		session.setAttribute("lastLogin", JspUtil.getLastTime(user.getLastLogin()));
+		session.setAttribute("lastLogin", user.getLastLogin());
 		model.addAttribute("spaces",spaces);
 		model.addAttribute("logs",logs);
 		model.addAttribute("recentImages",recentImages);
