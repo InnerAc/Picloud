@@ -71,7 +71,7 @@ public class ProcessController {
 	@RequestMapping(value="/scale",method=RequestMethod.GET)
 	public String  scale(Model model,HttpSession session){
 		model.addAttribute("module", module);
-		model.addAttribute("action", "缩放");
+		model.addAttribute("action", "缩放" );
 
 		User loginUser = (User) session.getAttribute("LoginUser");
 		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
@@ -127,7 +127,7 @@ public class ProcessController {
 	public void scale(@PathVariable String imageKey, @PathVariable int width,
 			@PathVariable int height, HttpSession session,
 			HttpServletResponse response) throws Exception {
-
+	        System.out.println(width + "  " + height);
 		Image image = mImageDaoImpl.find(imageKey);
 		User loginUser = (User) session.getAttribute("LoginUser");
 		ImageReader imageReader = new ImageReader(infoDaoImpl);

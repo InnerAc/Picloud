@@ -28,9 +28,9 @@
 		</div>
 	</present>
 	<div class="middle-box">
-		<form method="post" action="user/login">
+		<form method="post" action="login">
 			<div class="form-group">
-				<input type="text" class="form-control login-input" name="uid" title="uid" id="uid" placeholder="请输入用户名/邮箱" >
+				<input type="text" class="form-control login-input" name="email" title="email" id="email" placeholder="请输入用户名/邮箱" >
 			</div>
 			<div class="form-group">
 				<input type="password" class="form-control login-input" name="password" title="pwd" id="pwd"  placeholder="请输入密码">
@@ -39,13 +39,13 @@
 				<button type="submit" class="form-control btn btn-primary login-btn" name="submit" title="submit" id="submit" >登录</button>
 			</div>
 			<div class="form-group">
-				<a class="btn btn-default form-control" href="user/register">注册</a>
+				<a class="btn btn-default form-control" href="register">注册</a>
 			</div>
 		</form>
 	</div>
 	<div class="copyright">
-		<small>Developed by JetMuffin, Sloric, InnerAc, Goodpj </small>
-		<br/>© <small>2014 copyright </small>
+		<small>Developed by JetMuffin, Sloriac, InnerAc </small>
+		<br/>© <small>2015 copyright </small>
 	</div>
 <script type="text/javascript" src="${RESOURCES }/js/jquery-1.11.1.min.js"></script>
 <script type="text/javascript" src="${RESOURCES }/js/bootstrap.min.js"></script>

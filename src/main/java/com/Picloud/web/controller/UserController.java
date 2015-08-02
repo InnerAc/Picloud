@@ -22,6 +22,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.Picloud.exception.UserException;
 import com.Picloud.hibernate.dao.impl.UserDaoImpl;
 import com.Picloud.hibernate.entities.User;
+import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.JspUtil;
 import com.Picloud.web.dao.impl.LogDaoImpl;
 import com.Picloud.web.model.Log;
@@ -37,17 +38,24 @@ public class UserController {
 	private LogDaoImpl mLogDaoImpl;
 	private String module = "用户中心";
 	private static int pageNum = 20 + 1;
+	
+	       @RequestMapping(value = "/login", method = RequestMethod.GET)
+	        public String login()  {
+	                return "login";
+	        }
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(String uid, String password, HttpSession session) {
-		User user = mUserDaoImpl.find(Integer.parseInt(uid));
+	public String login(String email, String password, HttpSession session) throws Exception {
+		System.out.println(email);
+	        User user = mUserDaoImpl.validate(email);
+		String psw = EncryptUtil.encryptMD5(password.getBytes());
 		if (user == null) {
-			throw new UserException("用户名不存在");
-		} else if (!user.getPassword().equals(password)) {
+			throw new UserException("用户不存在");
+		} else if (!psw.equals(user.getPassword())) {
 			throw new UserException("用户名或密码错误");
 		}
 
-		Log log = new Log(uid, user.getNickname() + "登录系统");
+		Log log = new Log(String.valueOf(user.getUid()), user.getNickname() + "登录系统");
 		mLogDaoImpl.add(log);
 		user.setLastLogin(new Date());
 
@@ -60,7 +68,7 @@ public class UserController {
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session) {
 		session.invalidate();
-		return "redirect:../login.jsp";
+		      return "redirect:/user/login";
 	}
 
 	@RequestMapping(value = "/register", method = RequestMethod.GET)
@@ -70,16 +78,18 @@ public class UserController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@Validated User user, BindingResult br,
-			HttpSession session) {
+			HttpSession session) throws Exception {
 		if (br.hasErrors()) {
 			return "register";
 		}
-		if (mUserDaoImpl.validate(user.getEmail()) == null) {
+		if (mUserDaoImpl.validate(user.getEmail()) != null) {
 			throw new UserException("用户名已被使用");
 		}
-		mUserDaoImpl.add(user);
+		String password = EncryptUtil.encryptMD5(user.getPassword().getBytes());
+		User u = new User("0", user.getEmail(), user.getNickname(), password, 0, 0, 0);
+		mUserDaoImpl.add(u);
 		session.setAttribute("LOGIN_MSG", "注册成功，请登录！");
-		return "redirect:../login.jsp";
+		return "redirect:/user/login";
 	}
 
 	/**

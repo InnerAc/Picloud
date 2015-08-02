@@ -29,9 +29,9 @@
 	<div class="middle-box">
 		<sf:form method="post" modelAttribute="user" action="register">
 			<div class="form-group">
-				<sf:input path="uid" placeholder="请输入用户名/邮箱"
+				<sf:input path="email" placeholder="请输入用户名/邮箱"
 					class="form-control login-input" />
-				<sf:errors path="uid" class="login-error" />
+				<sf:errors path="email" class="login-error" />
 			</div>
 			<div class="form-group">
 				<sf:password path="password" class="form-control login-input"
@@ -48,13 +48,13 @@
 					name="submit" title="submit" id="submit">注册</button>
 			</div>
 			<div class="form-group">
-				<a class="btn btn-default form-control" href="${ROOT}/login.jsp">返回登录</a>
+				<a class="btn btn-default form-control" href="login">返回登录</a>
 			</div>
 		</sf:form>
 	</div>
 	<div class="copyright">
-		<small>Developed by JetMuffin, Sloric, InnerAc, GMpj </small> <br />©
-		<small>2014 copyright </small>
+		<small>Developed by JetMuffin, Sloriac, InnerAc</small> <br />©
+		<small>2015 copyright </small>
 	</div>
 	<script type="text/javascript"
 		src="${RESOURCES }/js/jquery-1.11.1.min.js"></script>

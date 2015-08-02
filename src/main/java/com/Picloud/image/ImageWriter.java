@@ -403,7 +403,7 @@ public class ImageWriter {
 		user.setImageTotalSize(d1 + d2);
 
 		// 更新空间和用户信息
-		mUserDaoImpl.update(user);
+		mUserDaoImpl.updateImage(user.getUid(), 1, d1+d2);
 		mSpaceDaoImpl.update(space);
 
 	}

@@ -115,8 +115,9 @@ public class SpaceController {
 		mSpaceDaoImpl.add(space);
 
 		String spaceNum = String.valueOf(LoginUser.getSpaceNum());
-		LoginUser.setSpaceNum(Integer.parseInt(spaceNum) + 1);
-		mUserDaoImpl.update(LoginUser);
+		mUserDaoImpl.updateSpaceNum(LoginUser.getUid());
+//		LoginUser.setSpaceNum(Integer.parseInt(spaceNum) + 1);
+//		mUserDaoImpl.update(LoginUser);
 		return "redirect:spaces";
 	}
 
