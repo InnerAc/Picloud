@@ -9,114 +9,70 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title>${TITLE}</title>
 <link rel="stylesheet" href="${RESOURCES}/font/css/font-awesome.min.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/bootstrap.min.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/common.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/picserver.css" />
+<link rel="stylesheet" href="${RESOURCES}/css/main.css" />
 </head>
 <body>
-	<div class="wrap">
-		<jsp:include page="../common/header.jsp" />
-		<div class="page-wrapper">
-			<jsp:include page="../common/navbar.jsp" />
-			<jsp:include page="../common/breadcrumb.jsp" />
-			<div class="wrapper wrapper-content animated fadeInDown">
-				<block name="content"> <block name="content">
-				<div class="row">
-					<c:forEach items="${spaces}" var="space">  
-					<div class="col-md-4">
-						<div class="ibox ">
-							<div class="ibox-title">
-								<h5>${space.name}</h5>
-							</div>
-							<div class="ibox-content  space-pic">
-								<a href="${space.key}/0">
-									<c:choose>
-										<c:when test="${space.cover=='' }">
-										<img src="${RESOURCES}/images/p3.jpg">
-										</c:when>
-										<c:otherwise>
-											<img src="${ROOT}/process/${space.cover}/scale[400,-]"/>
-										</c:otherwise>
-									</c:choose>
-								</a>
-							</div>
-							<div class="ibox-content profile-content">
-								<div class="row space-info">
-									<div class="col-xs-6">
-										<i class="fa-picture-o fa"></i>图 片<span class="info-figure">${space.number}
-											张</span>
-									</div>
-									<div class="col-xs-6">
-										<i class="fa-database fa"></i>用 量<span class="info-figure">
-											<c:out value="${jt.cutLength(space.storage)}"></c:out>MB 
-									</div>
-								</div>
-								<div class="space-desc">
-									<p>${space.desc}</p>
-								</div>
-								<div class="user-button">
-									<div class="row">
-										<div class="col-md-6">
-											<a href="${space.key }"
-												type="button" class="btn btn-primary btn-block jet-button"><i
-												class="fa fa-folder-open"></i> 查看</a>
-										</div>
-										<div class="col-md-6">
-											<a
-												href="${space.name }/delete"
-												class="btn btn-default btn-block"><i class="fa fa-trash"></i>
-												删除</a>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-					</c:forEach>
-					<div class="col-md-4">
-						<div class="ibox">
-							<div class="ibox-title">
-								<h5>创建空间</h5>
-							</div>
-							<sf:form method="post" modelAttribute="space" action="add">
-								<div class="ibox-content  space-pic">
-									<div class="form-group">
-										<label class="control-label">空间名称</label>
-										<sf:errors path="name"/>
-									</div>
-									<div class="form-group">
-											<sf:input path="name" class="form-control jet-input" placeholder="请输入空间名称"/>
-									</div>
-									<div class="form-group">
-										<label class="control-label">空间描述</label>
-										<sf:errors path="desc"/>
-									</div>
-									<div class="form-group">
-										<sf:textarea path="desc" class="form-control jet-input" placeholder="请输入空间描述"/>
-									</div>
-								</div>
-								<div class="ibox-content profile-content">
-									<div class="user-button">
-										<div class="row">
-											<div class="col-md-6">
-												<button type="submit"
-													class="btn btn-primary btn-block jet-button">
-													<i class="fa fa-plus"></i> 创建
-												</button>
-											</div>
-											<div class="col-md-6">
-												<a type="reset" class="btn btn-default btn-block"><i
-													class="fa fa-reply"></i> 取消</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</sf:form>
-						</div>
-					</div>
-				</div>
-				</block> 
-			</div>
+<jsp:include page="../common/header.jsp" />
+
+ <div class="content">
+            <div class="content-wrap">
+                <div class="content-toolbar clearfix">
+                    <ul class="toolbar-action clearfix">
+                        <li class="current"><a href="">最近修改</a></li>
+                        <li><a href="">上传时间</a></li>
+                    </ul>
+                </div>
+                <div class="space-list">
+                    <ul class="spaces">
+                        <li class="space-li">
+                            <div class="thumbnail-wrapper"><a href=""><div class="thumbnail">
+                                <img src="spacer-col.gif" class="sicn ">
+                                <div class="progress-wrapper ab-center js-empty-folder">Empty collection</div>
+                            </div></a></div>
+                            <div class="name-area"><a href="" class="thumb-title">测试空间</a></div>
+                            <div class="actions clearfix">
+                                <div class="action-list l">
+                                    <span>裁剪</span> <span>缩放</span>
+                                </div>
+                            </div>
+                            <div class="space-footer">
+                                <span class="time">16 minutes ago</span>
+                            </div>
+                        </li>
+                        <li class="space-li">
+                            <div class="thumbnail-wrapper"><a href=""><div class="thumbnail">
+                                <div class="thumb"><img src="1.png" alt=""></div>
+                                <div class="thumb"><img src="2.png" alt=""></div>
+                                <div class="thumb"><img src="3.png" alt=""></div>
+                                <div class="thumb"><img src="3.png" alt=""></div>
+
+                            </div></a></div>
+                            <div class="name-area"><a href="" class="thumb-title">测试空间</a></div>
+                            <div class="actions clearfix">
+                                <div class="action-list l">
+                                    <span>裁剪</span> <span>缩放</span>
+                                </div>
+                            </div>
+                            <div class="space-footer">
+                                <span class="time">16 minutes ago</span>
+                            </div>
+                        </li>  
+                        <li class="space-li">
+                            <form action="" class="new-space">
+                                <input type="text"  placeholder="请输入空间名字"/>
+                                <textarea name="" id="" placeholder="请输入空间描述"></textarea>
+                                <button class="btn btn-blue">添加</button>
+                            </form>
+                            <div class="space-footer">
+                                <span class="time">right now</span>
+                            </div>
+                        </li>                                             
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="clearfix"></div>
 			<jsp:include page="../common/footer.jsp" />
 		</div>
 	</div>
