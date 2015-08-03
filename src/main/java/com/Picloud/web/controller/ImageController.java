@@ -32,12 +32,16 @@ import com.Picloud.hdfs.MapfileHandler;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.ImageDeleter;
 import com.Picloud.image.ImageReader;
+import com.Picloud.utils.DateUtil;
 import com.Picloud.utils.EncryptUtil;
+import com.Picloud.utils.IpUtil;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.SpaceDaoImpl;
+import com.Picloud.web.dao.impl.VisitDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Space;
+import com.Picloud.web.model.Visit;
 
 @Controller
 @RequestMapping("/server")
@@ -48,6 +52,9 @@ public class ImageController {
 	private ImageDaoImpl imageDaoImpl;
 	@Autowired
 	private SpaceDaoImpl spaceDaoImpl;
+	@Autowired
+	private VisitDaoImpl visitDaoImpl;
+	
 	private String module = "图片服务器";
 	
 	/**
@@ -55,9 +62,19 @@ public class ImageController {
 	 * @throws Exception 
 	 */
 	@RequestMapping(value="/{imageKey}",method=RequestMethod.GET)
-	public void show(@PathVariable String imageKey,HttpSession session,HttpServletResponse response) throws Exception{
+	public void show(@PathVariable String imageKey,HttpSession session,HttpServletResponse response, HttpServletRequest request) throws Exception{
 		ImageReader imageReader = new ImageReader(infoDaoImpl);
 		byte[] buffer = imageReader.readPicture(imageKey);
+		
+		
+		Image image = imageDaoImpl.find(imageKey);
+		Space space = spaceDaoImpl.find(image.getSpace());
+		
+		String time = DateUtil.getCurrentDateMS();
+		String ip = request.getRemoteAddr();
+		String key = image.getSpace()+image.getKey()+time;
+		Visit visit = new Visit(key, space.getName(), image.getName(), time, ip);
+		visitDaoImpl.add(visit);
 		
 		if (buffer != null) {
 			// 输出byte为图片
