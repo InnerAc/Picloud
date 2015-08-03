@@ -27,22 +27,22 @@
 							<div class="ibox-content">
 								<div class="file-manager">
 									<h4>${space.name}</h4>
-									<h5 class="space-desc">${space.desc}</h5>
+									<h5 class="space-desc">${space.description}</h5>
 									<div class="hr-line-dashed"></div>
 									<a class="jet-button btn btn-primary btn-block"
-										href="${ROOT}/space/${space.key}/upload">上传图片</a>
+										href="${ROOT}/space/${space.sid}/upload">上传图片</a>
 									<div class="hr-line-dashed"></div>
 									<label class="control-label">其他空间</label>
 									<ul class="folder-list" style="padding: 0">
 										<c:forEach items="${spaces}" var="otherspace">
 											<c:if test="${space.name ne otherspace.name}">
-												<li><a href="${ROOT}/space/${otherspace.key}/0">${otherspace.name }</a></li>
+												<li><a href="${ROOT}/space/${otherspace.sid}/0">${otherspace.name }</a></li>
 											</c:if>
 										</c:forEach>
 									</ul>
 									<div class="picture-search">
 										<label class="control-label">搜索图片</label>
-										<form action="${ROOT}/space/${space.key}/search" method="get">
+										<form action="${ROOT}/space/${space.sid}/search" method="get">
 											<input type="text" placeholder="搜索" name="key"
 												class="form-control jet-input">
 										</form>
@@ -81,13 +81,13 @@
 								</c:if>
 								<c:if test="${sessionScope.imagePagePnfo.page >= 1}">
 									<li><a
-										href="${ROOT}/space/${space.key}/${sessionScope.imagePagePnfo.page-1}">&laquo;</a></li>
+										href="${ROOT}/space/${space.sid}/${sessionScope.imagePagePnfo.page-1}">&laquo;</a></li>
 								</c:if>
 								<c:if test="${sessionScope.imagePagePnfo.ifHaveNext =='false' }">
 									<li class="disabled"><a href="">&raquo;</a></li>
 								</c:if>
 								<c:if test="${sessionScope.imagePagePnfo.ifHaveNext =='true' }">
-									<li><a href="${ROOT}/space/${space.key}/${sessionScope.imagePagePnfo.page+1}" >&raquo;</a></li>
+									<li><a href="${ROOT}/space/${space.sid}/${sessionScope.imagePagePnfo.page+1}" >&raquo;</a></li>
 								</c:if>
 							</ul>
 							</nav>

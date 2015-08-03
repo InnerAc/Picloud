@@ -26,10 +26,10 @@ public class VisitDaoImpl implements IVisitDao {
                 if(visit == null){
                         return;
                 }
-                mHbaseOperationImpl.insertData("cloud_visit", visit.getKey(), "attr", "space", visit.getSpace());
-                mHbaseOperationImpl.insertData("cloud_visit", visit.getKey(), "attr", "image", visit.getImage());
-                mHbaseOperationImpl.insertData("cloud_visit", visit.getKey(), "attr", "time", visit.getTime());
-                mHbaseOperationImpl.insertData("cloud_visit", visit.getKey(), "attr", "ip", visit.getIp());
+                mHbaseOperationImpl.insertData("cloud_visits", visit.getKey(), "attr", "space", visit.getSpace());
+                mHbaseOperationImpl.insertData("cloud_visits", visit.getKey(), "attr", "image", visit.getImage());
+                mHbaseOperationImpl.insertData("cloud_visits", visit.getKey(), "attr", "time", visit.getTime());
+                mHbaseOperationImpl.insertData("cloud_visits", visit.getKey(), "attr", "ip", visit.getIp());
         }
 
 }

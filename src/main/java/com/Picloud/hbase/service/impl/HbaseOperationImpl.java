@@ -26,6 +26,7 @@ import org.apache.hadoop.hbase.util.Bytes;
 import org.springframework.data.hadoop.hbase.HbaseTemplate;
 
 import com.Picloud.hbase.service.IHbaseOperation;
+import com.Picloud.utils.EncryptUtil;
 
 import org.apache.hadoop.hbase.filter.SubstringComparator;
 
@@ -425,5 +426,34 @@ public class HbaseOperationImpl implements IHbaseOperation {
 			return null;
 		}
 	}
+
+        @Override
+        public ResultScanner visit(int sid, String space) {
+                try {
+                        HTable table = new HTable(mConfiguration, "cloud_visits");
+                        List<Filter> filters = new ArrayList<Filter>();
+                        String startKey = EncryptUtil.spaceEncryptKey(sid, space)+"00000000000000000";
+                        String endKey = EncryptUtil.spaceEncryptKey(sid, space)+"99999999999999999";
+                        
+                        Filter rf1 = new RowFilter(CompareOp.GREATER_OR_EQUAL,
+                                        new BinaryComparator(startKey.getBytes()));
+                        filters.add(rf1);
+                        Filter rf2 = new RowFilter(CompareOp.LESS_OR_EQUAL,
+                                        new BinaryComparator(endKey.getBytes()));
+                        filters.add(rf2);
+                        
+                        FilterList filterList = new FilterList(filters);
+                        Scan scan = new Scan();
+                        scan.setFilter(filterList);
+                        ResultScanner rs = table.getScanner(scan);
+                        // table.close();
+                        return rs;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+  
+                
+                return null;
+        }
 
 }

@@ -16,7 +16,6 @@ import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PanoImage;
 import com.Picloud.web.model.PanoScene;
-import com.Picloud.web.model.Space;
 import com.Picloud.web.model.ThreeDImage;
 import com.Picloud.web.model.Visit;
 
@@ -84,49 +83,7 @@ public class ListMapping {
 			return null;
 		}
 		return list;
-	}
-	
-	/**
-	 * 将数据库读出的数据映射到Space 的 List
-	 * @param rs
-	 * @return
-	 */
-	public List<Space> spaceListMapping(ResultScanner rs){
-		List<Space> list = new ArrayList<Space>();
-		for (Result r : rs) {
-			Space space = new Space();
-			space.setKey(new String(r.getRow()));
-			for(Cell cell:r.rawCells()){
-				String v = new String(CellUtil.cloneQualifier(cell));
-				String val = new String(CellUtil.cloneValue(cell));
-				if (v.equals("name")) {
-					space.setName(val);
-				}
-				if (v.equals("desc")) {
-					space.setDesc(val);
-				}
-				if (v.equals("cover")) {
-					space.setCover(val);
-				}
-				if (v.equals("uid")) {
-					space.setUid(val);
-				}
-				if (v.equals("storage")) {
-					space.setStorage(val);
-				}
-				if (v.equals("number")) {
-					space.setNumber(val);
-				}
-			}
-			list.add(space);
-		}
-		rs.close();
-		if (list.size() == 0) {
-			return null;
-		}
-		return list;
-	}
-	
+	}	
 	/**
 	 * 将数据库读出的数据映射到Log的 List
 	 * @param rs

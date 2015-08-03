@@ -7,16 +7,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.Picloud.hdfs.HdfsHandler;
 import com.Picloud.hdfs.MapfileHandler;
+import com.Picloud.hibernate.dao.impl.SpaceDaoImpl;
 import com.Picloud.hibernate.dao.impl.UserDaoImpl;
+import com.Picloud.hibernate.entities.Space;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.utils.EncryptUtil;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.MapfileDaoImpl;
-import com.Picloud.web.dao.impl.SpaceDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Mapfile;
-import com.Picloud.web.model.Space;
 import com.Picloud.web.thread.MergeThread;
 
 public class ImageDeleter {
@@ -116,25 +116,24 @@ public class ImageDeleter {
 	 */
 	public void updateInfo(Image image) throws Exception {
 
-		Space space = mSpaceDaoImpl.find(image.getSpace());
+		Space space = mSpaceDaoImpl.find(Integer.parseInt(image.getSpace()));
 		User user = mUserDaoImpl.find(Integer.parseInt(image.getUid()));
 		
 		// 空间和用户的图片数量减1
-		int number = Integer.parseInt(space.getNumber()) - 1;
-		space.setNumber(Integer.toString(number));
+		int number = space.getNumber() - 1;
+		space.setNumber(number);
 		number = user.getImageNum() - 1;
 		user.setImageNum(number);
 
 		// 空间和用户的容量减少
-		double size = Double.parseDouble(space.getStorage())
-				- Double.parseDouble(image.getSize());
-		space.setStorage(Double.toString(size));
+		double size = space.getStorage()- Double.parseDouble(image.getSize());
+		space.setStorage(size);
 		size = user.getImageTotalSize()	 - Double.parseDouble(image.getSize());
 		user.setImageTotalSize(size);
 
 		// 将修改后的spaceh和user更新到数据库
-		mSpaceDaoImpl.update(space);
-		mUserDaoImpl.update(user);
+		mSpaceDaoImpl.reduceStorage(space.getSid(), size);
+		mUserDaoImpl.reduceImage(user.getUid(), 1, size);
 		System.out.println("空间和用户信息同步成功！");
 	}
 }

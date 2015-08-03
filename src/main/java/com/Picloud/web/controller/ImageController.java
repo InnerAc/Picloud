@@ -29,6 +29,8 @@ import com.Picloud.exception.ImageException;
 import com.Picloud.exception.UserException;
 import com.Picloud.hdfs.HdfsHandler;
 import com.Picloud.hdfs.MapfileHandler;
+import com.Picloud.hibernate.dao.impl.SpaceDaoImpl;
+import com.Picloud.hibernate.entities.Space;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.ImageDeleter;
 import com.Picloud.image.ImageReader;
@@ -37,10 +39,8 @@ import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.IpUtil;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
-import com.Picloud.web.dao.impl.SpaceDaoImpl;
 import com.Picloud.web.dao.impl.VisitDaoImpl;
 import com.Picloud.web.model.Image;
-import com.Picloud.web.model.Space;
 import com.Picloud.web.model.Visit;
 
 @Controller
@@ -68,12 +68,12 @@ public class ImageController {
 		
 		
 		Image image = imageDaoImpl.find(imageKey);
-		Space space = spaceDaoImpl.find(image.getSpace());
+		Space space = spaceDaoImpl.find(Integer.parseInt(image.getSpace()));
 		
 		String time = DateUtil.getCurrentDateMS();
 		String ip = request.getRemoteAddr();
 		String key = image.getSpace()+image.getKey();
-		Visit visit = new Visit(key, space.getName(), image.getName(), ip);
+		Visit visit = new Visit(space.getSid(), space.getName(), image.getName(), ip);
 		visitDaoImpl.add(visit);
 		
 		if (buffer != null) {
@@ -116,13 +116,13 @@ public class ImageController {
 		
 		User LoginUser = (User) session.getAttribute("LoginUser");
 		Image image = imageDaoImpl.find(imageKey);
-		Space space = spaceDaoImpl.find(image.getSpace());
+		Space space = spaceDaoImpl.find(Integer.parseInt(image.getSpace()));
 		
 		
 		//其他图片
 		List<Image> otherImages = imageDaoImpl.getOtherImages(image.getSpace(), image.getName(),6);
 		//所有空间
-		List<Space> spaces = spaceDaoImpl.load(String.valueOf(LoginUser.getUid()));
+		List<Space> spaces = spaceDaoImpl.load(LoginUser.getUid());
 		if(otherImages!=null){
 			model.addAttribute("otherImages",otherImages);
 		}
@@ -173,7 +173,7 @@ public class ImageController {
 	@RequestMapping(value="/{spaceKey}/cover[{imageKey}]",method=RequestMethod.GET)
 	public String  cover(@PathVariable String spaceKey,@PathVariable String imageKey) {
 		
-		Space space = spaceDaoImpl.find(spaceKey);
+		Space space = spaceDaoImpl.find(Integer.parseInt(spaceKey));
 		space.setCover(imageKey);
 		spaceDaoImpl.update(space);
 		return "redirect:/space/spaces";

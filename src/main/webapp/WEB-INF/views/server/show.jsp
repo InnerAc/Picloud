@@ -60,10 +60,10 @@
 					</div>
 					<h4 ><i class="fa fa-circle text-warning"></i>${space.name }</h4>
 					<p class="small">
-				      ${space.desc}
+				      ${space.description}
             </p>
 	        	<div class="other-group">
-            	<a href="${ROOT}/server/${space.key}/cover[${image.key}]" class="btn btn-xs btn-primary jet-button">设为封面</a>
+            	<a href="${ROOT}/server/${space.sid}/cover[${image.key}]" class="btn btn-xs btn-primary jet-button">设为封面</a>
             	<a href="${ROOT}/server/${space.cover}/view" class="btn btn-xs btn-default ">查看封面</a>
 	          </div>	
             <h4><i class="fa fa-circle text-warning"></i>其他图片</h4>
@@ -75,8 +75,8 @@
 				</c:if>
             </ul>	
             <div class="other-group">
-            	<a  href="${ROOT}/space/${space.key}/upload" class="btn btn-xs btn-primary jet-button">上传图片</a>
-            	<a href="${ROOT}/space/${space.key}" class="btn btn-xs btn-default">查看全部</a>
+            	<a  href="${ROOT}/space/${space.sid}/upload" class="btn btn-xs btn-primary jet-button">上传图片</a>
+            	<a href="${ROOT}/space/${space.sid}" class="btn btn-xs btn-default">查看全部</a>
             </div>			              
 				</div>	
 			</div>
@@ -108,7 +108,7 @@
                 <label class="control-label">选择空间</label>
                 <select class="form-control  jet-input" name="account" id='spaces_select'>
                   <c:forEach items="${spaces}" var="space">
-                    <option value="${space.key}">${space.name}</option>
+                    <option value="${space.sid}">${space.name}</option>
                   </c:forEach>
                </select>
               </div>

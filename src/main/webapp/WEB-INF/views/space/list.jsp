@@ -29,7 +29,7 @@
 								<h5>${space.name}</h5>
 							</div>
 							<div class="ibox-content  space-pic">
-								<a href="${space.key}/0">
+								<a href="${space.sid}/0">
 									<c:choose>
 										<c:when test="${space.cover=='' }">
 										<img src="${RESOURCES}/images/p3.jpg">
@@ -52,12 +52,12 @@
 									</div>
 								</div>
 								<div class="space-desc">
-									<p>${space.desc}</p>
+									<p>${space.description}</p>
 								</div>
 								<div class="user-button">
 									<div class="row">
 										<div class="col-md-6">
-											<a href="${space.key }"
+											<a href="${space.sid }"
 												type="button" class="btn btn-primary btn-block jet-button"><i
 												class="fa fa-folder-open"></i> 查看</a>
 										</div>
@@ -89,10 +89,10 @@
 									</div>
 									<div class="form-group">
 										<label class="control-label">空间描述</label>
-										<sf:errors path="desc"/>
+										<sf:errors path="description"/>
 									</div>
 									<div class="form-group">
-										<sf:textarea path="desc" class="form-control jet-input" placeholder="请输入空间描述"/>
+										<sf:textarea path="description" class="form-control jet-input" placeholder="请输入空间描述"/>
 									</div>
 								</div>
 								<div class="ibox-content profile-content">

@@ -144,6 +144,12 @@ public class EncryptUtil {
 		return key;
     }
     
+    public static String spaceEncryptKey(int sid, String space) throws Exception{
+            String data =sid + "_" + space;
+            String key = encryptBASE64(data.getBytes());
+            return key;
+}
+    
     public static String hdEncryptKey(String hdImageName,String uid) throws Exception{
     	String data = hdImageName + "_" + uid + "_hd";
     	String sha = encryptSHA(data.getBytes());

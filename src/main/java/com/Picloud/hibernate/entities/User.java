@@ -1,13 +1,17 @@
 package com.Picloud.hibernate.entities;
 
-// Generated 2015-7-31 11:56:50 by Hibernate Tools 3.4.0.CR1
+// Generated 2015-8-3 14:27:19 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import static javax.persistence.GenerationType.IDENTITY;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -29,6 +33,7 @@ public class User implements java.io.Serializable {
         private int imageNum;
         private double imageTotalSize;
         private int spaceNum;
+        private Set<Space> spaces = new HashSet<Space>(0);
 
         public User() {
         }
@@ -47,7 +52,8 @@ public class User implements java.io.Serializable {
 
         public User(String accountType, String email, Date lastLogin,
                         String website, String nickname, String password,
-                        int imageNum, double imageTotalSize, int spaceNum) {
+                        int imageNum, double imageTotalSize, int spaceNum,
+                        Set<Space> spaces) {
                 this.accountType = accountType;
                 this.email = email;
                 this.lastLogin = lastLogin;
@@ -57,6 +63,7 @@ public class User implements java.io.Serializable {
                 this.imageNum = imageNum;
                 this.imageTotalSize = imageTotalSize;
                 this.spaceNum = spaceNum;
+                this.spaces = spaces;
         }
 
         @Id
@@ -150,6 +157,15 @@ public class User implements java.io.Serializable {
 
         public void setSpaceNum(int spaceNum) {
                 this.spaceNum = spaceNum;
+        }
+
+        @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+        public Set<Space> getSpaces() {
+                return this.spaces;
+        }
+
+        public void setSpaces(Set<Space> spaces) {
+                this.spaces = spaces;
         }
 
 }

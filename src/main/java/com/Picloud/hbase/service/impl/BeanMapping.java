@@ -15,7 +15,6 @@ import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Mapfile;
 import com.Picloud.web.model.PanoImage;
 import com.Picloud.web.model.PanoScene;
-import com.Picloud.web.model.Space;
 import com.Picloud.web.model.ThreeDImage;
 import com.Picloud.web.model.Visit;
 
@@ -92,47 +91,6 @@ public class BeanMapping {
                 return image;
         }
 
-        /**
-         * 将数据库读出的数据映射到Space
-         * 
-         * @param rs
-         * @param rowkey
-         * @return
-         */
-        public Space SpaceMapping(Result rs, String rowkey) {
-                Space space = new Space();
-                if (rs.isEmpty()) {
-                        // 没有检索到，说明数据库中没有该图片，返回错误信息
-                        return null;
-                } else {
-                        space.setKey(rowkey);
-                        for (Cell cell : rs.rawCells()) {
-                                String v = new String(
-                                                CellUtil.cloneQualifier(cell));
-                                String val = new String(
-                                                CellUtil.cloneValue(cell));
-                                if (v.equals("name")) {
-                                        space.setName(val);
-                                }
-                                if (v.equals("desc")) {
-                                        space.setDesc(val);
-                                }
-                                if (v.equals("cover")) {
-                                        space.setCover(val);
-                                }
-                                if (v.equals("uid")) {
-                                        space.setUid(val);
-                                }
-                                if (v.equals("storage")) {
-                                        space.setStorage(val);
-                                }
-                                if (v.equals("number")) {
-                                        space.setNumber(val);
-                                }
-                        }
-                }
-                return space;
-        }
 
         /**
          * 将数据库读出的数据映射到Mapfile
