@@ -70,9 +70,7 @@ public class ImageController {
 		Image image = imageDaoImpl.find(imageKey);
 		Space space = spaceDaoImpl.find(Integer.parseInt(image.getSpace()));
 		
-		String time = DateUtil.getCurrentDateMS();
 		String ip = request.getRemoteAddr();
-		String key = image.getSpace()+image.getKey();
 		Visit visit = new Visit(space.getSid(), space.getName(), image.getName(), ip);
 		visitDaoImpl.add(visit);
 		

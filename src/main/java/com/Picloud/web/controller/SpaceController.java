@@ -41,10 +41,12 @@ import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.PropertiesUtil;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
+import com.Picloud.web.dao.impl.VisitDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PageInfo;
 import com.Picloud.web.model.ThreeDImage;
+import com.Picloud.web.model.Visit;
 import com.Picloud.web.thread.SyncThread;
 
 @Controller
@@ -61,6 +63,8 @@ public class SpaceController {
 	private SystemConfig systemConfig;
 	@Autowired
 	private InfoDaoImpl infoDaoImpl;
+	@Autowired
+	private VisitDaoImpl visitDaoImpl;
 
 	private static int pageNum = 6+1;
 
@@ -430,4 +434,12 @@ public class SpaceController {
 		model.addAttribute("space", space);
 		return "space/show";
 	}
+	
+	       @RequestMapping(value = "test/{sid}/{space}", method = RequestMethod.GET)
+	        public String test(@PathVariable int sid, @PathVariable String space, Model model,
+	                        HttpSession session) {
+	               List<Visit> visits = visitDaoImpl.get(sid, space);
+	               System.out.println(visits.size());
+	                return "space/show";
+	        }
 }

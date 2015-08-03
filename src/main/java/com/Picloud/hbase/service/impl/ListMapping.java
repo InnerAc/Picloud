@@ -320,6 +320,7 @@ public class ListMapping {
 	                }
 	                rs.close();
 	                if (list.size() == 0) {
+	                        System.out.println("这里是空");
 	                        return null;
 	                }
 	                return list;

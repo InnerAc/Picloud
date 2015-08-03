@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.filefilter.PrefixFileFilter;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.MasterNotRunningException;
 import org.apache.hadoop.hbase.ZooKeeperConnectionException;
@@ -20,6 +21,7 @@ import org.apache.hadoop.hbase.filter.CompareFilter.CompareOp;
 import org.apache.hadoop.hbase.filter.Filter;
 import org.apache.hadoop.hbase.filter.FilterList;
 import org.apache.hadoop.hbase.filter.PageFilter;
+import org.apache.hadoop.hbase.filter.PrefixFilter;
 import org.apache.hadoop.hbase.filter.RowFilter;
 import org.apache.hadoop.hbase.filter.SingleColumnValueFilter;
 import org.apache.hadoop.hbase.util.Bytes;
@@ -431,28 +433,17 @@ public class HbaseOperationImpl implements IHbaseOperation {
         public ResultScanner visit(int sid, String space) {
                 try {
                         HTable table = new HTable(mConfiguration, "cloud_visits");
-                        List<Filter> filters = new ArrayList<Filter>();
-                        String startKey = EncryptUtil.spaceEncryptKey(sid, space)+"00000000000000000";
-                        String endKey = EncryptUtil.spaceEncryptKey(sid, space)+"99999999999999999";
-                        
-                        Filter rf1 = new RowFilter(CompareOp.GREATER_OR_EQUAL,
-                                        new BinaryComparator(startKey.getBytes()));
-                        filters.add(rf1);
-                        Filter rf2 = new RowFilter(CompareOp.LESS_OR_EQUAL,
-                                        new BinaryComparator(endKey.getBytes()));
-                        filters.add(rf2);
-                        
-                        FilterList filterList = new FilterList(filters);
+                        String pre = EncryptUtil.spaceEncryptKey(sid, space);
+                        PrefixFilter pff = new PrefixFilter(pre.getBytes());
                         Scan scan = new Scan();
-                        scan.setFilter(filterList);
+                        scan.setFilter(pff);
                         ResultScanner rs = table.getScanner(scan);
                         // table.close();
+                        System.out.println(rs.toString());
                         return rs;
                 } catch (Exception e) {
                         e.printStackTrace();
                 }
-  
-                
                 return null;
         }
 
