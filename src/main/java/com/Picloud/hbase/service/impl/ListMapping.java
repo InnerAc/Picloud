@@ -18,6 +18,7 @@ import com.Picloud.web.model.PanoImage;
 import com.Picloud.web.model.PanoScene;
 import com.Picloud.web.model.Space;
 import com.Picloud.web.model.ThreeDImage;
+import com.Picloud.web.model.Visit;
 
 /**
  * 将数据库读出的数据映射到List
@@ -336,5 +337,35 @@ public class ListMapping {
 		}
 		return list;
 	}
+	
+	       public List<Visit> visitListMapping(ResultScanner rs){
+	                List<Visit> list = new ArrayList<Visit>();
+	                for (Result r : rs) {
+	                        Visit visit = new Visit();
+	                        visit.setKey(new String(r.getRow()));
+	                        for(Cell cell:r.rawCells()){
+	                                String v = new String(CellUtil.cloneQualifier(cell));
+	                                String val = new String(CellUtil.cloneValue(cell));
+	                                if (v.equals("space")) {
+	                                        visit.setSpace(val);
+	                                }
+	                                if (v.equals("image")) {
+	                                        visit.setImage(val);
+	                                }
+	                                if (v.equals("time")) {
+	                                        visit.setTime(val);
+	                                }
+	                                if (v.equals("ip")) {
+	                                        visit.setIp(val);
+	                                }
+	                        }
+	                                list.add(visit);
+	                }
+	                rs.close();
+	                if (list.size() == 0) {
+	                        return null;
+	                }
+	                return list;
+	        }
 
 }
