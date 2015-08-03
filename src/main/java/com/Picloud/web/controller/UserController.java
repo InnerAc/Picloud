@@ -45,23 +45,23 @@ public class UserController {
 	        }
 
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(String email, String password, HttpSession session) throws Exception {
+	public String login(String email, String password, HttpSession session,RedirectAttributes redirectAttributes) throws Exception {
 		System.out.println(email);
 	        User user = mUserDaoImpl.validate(email);
 		String psw = EncryptUtil.encryptMD5(password.getBytes());
 		if (user == null) {
-			throw new UserException("用户不存在");
+			redirectAttributes.addFlashAttribute("LOGIN_MSG", "用户不存在！");
+			return "redirect:/user/login";			
 		} else if (!psw.equals(user.getPassword())) {
-			throw new UserException("用户名或密码错误");
+			redirectAttributes.addFlashAttribute("LOGIN_MSG", "用户名或密码错误");
+			return "redirect:/user/login";					
 		}
 
-		Log log = new Log(String.valueOf(user.getUid()), user.getNickname() + "登录系统");
+		Log log = new Log(String.valueOf(user.getUid()), "登录系统");
 		mLogDaoImpl.add(log);
 		user.setLastLogin(new Date());
 
 		session.setAttribute("LoginUser", user);
-		session.removeAttribute("LOGIN_MSG");
-
 		return "redirect:../index";
 	}
 
@@ -78,17 +78,18 @@ public class UserController {
 
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String register(@Validated User user, BindingResult br,
-			HttpSession session) throws Exception {
+			HttpSession session,RedirectAttributes redirectAttributes) throws Exception {
 		if (br.hasErrors()) {
 			return "register";
 		}
 		if (mUserDaoImpl.validate(user.getEmail()) != null) {
-			throw new UserException("用户名已被使用");
+			redirectAttributes.addFlashAttribute("LOGIN_MSG", "该邮箱已被注册");
+			return "redirect:/user/register";
 		}
 		String password = EncryptUtil.encryptMD5(user.getPassword().getBytes());
 		User u = new User("0", user.getEmail(), user.getNickname(), password, 0, 0, 0);
 		mUserDaoImpl.add(u);
-		session.setAttribute("LOGIN_MSG", "注册成功，请登录！");
+		redirectAttributes.addFlashAttribute("LOGIN_MSG", "注册成功，请登录！");
 		return "redirect:/user/login";
 	}
 
