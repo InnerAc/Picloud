@@ -72,8 +72,8 @@ public class ImageController {
 		
 		String time = DateUtil.getCurrentDateMS();
 		String ip = request.getRemoteAddr();
-		String key = image.getSpace()+image.getKey()+time;
-		Visit visit = new Visit(key, space.getName(), image.getName(), time, ip);
+		String key = image.getSpace()+image.getKey();
+		Visit visit = new Visit(key, space.getName(), image.getName(), ip);
 		visitDaoImpl.add(visit);
 		
 		if (buffer != null) {

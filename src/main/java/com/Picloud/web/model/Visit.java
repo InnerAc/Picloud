@@ -1,5 +1,7 @@
 package com.Picloud.web.model;
 
+import com.Picloud.utils.JspUtil;
+
 public class Visit {
         
         public String key;
@@ -9,15 +11,22 @@ public class Visit {
         public String ip;
         public Visit() {
                 super();
-                // TODO Auto-generated constructor stub
         }
-        public Visit(String key, String space, String image, String time,
+        //务必使用此构造方法，其中，key由space和image的key拼成
+        public Visit(String key, String space, String image, 
                         String ip) {
                 super();
-                this.key = key;
+                try {
+                        String max = "99999999999999999";
+                        double d1 =   Double.parseDouble(max);
+                        double d2 = Double.parseDouble(JspUtil.getCurrentDateMS());
+                        this.key = key+String.valueOf(d1-d2);
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
                 this.space = space;
                 this.image = image;
-                this.time = time;
+                this.time = JspUtil.getCurrentDateStr();
                 this.ip = ip;
         }
         public String getKey() {
