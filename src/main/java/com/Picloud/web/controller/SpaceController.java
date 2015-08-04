@@ -77,6 +77,8 @@ public class SpaceController {
         @Autowired
         private LogDaoImpl mLogDaoImpl;
         private static int pageNum = 6 + 1;
+        
+        
 
         /**
          * 查看所有空间

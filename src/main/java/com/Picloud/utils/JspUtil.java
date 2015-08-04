@@ -81,6 +81,15 @@ public class JspUtil {
                 SimpleDateFormat sdf = new SimpleDateFormat(format);
                 return sdf.parse(str);
         }
+        
+        public static Date formatString(String str)
+                        throws Exception {
+                if ((str == null) || (str.equals(""))) {
+                        return null;
+                }
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                return sdf.parse(str);
+        }
 
         /**
          * 获取当前日期时间，24小时制
@@ -160,6 +169,27 @@ public class JspUtil {
                         if (ch[i] == '.') {
                                 if (i + 3 <= ch.length)
                                         return str.substring(0, i + 3);
+                                else
+                                        return str.substring(0, ch.length);
+                        }
+                }
+                return String.valueOf(0);
+        }
+        
+        /**
+         * 保留4位小数
+         * 
+         * @param str
+         * @return
+         */
+        public static String cutLength4(String str) {
+                if ((str == null) || (str.length() == 0))
+                        return String.valueOf(0);
+                char[] ch = str.toCharArray();
+                for (int i = 0; i < ch.length; i++) {
+                        if (ch[i] == '.') {
+                                if (i + 5 <= ch.length)
+                                        return str.substring(0, i + 5);
                                 else
                                         return str.substring(0, ch.length);
                         }
