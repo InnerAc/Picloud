@@ -10,15 +10,12 @@
 <title>${TITLE}</title>
 <link rel="stylesheet" href="${RESOURCES}/font/css/font-awesome.min.css" />
 <link rel="stylesheet" href="${RESOURCES}/css/bootstrap.min.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/common.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/index.css" />
+<link rel="stylesheet" href="${RESOURCES}/css/main.css" />
 </head>
 <body>
 	<div class="wrap">
 		<jsp:include page="../common/header.jsp" />
 		<div class="page-wrapper">
-			<jsp:include page="../common/navbar.jsp" />
-			<jsp:include page="../common/breadcrumb.jsp" />
 			<div class="wrapper wrapper-content animated fadeInDown">
 			
 			

@@ -142,7 +142,7 @@ public class SpaceController {
 	                p = Integer.parseInt(page);
 	        }
 		model.addAttribute("module", module);
-		model.addAttribute("action", "图片空间");
+		model.addAttribute("action", "图片空间查看");
 
 		User loginUser = (User) session.getAttribute("LoginUser");
 		Space space = mSpaceDaoImpl.find(Integer.parseInt(spaceKey));
@@ -263,13 +263,13 @@ public class SpaceController {
 	 *            图片所在空间
 	 * @param attachs
 	 *            图片附件数组
-	 * @throws FileUploadException
+	 * @throws Exception 
 	 */
 	@RequestMapping(value = "/{spaceKey}/upload", method = RequestMethod.POST)
 	@ResponseBody
 	public UploadInfo upload(@PathVariable String spaceKey,
 			HttpServletRequest request, HttpServletResponse response,
-			HttpSession session) throws FileUploadException {
+			HttpSession session) throws Exception {
 		FileItemFactory factory = new DiskFileItemFactory();
 		ServletFileUpload upload = new ServletFileUpload(factory);
 		List items = upload.parseRequest(request);
@@ -299,7 +299,8 @@ public class SpaceController {
 			e.printStackTrace();
 		}
 		UploadInfo uploadInfo = new UploadInfo();
-		uploadInfo.setInfo(imageName);
+		
+		uploadInfo.setInfo(EncryptUtil.imageEncryptKey(imageName, String.valueOf(loginUser.getUid())));
 		if (flag) {
 			response.setContentType("text/html;charset=gb2312");
 			response.setStatus(200);

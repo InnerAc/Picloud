@@ -6,6 +6,13 @@
         <div class="brand l">
             <div class="logo"><img src="${RESOURCES}/images/logo4.png" alt="Picloud"  height="69"></div>
         </div>   
+        <c:if test="${action eq '图片空间查看'}">
+         <div class="space-title l">
+         	<a href="${ROOT}/space/spaces" class="ajax icn-back pull-left"></a>
+			<h3 class="title">${space.name}</h3>         	
+         </div>
+        </c:if>
+       
         <div class="login-area r">
             <div class="dropdown user-info pull-right logged-in">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" id="user-dropdown">
@@ -14,8 +21,8 @@
                 <ul class="dropdown-menu top-right" role="menu" aria-labelledby="dropdownMenu2">
                     <span class="arrow icn-dd-top-arrow"></span>
                 <li role="presentation" class="dropdown-header">
-                    <div class="dropdown-title">Jeff Chen</div>
-                    <div class="dropdown-detail">564936642@qq.com</div>
+                    <div class="dropdown-title">${LoginUser.nickname}</div>
+                    <div class="dropdown-detail">${LoginUser.email }</div>
                 </li>
                 <li role="presentation" class="divider"></li>
                 <li><a href="/settings">Settings</a></li>

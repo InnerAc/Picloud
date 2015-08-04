@@ -33,7 +33,7 @@ public class MenuConfig  extends HttpServlet{
 		basicModules.add(new Module("basic", "数据中心", "link", "space/spaces"));
 		
 		personalModules.add(new Module("user", "个人中心", "user", "user/index"));
-		personalModules.add(new Module("Log", "日志", "log", "user/log"));
+		personalModules.add(new Module("Log", "日志", "log", "user/log/0"));
 		
 		application.setAttribute("BASIC_MODULE", basicModules);
 		application.setAttribute("PERSONAL_MODULE", personalModules);

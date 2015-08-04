@@ -1773,3 +1773,33 @@ header .global-actions {
 .hide {
   display: none !important;
 }
+
+.space-title .icn-back {
+  margin-top: 7px;
+  margin-right: 15px;
+}
+
+.title {
+  position: relative;
+  margin: 1px 0;
+  max-width: 400px;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.space-title{
+	margin-top:20px;
+	margin-left:10px;
+}
+.space-title .title{
+	max-width: 360px;
+	font-size:20px;
+	color:#101010;
+}
+.icn-back {
+  background-position: -418px 0;
+  height: 16px;
+  width: 9px;
+}

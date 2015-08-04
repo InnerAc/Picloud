@@ -60,7 +60,7 @@
 		                                </div>
 		                            </div>
 		                            <div class="space-footer">
-		                                <span class="time">16 minutes ago</span>
+		                                <span class="time">${space.time}</span>
 		                            </div>
 		                        </li>                                           			
                        			</c:otherwise>
