@@ -132,8 +132,8 @@ public class SpaceController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/{spaceKey}/{page} ", method = RequestMethod.GET)
-	public String show(@PathVariable String spaceKey, @PathVariable int page, Model model,
+	@RequestMapping(value = "/{spaceKey} ", method = RequestMethod.GET)
+	public String show(@PathVariable String spaceKey, int page, Model model,
 			HttpSession session) throws Exception {
 		model.addAttribute("module", module);
 		model.addAttribute("action", "图片空间");

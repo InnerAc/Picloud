@@ -828,12 +828,12 @@ header .toolbar li a i {
 header .search-box {
   position: relative;
   margin-left: 20px;
-  line-height: 70px;
+margin-top:15px;
   margin-right: 20px;
 }
 header .search-box .icn-search {
   position: absolute;
-  top: 30px;
+  top:13px;
   margin-left: 10px;
   z-index: 3;
 }
@@ -850,8 +850,8 @@ header .search-box input:focus {
   width: 240px;
 }
 header .login-area {
-  line-height: 70px;
-  margin-right: 20px;
+	margin-top:15px;
+	margin-right: 20px;
 }
 header .login-area img {
   vertical-align: middle;
@@ -876,7 +876,7 @@ header .login-area .user-info > a {
 }
 header .login-area .user-info.logged-in > a:before {
   position: absolute;
-  top: 35px;
+  top: 15px;
   right: 0;
   background: url('/Picloud/resources/images/sprites.png') no-repeat;
   background-position: -5248px 0;
@@ -886,8 +886,8 @@ header .login-area .user-info.logged-in > a:before {
   display: inline-block;
 }
 header .global-actions {
-  line-height: 70px;
-}
+	margin-top:15px;
+	}
 .sidebar {
   background-color: #fff;
   position: fixed;

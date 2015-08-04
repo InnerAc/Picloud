@@ -10,99 +10,106 @@
 <title>${TITLE}</title>
 <link rel="stylesheet" href="${RESOURCES}/font/css/font-awesome.min.css" />
 <link rel="stylesheet" href="${RESOURCES}/css/bootstrap.min.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/common.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/picserver.css" />
+<link rel="stylesheet" href="${RESOURCES}/css/main.css" />
 </head>
 <body>
-	<div class="wrap">
-		<jsp:include page="../common/header.jsp" />
-		<div class="page-wrapper">
-			<jsp:include page="../common/navbar.jsp" />
-			<jsp:include page="../common/breadcrumb.jsp" />
-			<div class="wrapper wrapper-content animated fadeInDown">
-				<block name="content"> <block name="content">
-				<div class="row">
-					<div class="col-lg-3">
-						<div class="ibox ">
-							<div class="ibox-content">
-								<div class="file-manager">
-									<h4>${space.name}</h4>
-									<h5 class="space-desc">${space.description}</h5>
-									<div class="hr-line-dashed"></div>
-									<a class="jet-button btn btn-primary btn-block"
-										href="${ROOT}/space/${space.sid}/upload">上传图片</a>
-									<div class="hr-line-dashed"></div>
-									<label class="control-label">其他空间</label>
-									<ul class="folder-list" style="padding: 0">
-										<c:forEach items="${spaces}" var="otherspace">
-											<c:if test="${space.name ne otherspace.name}">
-												<li><a href="${ROOT}/space/${otherspace.sid}/0">${otherspace.name }</a></li>
-											</c:if>
-										</c:forEach>
-									</ul>
-									<div class="picture-search">
-										<label class="control-label">搜索图片</label>
-										<form action="${ROOT}/space/${space.sid}/search" method="get">
-											<input type="text" placeholder="搜索" name="key"
-												class="form-control jet-input">
-										</form>
-									</div>
-									<div class="clear"></div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="col-lg-9 animated fadeInRight">
-						<div class="row">
-							<c:forEach items="${images}" var="image">
-								<div class="file-box col-lg-4">
-									<div class="file">
-										<a href="${ROOT }/server/${image.key}/view"> <span
-											class="corner"></span>
-											<div class="image">
-												<img alt="image" class="img-responsive"
-													src="${ROOT}/process/${image.key}/scale[198,-]" width=198>
-											</div>
-											<div class="file-name">
-												${image.name} <br> <small> <c:out
-														value="${jt.getStrTime(image.createTime)}"></c:out>
-												</small>
-											</div>
-										</a>
-									</div>
-								</div>
-							</c:forEach>
-							<div class="clear"></div>
-							<nav class="pull-right gallery-pag">
-							<ul class="pagination jet-pagination">
-								<c:if test="${sessionScope.imagePagePnfo.page < 1 }">
-									<li class="disabled"><a href="">&laquo;</a></li>
-								</c:if>
-								<c:if test="${sessionScope.imagePagePnfo.page >= 1}">
-									<li><a
-										href="${ROOT}/space/${space.sid}/${sessionScope.imagePagePnfo.page-1}">&laquo;</a></li>
-								</c:if>
-								<c:if test="${sessionScope.imagePagePnfo.ifHaveNext =='false' }">
-									<li class="disabled"><a href="">&raquo;</a></li>
-								</c:if>
-								<c:if test="${sessionScope.imagePagePnfo.ifHaveNext =='true' }">
-									<li><a href="${ROOT}/space/${space.sid}/${sessionScope.imagePagePnfo.page+1}" >&raquo;</a></li>
-								</c:if>
-							</ul>
-							</nav>
-						</div>
-					</div>
-				</div>
-
-				</block> </block>
-			</div>
+			<jsp:include page="../common/header.jsp" />
+		 <div class="content">
+            <div class="content-wrap">
+                <div class="content-toolbar clearfix">
+                    <ul class="toolbar-action clearfix">
+                        <li><a href=""><i class="fa fa-copy"></i>Move</a></li>
+                        <li><a href=""><i class="fa fa-trash"></i>Delete</a></li>
+                    </ul>
+                    <ul class="list-style r">
+                        <li class="active"><a href="" id="list-square"><span  class="icn-square"></span></a></li>
+                        <li><a href="" id="list-table"><span class="icn-table"></span></a></li>
+                    </ul>
+                </div>
+                <div class="photo-list">
+                <c:forEach items="${images}" var="image">
+                      <div class="photo">
+                        <div class="photo-wrap">
+                            <div class="photo-img">
+                            <a href=""><img src="2.png" alt=""></a></div>
+                            <div class="photo-info">
+                                <div class="photo-name">
+                                    <a href="1">${image.name}</a>
+                                </div>
+                                <div class="photo-meta">
+                                    <span class="icn-timer"></span>6 mins ago <span class="icn-storage"></span>244kb
+                                </div>
+                            </div>
+                        </div>
+                    </div>              
+                </c:forEach>
+                </div>
+            </div>
+            </div>
+                </section>
+    <div class="clearfix"></div>
 			<jsp:include page="../common/footer.jsp" />
-		</div>
-	</div>
 	<script type="text/javascript"
 		src="${RESOURCES }/js/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="${RESOURCES }/js/bootstrap.min.js"></script>
-	<script type="text/javascript" src="${RESOURCES }/js/common.js"></script>
+	<script type="text/javascript" src="${PLUGIN}/uploadify/jquery.Huploadify.js"></script>
+	<script>
+    $(function() {
+
+        $(".photo").click(function() {
+            if ($(this).hasClass('active')) {
+                $(this).removeClass('active');
+                $(this).children('.clicked').remove();
+            } else {
+                $(this).addClass('active').append('<div class="clicked"><span class="icn-tick"></span></div>');
+            }
+        });
+
+        var up = $('#upload').Huploadify({
+        auto:true,
+        fileTypeExts:'*.jpg;*.png;*.gif;*.bmp',
+        multi:true,
+        fileSizeLimit:99999999,
+        breakPoints:true,
+        saveInfoLocal:true,
+        showUploadedPercent:true,//是否实时显示上传的百分比，如20%
+        showUploadedSize:true,
+        removeTimeout:9999999,
+        uploader:'upload',
+        onUploadStart:function(){
+            //up.settings('formData', {aaaaa:'1111111',bb:'2222'});
+            up.Huploadify('settings','formData', {aaaaa:'1111111',bb:'2222'});
+        },
+        onUploadSuccess:function(file){
+            //alert('上传成功');
+        },
+        onUploadComplete:function(){
+            //alert('上传完成');
+        },
+        /*getUploadedSize:function(file){
+            var data = {
+                data : {
+                    fileName : file.name,
+                    lastModifiedDate : file.lastModifiedDate.getTime()
+                }
+            };
+            var url = 'http://49.4.132.173:8080/admin/uploadfile/index/';
+            var uploadedSize = 0;
+            $.ajax({
+                url : url,
+                data : data,
+                async : false,
+                type : 'POST',
+                success : function(returnData){
+                    returnData = JSON.parse(returnData);
+                    uploadedSize = returnData.uploadedSize;
+                }
+            });
+            return uploadedSize;
+        }   */  
+    });
+});
+
+</script>
 </body>
 </html>

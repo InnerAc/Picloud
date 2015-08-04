@@ -24,39 +24,48 @@
                 </div>
                 <div class="space-list">
                     <ul class="spaces">
-                        <li class="space-li">
-                            <div class="thumbnail-wrapper"><a href=""><div class="thumbnail">
-                                <img src="spacer-col.gif" class="sicn ">
-                                <div class="progress-wrapper ab-center js-empty-folder">Empty collection</div>
-                            </div></a></div>
-                            <div class="name-area"><a href="" class="thumb-title">测试空间</a></div>
-                            <div class="actions clearfix">
-                                <div class="action-list l">
-                                    <span>裁剪</span> <span>缩放</span>
-                                </div>
-                            </div>
-                            <div class="space-footer">
-                                <span class="time">16 minutes ago</span>
-                            </div>
-                        </li>
-                        <li class="space-li">
-                            <div class="thumbnail-wrapper"><a href=""><div class="thumbnail">
-                                <div class="thumb"><img src="1.png" alt=""></div>
-                                <div class="thumb"><img src="2.png" alt=""></div>
-                                <div class="thumb"><img src="3.png" alt=""></div>
-                                <div class="thumb"><img src="3.png" alt=""></div>
-
-                            </div></a></div>
-                            <div class="name-area"><a href="" class="thumb-title">测试空间</a></div>
-                            <div class="actions clearfix">
-                                <div class="action-list l">
-                                    <span>裁剪</span> <span>缩放</span>
-                                </div>
-                            </div>
-                            <div class="space-footer">
-                                <span class="time">16 minutes ago</span>
-                            </div>
-                        </li>  
+                       <c:forEach items="${spaces}" var="space">  
+                       		<c:choose>
+                       			<c:when test="${space.number  eq 0}">
+			                        <li class="space-li">
+			                            <div class="thumbnail-wrapper"><a href="${ROOT}/space/${space.sid}?page=0"><div class="thumbnail">
+			                                <img src="${RESOURCES}/images/spacer-col.gif" class="sicn ">
+			                                <div class="progress-wrapper ab-center js-empty-folder">Empty Space</div>
+			                            </div></a></div>
+			                            <div class="name-area"><a href="" class="thumb-title">${space.name}</a></div>
+			                            <div class="actions clearfix">
+			                                <div class="action-list l">
+			                                    <span>裁剪</span> <span>缩放</span>
+			                                </div>
+			                            </div>
+			                            <div class="space-footer">
+			                                <span class="time">16 minutes ago</span>
+			                            </div>
+			                        </li>                       			
+                       			</c:when>
+                       			
+                       			<c:otherwise>
+		                           <li class="space-li">
+		                            <div class="thumbnail-wrapper"><a href="${space.sid}"><div class="thumbnail">
+		                                <div class="thumb"><img src="1.png" alt=""></div>
+		                                <div class="thumb"><img src="2.png" alt=""></div>
+		                                <div class="thumb"><img src="3.png" alt=""></div>
+		                                <div class="thumb"><img src="3.png" alt=""></div>
+		
+		                            </div></a></div>
+		                            <div class="name-area"><a href="" class="thumb-title">${space.name}</a></div>
+		                            <div class="actions clearfix">
+		                                <div class="action-list l">
+		                                    <span>裁剪</span> <span>缩放</span>
+		                                </div>
+		                            </div>
+		                            <div class="space-footer">
+		                                <span class="time">16 minutes ago</span>
+		                            </div>
+		                        </li>                                           			
+                       			</c:otherwise>
+                       		</c:choose>
+                        </c:forEach>
                         <li class="space-li">
                            <sf:form method="post" modelAttribute="space" action="add" class="new-space">
                                 <sf:input path="name" type="text"  placeholder="请输入空间名字"/>
