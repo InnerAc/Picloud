@@ -577,5 +577,4 @@ public class SpaceController {
                 }
                 return "redirect:/space/" + spaceId;
         }
->>>>>>> 4fa2d25c7638510f1f3af5df9d00a9636b032b56
 }
