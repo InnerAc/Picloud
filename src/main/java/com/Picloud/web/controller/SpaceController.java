@@ -122,7 +122,7 @@ public class SpaceController {
 		Space s2 = mSpaceDaoImpl.getByName(space.getName());
 		String spaceNum = String.valueOf(LoginUser.getSpaceNum());
 		mUserDaoImpl.addSpaceNum(LoginUser.getUid());
-		return "redirect:/space/"+s2.getSid()+"?page=0";
+		return "redirect:/space/"+s2.getSid();
 	}
 
 	/**
@@ -135,8 +135,12 @@ public class SpaceController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/{spaceKey} ", method = RequestMethod.GET)
-	public String show(@PathVariable String spaceKey, int page, Model model,
+	public String show(@PathVariable String spaceKey, String page, Model model,
 			HttpSession session) throws Exception {
+	        int p = 0;
+	        if(page != null){
+	                p = Integer.parseInt(page);
+	        }
 		model.addAttribute("module", module);
 		model.addAttribute("action", "图片空间");
 
@@ -150,7 +154,7 @@ public class SpaceController {
 			 pi.setPage(0);
 			 pi.getStartKeys().add(" ");
 		 }
-		 pi.setPage(page);
+		 pi.setPage(p);
 		 List<Image> images = mImageDaoImpl.imagePageByKey(String.valueOf(loginUser.getUid()),
 		 pi.getStartKeys().get(pi.getPage()), spaceKey, pageNum);
 		 if(images == null ||images.size() < pageNum){
