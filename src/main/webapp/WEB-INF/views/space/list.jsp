@@ -26,41 +26,39 @@
                     <ul class="spaces">
                        <c:forEach items="${spaces}" var="space">  
                        		<c:choose>
-                       			<c:when test="${space.number  eq 0}">
+                       			<c:when test="${space.space.number  eq 0}">
 			                        <li class="space-li">
-			                            <div class="thumbnail-wrapper"><a href="${ROOT}/space/${space.sid}?page=0"><div class="thumbnail">
+			                            <div class="thumbnail-wrapper"><a href="${ROOT}/space/${space.space.sid}?page=0"><div class="thumbnail">
 			                                <img src="${RESOURCES}/images/spacer-col.gif" class="sicn ">
 			                                <div class="progress-wrapper ab-center js-empty-folder">Empty Space</div>
 			                            </div></a></div>
-			                            <div class="name-area"><a href="" class="thumb-title">${space.name}</a></div>
+			                            <div class="name-area"><a href="" class="thumb-title">${space.space.name}</a></div>
 			                            <div class="actions clearfix">
 			                                <div class="action-list l">
 			                                    <span>裁剪</span> <span>缩放</span>
 			                                </div>
 			                            </div>
 			                            <div class="space-footer">
-			                                <span class="time">${jt.formatDate(space.time)} </span>
+			                                <span class="time">${jt.formatDate(space.space.time)} </span>
 			                            </div>
 			                        </li>                       			
                        			</c:when>
                        			
                        			<c:otherwise>
 		                           <li class="space-li">
-		                            <div class="thumbnail-wrapper"><a href="${space.sid}"><div class="thumbnail">
-		                                <div class="thumb"><img src="1.png" alt=""></div>
-		                                <div class="thumb"><img src="2.png" alt=""></div>
-		                                <div class="thumb"><img src="3.png" alt=""></div>
-		                                <div class="thumb"><img src="3.png" alt=""></div>
-		
+		                            <div class="thumbnail-wrapper"><a href="${space.space.sid}"><div class="thumbnail">
+										<c:forEach var="image" items="${space.images}" >
+										 <div class="thumb"><img src="${ROOT}/process/${image.key}/scale[198,-]" alt=""></div>
+										</c:forEach>
 		                            </div></a></div>
-		                            <div class="name-area"><a href="" class="thumb-title">${space.name}</a></div>
+		                            <div class="name-area"><a href="" class="thumb-title">${space.space.name}</a></div>
 		                            <div class="actions clearfix">
 		                                <div class="action-list l">
 		                                    <span>裁剪</span> <span>缩放</span>
 		                                </div>
 		                            </div>
 		                            <div class="space-footer">
-		                                <span class="time">${space.time}</span>
+		                                <span class="time">${space.space.time}</span>
 		                            </div>
 		                        </li>                                           			
                        			</c:otherwise>

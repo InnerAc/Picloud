@@ -549,7 +549,7 @@ public class SpaceController {
                 return "redirect:/space/" + spaceId;
         }
 
-        @RequestMapping(value = "/{spaceId}/imageLogo/", method = RequestMethod.POST)
+        @RequestMapping(value = "/{spaceId}/textLogo/", method = RequestMethod.POST)
         public String textLogo(@PathVariable int spaceId, int startX,
                         int startY, int fontSize, int alpha, String color,
                         Model model, HttpSession session,
@@ -578,5 +578,4 @@ public class SpaceController {
 
                 return "redirect:/space/" + spaceId;
         }
->>>>>>> 4fa2d25c7638510f1f3af5df9d00a9636b032b56
 }
