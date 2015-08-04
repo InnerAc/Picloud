@@ -10,31 +10,17 @@
 <title>${TITLE}</title>
 <link rel="stylesheet" href="${RESOURCES}/font/css/font-awesome.min.css" />
 <link rel="stylesheet" href="${RESOURCES}/css/bootstrap.min.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/common.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/index.css" />
+<link rel="stylesheet" href="${RESOURCES}/css/main.css" />
 </head>
 <body>
 	<div class="wrap">
 		<jsp:include page="../common/header.jsp" />
-		<div class="page-wrapper">
-			<jsp:include page="../common/navbar.jsp" />
-			<jsp:include page="../common/breadcrumb.jsp" />
-			<div class="wrapper wrapper-content animated fadeInDown">
-			
-			
-				<block name="content"> 	
+ <div class="content">
+            <div class="content-wrap">
 						<div class="row">
 					<div class="col-md-12">
 						<div class="ibox float-e-margins">
-							<div class="ibox-title">
-								<h5>
-									用户日志 : <span class="account-item">${LoginUser.nickname }</span>
-								</h5>
-								<div class="ibox-tools">
-									<a class="collapse-link"><i class="fa fa-chevron-up"></i></a> <a
-										class="close-link"><i class="fa fa-times"></i></a>
-								</div>
-							</div>
+							<h3>用户日志</h3>
 							<div class="ibox-content" style="display: block;">
 								<table class="table table-striped table table-bordered table-hover dataTables-example">
 									<thead>
@@ -77,7 +63,6 @@
 					</div>
 				</div>
 				
-			</block>
 			</div>
 			<jsp:include page="../common/footer.jsp" />
 		</div>

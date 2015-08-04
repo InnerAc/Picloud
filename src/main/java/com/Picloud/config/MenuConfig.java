@@ -30,10 +30,10 @@ public class MenuConfig  extends HttpServlet{
 		basicModules.add(new Module("Index", "首页", "home", "index"));
 		basicModules.add(new Module("space", "图片服务器", "link", "space/spaces"));
 		basicModules.add(new Module("process", "应用中心", "th-large", "space/spaces"));
-		basicModules.add(new Module("basic", "数据中心", "link", "space/spaces"));
+		basicModules.add(new Module("basic", "数据中心", "line-chart", "space/spaces"));
 		
-		personalModules.add(new Module("user", "个人中心", "user", "user/index"));
-		personalModules.add(new Module("Log", "日志", "log", "user/log"));
+		personalModules.add(new Module("user", "个人中心", "user", "user/account"));
+		personalModules.add(new Module("Log", "日志", "newspaper-o", "user/log/0"));
 		
 		application.setAttribute("BASIC_MODULE", basicModules);
 		application.setAttribute("PERSONAL_MODULE", personalModules);

@@ -107,7 +107,7 @@ public class UserController {
 	/**
 	 * 个人信息修改页
 	 */
-	@RequestMapping(value = "/update", method = RequestMethod.GET)
+	@RequestMapping(value = "/account", method = RequestMethod.GET)
 	public String update(Model model, @ModelAttribute("user") User user) {
 		model.addAttribute("action", "帐号管理");
 		model.addAttribute("module", module);

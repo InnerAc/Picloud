@@ -356,6 +356,10 @@ $.fn.Huploadify = function(opts){
 					  if (xhr.readyState == 4) {
 					  	fileObj.uploadOver = true;
 						  if (xhr.status == 200) {
+								var returnData = xhr.responseText ? JSON.parse(xhr.responseText) : {} ;
+								var photoDom = $('.photo-list').find('#fileupload_'+instanceNumber+'_'+file.index + ' .photo-img');
+								photoDom.html('');
+								photoDom.append('<img src="/Picloud/process/'+returnData.info+'/scale[198,-]"/>');
 								//将文件块数据更新到本地记录
 								if(option.breakPoints){
 									//更新已上传文件大小，保存到本地

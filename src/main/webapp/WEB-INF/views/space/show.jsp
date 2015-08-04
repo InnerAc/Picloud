@@ -37,7 +37,7 @@
                                     <a href="${ROOT }/server/${image.key}/view">${image.name}</a>
                                 </div>
                                 <div class="photo-meta">
-                                    <span class="icn-timer"></span>6 mins ago <span class="icn-storage"></span>244kb
+                                    <span class="icn-timer"></span>${image.createTime }<span class="icn-storage"></span>${image.size }
                                 </div>
                             </div>
                         </div>

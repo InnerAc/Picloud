@@ -284,70 +284,62 @@ public class SpaceController {
                 return "space/upload";
         }
 
-        /**
-         * 上传图片
-         * 
-         * @param space
-         *                图片所在空间
-         * @param attachs
-         *                图片附件数组
-         * @throws FileUploadException
-         */
-        @RequestMapping(value = "/{spaceKey}/upload", method = RequestMethod.POST)
-        @ResponseBody
-        public UploadInfo upload(@PathVariable String spaceKey,
-                        HttpServletRequest request,
-                        HttpServletResponse response, HttpSession session)
-                        throws FileUploadException {
-                FileItemFactory factory = new DiskFileItemFactory();
-                ServletFileUpload upload = new ServletFileUpload(factory);
-                List items = upload.parseRequest(request);
-                Iterator iter = items.iterator();
-                User loginUser = (User) session.getAttribute("LoginUser");
-                final String LocalPath = PropertiesUtil
-                                .getValue("localUploadPath")
-                                + "/"
-                                + String.valueOf(loginUser.getUid())
-                                + '/'
-                                + spaceKey + '/';
-                boolean flag = false;
-                String imageName = null;
-                FileItem imageItem = null;
-                try {
-                        while (iter.hasNext()) {
-                                FileItem item = (FileItem) iter.next();
-                                if (item.isFormField()) {
-                                        System.out.println(item.getName()
-                                                        + item.getFieldName()
-                                                        + item.getString());
-                                        if (item.getFieldName().equals(
-                                                        "fileName")) {
-                                                imageName = item.getString();
-                                        }
-                                } else {
-                                        imageItem = item;
-                                }
-                        }
-                        ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
-                        flag = imageWriter.write(imageItem, imageName,
-                                        String.valueOf(loginUser.getUid()),
-                                        spaceKey, LocalPath);
-                } catch (Exception e) {
-                        e.printStackTrace();
-                }
-                UploadInfo uploadInfo = new UploadInfo();
-                uploadInfo.setInfo(imageName);
-                if (flag) {
-                        response.setContentType("text/html;charset=gb2312");
-                        response.setStatus(200);
-                        uploadInfo.setStatus(1);
-                } else {
-                        response.setContentType("text/html;charset=gb2312");
-                        response.setStatus(302);
-                        uploadInfo.setStatus(0);
-                }
-                return uploadInfo;
-        }
+    	/**
+    	 * 上传图片
+    	 * 
+    	 * @param space
+    	 *            图片所在空间
+    	 * @param attachs
+    	 *            图片附件数组
+    	 * @throws Exception 
+    	 */
+    	@RequestMapping(value = "/{spaceKey}/upload", method = RequestMethod.POST)
+    	@ResponseBody
+    	public UploadInfo upload(@PathVariable String spaceKey,
+    			HttpServletRequest request, HttpServletResponse response,
+    			HttpSession session) throws Exception {
+    		FileItemFactory factory = new DiskFileItemFactory();
+    		ServletFileUpload upload = new ServletFileUpload(factory);
+    		List items = upload.parseRequest(request);
+    		Iterator iter = items.iterator();
+    		User loginUser = (User) session.getAttribute("LoginUser");
+    		final String LocalPath = PropertiesUtil.getValue("localUploadPath")+ "/"
+    				+ String.valueOf(loginUser.getUid()) + '/' + spaceKey + '/';
+    		boolean flag = false;
+    		String imageName = null;
+    		FileItem  imageItem = null;
+    		try {
+    			while (iter.hasNext()) {
+    				FileItem item = (FileItem) iter.next();
+    				if (item.isFormField()) {
+    					System.out.println(item.getName() + item.getFieldName() + item.getString());
+    					if(item.getFieldName().equals("fileName")){
+    						imageName = item.getString();
+    					}
+    				} else {
+    					imageItem = item;
+    				}
+    			}
+    			ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
+    			flag = imageWriter.write(imageItem, imageName,String.valueOf(loginUser.getUid()),
+    					spaceKey, LocalPath);
+    		} catch (Exception e) {
+    			e.printStackTrace();
+    		}
+    		UploadInfo uploadInfo = new UploadInfo();
+    		
+    		uploadInfo.setInfo(EncryptUtil.imageEncryptKey(imageName, String.valueOf(loginUser.getUid())));
+    		if (flag) {
+    			response.setContentType("text/html;charset=gb2312");
+    			response.setStatus(200);
+    			uploadInfo.setStatus(1);
+    		} else {
+    			response.setContentType("text/html;charset=gb2312");
+    			response.setStatus(302);
+    			uploadInfo.setStatus(0);
+    		}
+    		return uploadInfo;
+    	}
 
         @RequestMapping(value = "/{spaceName}/delete", method = RequestMethod.GET)
         public String delete(@PathVariable String spaceName, Model model,
@@ -585,4 +577,5 @@ public class SpaceController {
                 }
                 return "redirect:/space/" + spaceId;
         }
+>>>>>>> 4fa2d25c7638510f1f3af5df9d00a9636b032b56
 }
