@@ -1,136 +1,135 @@
-//package com.Picloud.jxm;
-//
-//import java.text.DecimalFormat;
-//
-//import net.sf.json.JSONArray;
-//import net.sf.json.JSONObject;
-//
-//import com.Picloud.config.SystemConfig;
-//import com.Picloud.utils.PropertiesUtil;
-//import com.Picloud.web.model.DataNodeState;
-//import com.Picloud.web.model.SystemStateInfo;
-//
-//public class SystemState {
-//
-//        private static DecimalFormat df = new DecimalFormat("#.00");
-//
-//        public static SystemStateInfo getSystemState() {
-//                String nameNodeInfo = PropertiesUtil.getValue("nameNodeInfo");
-//                String nameNodeStatus = PropertiesUtil.getValue("nameNodeStatus");
-//                String FSNamesystemState = PropertiesUtil.getValue("FSNamesystemState");
-//                String memory = PropertiesUtil.getValue("memory");
-//
-//                SystemStateInfo info = new SystemStateInfo();
-//
-//                JSONObject jsonNameNodeInfo = new JSONObject().fromObject(SendGet
-//                                .sendGet(nameNodeInfo));
-//                JSONArray jsonBeans = jsonNameNodeInfo.getJSONArray("beans");
-//                JSONObject jsonInfo = jsonBeans.getJSONObject(0);
-//
-//                double used = Double.valueOf(jsonInfo.getString("Used"))
-//                                / (1024 * 1024);
-//                info.setDfsUsed(df.format(used) + "MB");
-//
-//                double blockPoolUsed = Double.valueOf(jsonInfo
-//                                .getString("BlockPoolUsedSpace")) / (1024 * 1024);
-//                info.setBlockPoolUsed(df.format(blockPoolUsed) + "MB");
-//
-//                double nonUsed = Double.valueOf(jsonInfo.getString("NonDfsUsedSpace"))
-//                                / (1024 * 1024 * 1024);
-//                info.setNonDFSUsed(df.format(nonUsed) + "GB");
-//
-//                double dfsRemaining = Double.valueOf(jsonInfo.getString("Free"))
-//                                / (1024 * 1024 * 1024);
-//                info.setDfsRemaining(df.format(dfsRemaining) + "GB");
-//
-//                double percentUsed = Double.valueOf(jsonInfo.getString("PercentUsed"));
-//                if (percentUsed < 1.0)
-//                        info.setDfsUsedPercent("0" + df.format(percentUsed) + "%");
-//                else
-//                        info.setDfsUsedPercent(df.format(percentUsed) + "%");
-//
-//                double percentRemaining = Double.valueOf(jsonInfo
-//                                .getString("PercentRemaining"));
-//                if (percentRemaining < 1.0)
-//                        info.setDfsRemainingPercent("0" + df.format(percentRemaining) + "%");
-//                else
-//                        info.setDfsRemainingPercent(df.format(percentRemaining) + "%");
-//
-//                double blockPoolUsedPercent = Double.valueOf(jsonInfo
-//                                .getString("PercentBlockPoolUsed"));
-//                if (blockPoolUsedPercent < 1.0)
-//                        info.setBlockPoolUsedPercent("0" + df.format(blockPoolUsedPercent)
-//                                        + "%");
-//                else
-//                        info.setBlockPoolUsedPercent(df.format(blockPoolUsedPercent) + "%");
-//
-//                JSONObject jsonNode = jsonInfo.getJSONObject("NodeUsage")
-//                                .getJSONObject("nodeUsage");
-//                String nodeUsageMin = jsonNode.getString("min");
-//                info.setNodeUsageMin(nodeUsageMin);
-//
-//                String nodeUsageMedian = jsonNode.getString("median");
-//                info.setNodeUsageMedian(nodeUsageMedian);
-//
-//                String nodeUsageMax = jsonNode.getString("max");
-//                info.setNodeUsageMax(nodeUsageMax);
-//
-//                String nodeUsageStdDev = jsonNode.getString("stdDev");
-//                info.setNodeUsageStdDev(nodeUsageStdDev);
-//
-//                // ////////////////////////////
-//
-//                JSONObject datanode = jsonInfo.getJSONObject("LiveNodes");
-//
-//                for (int i = 0; i < 2; i++) {
-//                        String str = "";
-//                        if(i ==0)str = "inenrac-ubuntu";
-//                        else if(i==1) str ="sloriac-ThinkPad";
-//                        else str = "Jeff-PC";
-//                        
-//                        JSONObject node1 = (JSONObject) datanode
-//                                        .getJSONObject(str);
-//                        
-//                        if(node1 == null)
-//                                        continue;
-//                        DataNodeState dns = new DataNodeState();
-//                        dns.setNode(node1.getString("xferaddr"));
-//
-//                        Double datanodecapacity = Double.valueOf(node1
-//                                        .getString("capacity")) / (1024 * 1024 * 1024);
-//                        dns.setCapacity(df.format(datanodecapacity) + "GB");
-//
-//                        Double datanodeused = Double.valueOf(node1.getString("used"))
-//                                        / (1024 * 1024);
-//                        dns.setUsed(df.format(datanodeused) + "MB");
-//
-//                        Double nonDfsUsedSpace = Double.valueOf(node1
-//                                        .getString("nonDfsUsedSpace")) / (1024 * 1024 * 1024);
-//                        dns.setNonDFSUsed(df.format(nonDfsUsedSpace) + "GB");
-//
-//                        Double datanoderemaining = Double.valueOf(node1
-//                                        .getString("remaining")) / (1024 * 1024 * 1024);
-//                        dns.setRemaining(df.format(datanoderemaining) + "GB");
-//
-//                        dns.setBlocks(node1.getString("numBlocks"));
-//
-//                        Double datanodeblockPoolUsed = Double.valueOf(node1
-//                                        .getString("blockPoolUsed")) / (1024 * 1024);
-//                        dns.setBlockPoolUsed((df.format(datanodeblockPoolUsed) + "MB"));
-//
-//                        dns.setFailedVolumes(node1.getString("volfails"));
-//
-//                        dns.setVersion(node1.getString("version"));
-//
-//                        info.getDatanodes().add(dns);
-//                }
-//
-//                System.out.println(info);
-//                return info;
-//        }
-//
-//        //
-//        public static void main(String[] args) {
-//                System.out.println(getSystemState());
-//        }
-//}
+package com.Picloud.jxm;
+
+import java.text.DecimalFormat;
+
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
+
+import com.Picloud.utils.PropertiesUtil;
+import com.Picloud.web.model.DataNodeState;
+import com.Picloud.web.model.SystemStateInfo;
+
+public class SystemState {
+
+        private static DecimalFormat df = new DecimalFormat("#.00");
+
+        public static SystemStateInfo getSystemState() {
+                String nameNodeInfo = PropertiesUtil.getValue("nameNodeInfo");
+                String nameNodeStatus = PropertiesUtil.getValue("nameNodeStatus");
+                String FSNamesystemState = PropertiesUtil.getValue("FSNamesystemState");
+                String memory = PropertiesUtil.getValue("memory");
+
+                SystemStateInfo info = new SystemStateInfo();
+
+                JSONObject jsonNameNodeInfo = new JSONObject().fromObject(SendGet
+                                .sendGet(nameNodeInfo));
+                JSONArray jsonBeans = jsonNameNodeInfo.getJSONArray("beans");
+                JSONObject jsonInfo = jsonBeans.getJSONObject(0);
+
+                double used = Double.valueOf(jsonInfo.getString("Used"))
+                                / (1024 * 1024);
+                info.setDfsUsed(df.format(used) + "MB");
+
+                double blockPoolUsed = Double.valueOf(jsonInfo
+                                .getString("BlockPoolUsedSpace")) / (1024 * 1024);
+                info.setBlockPoolUsed(df.format(blockPoolUsed) + "MB");
+
+                double nonUsed = Double.valueOf(jsonInfo.getString("NonDfsUsedSpace"))
+                                / (1024 * 1024 * 1024);
+                info.setNonDFSUsed(df.format(nonUsed) + "GB");
+
+                double dfsRemaining = Double.valueOf(jsonInfo.getString("Free"))
+                                / (1024 * 1024 * 1024);
+                info.setDfsRemaining(df.format(dfsRemaining) + "GB");
+
+                double percentUsed = Double.valueOf(jsonInfo.getString("PercentUsed"));
+                if (percentUsed < 1.0)
+                        info.setDfsUsedPercent("0" + df.format(percentUsed) + "%");
+                else
+                        info.setDfsUsedPercent(df.format(percentUsed) + "%");
+
+                double percentRemaining = Double.valueOf(jsonInfo
+                                .getString("PercentRemaining"));
+                if (percentRemaining < 1.0)
+                        info.setDfsRemainingPercent("0" + df.format(percentRemaining) + "%");
+                else
+                        info.setDfsRemainingPercent(df.format(percentRemaining) + "%");
+
+                double blockPoolUsedPercent = Double.valueOf(jsonInfo
+                                .getString("PercentBlockPoolUsed"));
+                if (blockPoolUsedPercent < 1.0)
+                        info.setBlockPoolUsedPercent("0" + df.format(blockPoolUsedPercent)
+                                        + "%");
+                else
+                        info.setBlockPoolUsedPercent(df.format(blockPoolUsedPercent) + "%");
+
+                JSONObject jsonNode = jsonInfo.getJSONObject("NodeUsage")
+                                .getJSONObject("nodeUsage");
+                String nodeUsageMin = jsonNode.getString("min");
+                info.setNodeUsageMin(nodeUsageMin);
+
+                String nodeUsageMedian = jsonNode.getString("median");
+                info.setNodeUsageMedian(nodeUsageMedian);
+
+                String nodeUsageMax = jsonNode.getString("max");
+                info.setNodeUsageMax(nodeUsageMax);
+
+                String nodeUsageStdDev = jsonNode.getString("stdDev");
+                info.setNodeUsageStdDev(nodeUsageStdDev);
+
+                // ////////////////////////////
+
+                JSONObject datanode = jsonInfo.getJSONObject("LiveNodes");
+
+                for (int i = 0; i < 2; i++) {
+                        String str = "";
+                        if(i ==0)str = "inenrac-ubuntu";
+                        else if(i==1) str ="sloriac-ThinkPad";
+                        else str = "Jeff-PC";
+                        
+                        JSONObject node1 = (JSONObject) datanode
+                                        .getJSONObject(str);
+                        
+                        if(node1 == null)
+                                        continue;
+                        DataNodeState dns = new DataNodeState();
+                        dns.setNode(node1.getString("xferaddr"));
+
+                        Double datanodecapacity = Double.valueOf(node1
+                                        .getString("capacity")) / (1024 * 1024 * 1024);
+                        dns.setCapacity(df.format(datanodecapacity) + "GB");
+
+                        Double datanodeused = Double.valueOf(node1.getString("used"))
+                                        / (1024 * 1024);
+                        dns.setUsed(df.format(datanodeused) + "MB");
+
+                        Double nonDfsUsedSpace = Double.valueOf(node1
+                                        .getString("nonDfsUsedSpace")) / (1024 * 1024 * 1024);
+                        dns.setNonDFSUsed(df.format(nonDfsUsedSpace) + "GB");
+
+                        Double datanoderemaining = Double.valueOf(node1
+                                        .getString("remaining")) / (1024 * 1024 * 1024);
+                        dns.setRemaining(df.format(datanoderemaining) + "GB");
+
+                        dns.setBlocks(node1.getString("numBlocks"));
+
+                        Double datanodeblockPoolUsed = Double.valueOf(node1
+                                        .getString("blockPoolUsed")) / (1024 * 1024);
+                        dns.setBlockPoolUsed((df.format(datanodeblockPoolUsed) + "MB"));
+
+                        dns.setFailedVolumes(node1.getString("volfails"));
+
+                        dns.setVersion(node1.getString("version"));
+
+                        info.getDatanodes().add(dns);
+                }
+
+                System.out.println(info);
+                return info;
+        }
+
+        //
+        public static void main(String[] args) {
+                System.out.println(getSystemState());
+        }
+}
