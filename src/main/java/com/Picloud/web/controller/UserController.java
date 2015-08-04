@@ -24,6 +24,7 @@ import com.Picloud.hibernate.dao.impl.UserDaoImpl;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.JspUtil;
+import com.Picloud.utils.StringSplit;
 import com.Picloud.web.dao.impl.LogDaoImpl;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PageInfo;
@@ -49,6 +50,7 @@ public class UserController {
 		System.out.println(email);
 	        User user = mUserDaoImpl.validate(email);
 		String psw = EncryptUtil.encryptMD5(password.getBytes());
+		System.out.println(psw);
 		if (user == null) {
 			redirectAttributes.addFlashAttribute("LOGIN_MSG", "用户不存在！");
 			return "redirect:/user/login";			
@@ -86,7 +88,8 @@ public class UserController {
 			redirectAttributes.addFlashAttribute("LOGIN_MSG", "该邮箱已被注册");
 			return "redirect:/user/register";
 		}
-		String password = EncryptUtil.encryptMD5(user.getPassword().getBytes());
+		String psw = StringSplit.stringSplit(user.getPassword(), ",").get(0);
+		String password = EncryptUtil.encryptMD5(psw.getBytes());
 		User u = new User("0", user.getEmail(), user.getNickname(), password, 0, 0, 0);
 		mUserDaoImpl.add(u);
 		redirectAttributes.addFlashAttribute("LOGIN_MSG", "注册成功，请登录！");

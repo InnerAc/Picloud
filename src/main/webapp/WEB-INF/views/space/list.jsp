@@ -39,7 +39,7 @@
 			                                </div>
 			                            </div>
 			                            <div class="space-footer">
-			                                <span class="time">16 minutes ago</span>
+			                                <span class="time">${jt.formatDate(space.time)} </span>
 			                            </div>
 			                        </li>                       			
                        			</c:when>

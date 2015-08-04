@@ -273,7 +273,7 @@
         
         <!-- /usr/lib/jdk/jdk1.7.0_79/lib -->
 
-<!-- 
+
 		<dependency>
 			<groupId>jdk.tools</groupId>
 			<artifactId>jdk.tools</artifactId>
@@ -281,9 +281,10 @@
 			<scope>system</scope>
 			<systemPath>/usr/lib/jdk/jdk1.7.0_79/lib/tools.jar</systemPath>
 		</dependency>
-		 -->
+		 
 		 
 <!-- /usr/lib/jvm/java-7-openjdk-i386  -->
+		<!--  
 		<dependency>
 			<groupId>jdk.tools</groupId>
 			<artifactId>jdk.tools</artifactId>
@@ -291,7 +292,7 @@
 			<scope>system</scope>
 			<systemPath> /usr/lib/jvm/java-7-openjdk-i386/lib/tools.jar </systemPath>
 		</dependency>
-		
+		-->
 		<!-- im4java -->
 		<dependency>
 			<groupId>org.im4java</groupId>

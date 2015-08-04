@@ -1,5 +1,6 @@
 package com.Picloud.web.controller;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -115,12 +116,12 @@ public class SpaceController {
 		}
 		
 		User u = mUserDaoImpl.find(LoginUser.getUid());
-		Space s1 = new Space(u, space.getName(), space.getDescription(), 0, 0);
+		Space s1 = new Space(u, space.getName(), space.getDescription(), 0, 0, new Date());
 		mSpaceDaoImpl.add(s1);
 		Space s2 = mSpaceDaoImpl.getByName(space.getName());
 		String spaceNum = String.valueOf(LoginUser.getSpaceNum());
 		mUserDaoImpl.addSpaceNum(LoginUser.getUid());
-		return "redirect:/"+"space/"+s2.getSid()+"/"+0;
+		return "redirect:/space/"+s2.getSid()+"?page=0";
 	}
 
 	/**
