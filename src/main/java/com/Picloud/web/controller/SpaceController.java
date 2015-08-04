@@ -1,5 +1,6 @@
 package com.Picloud.web.controller;
 
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -46,6 +47,7 @@ import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PageInfo;
 import com.Picloud.web.model.ThreeDImage;
+import com.Picloud.web.model.UploadInfo;
 import com.Picloud.web.model.Visit;
 import com.Picloud.web.thread.SyncThread;
 
@@ -115,12 +117,12 @@ public class SpaceController {
 		}
 		
 		User u = mUserDaoImpl.find(LoginUser.getUid());
-		Space s1 = new Space(u, space.getName(), space.getDescription(), 0, 0);
+		Space s1 = new Space(u, space.getName(), space.getDescription(), 0, 0, new Date());
 		mSpaceDaoImpl.add(s1);
 		Space s2 = mSpaceDaoImpl.getByName(space.getName());
 		String spaceNum = String.valueOf(LoginUser.getSpaceNum());
 		mUserDaoImpl.addSpaceNum(LoginUser.getUid());
-		return "redirect:/"+"space/"+s2.getSid()+"/"+0;
+		return "redirect:/space/"+s2.getSid();
 	}
 
 	/**
@@ -133,14 +135,18 @@ public class SpaceController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/{spaceKey} ", method = RequestMethod.GET)
-	public String show(@PathVariable String spaceKey, int page, Model model,
+	public String show(@PathVariable String spaceKey, String page, Model model,
 			HttpSession session) throws Exception {
+	        int p = 0;
+	        if(page != null){
+	                p = Integer.parseInt(page);
+	        }
 		model.addAttribute("module", module);
 		model.addAttribute("action", "图片空间");
 
 		User loginUser = (User) session.getAttribute("LoginUser");
 		Space space = mSpaceDaoImpl.find(Integer.parseInt(spaceKey));
-		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
+		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid(), 5);
 		PageInfo pi = (PageInfo) session.getAttribute("imagePagePnfo");
 		 if(pi == null){
 			 pi = new PageInfo();
@@ -148,7 +154,7 @@ public class SpaceController {
 			 pi.setPage(0);
 			 pi.getStartKeys().add(" ");
 		 }
-		 pi.setPage(page);
+		 pi.setPage(p);
 		 List<Image> images = mImageDaoImpl.imagePageByKey(String.valueOf(loginUser.getUid()),
 		 pi.getStartKeys().get(pi.getPage()), spaceKey, pageNum);
 		 if(images == null ||images.size() < pageNum){
@@ -260,7 +266,8 @@ public class SpaceController {
 	 * @throws FileUploadException
 	 */
 	@RequestMapping(value = "/{spaceKey}/upload", method = RequestMethod.POST)
-	public String upload(@PathVariable String spaceKey,
+	@ResponseBody
+	public UploadInfo upload(@PathVariable String spaceKey,
 			HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) throws FileUploadException {
 		FileItemFactory factory = new DiskFileItemFactory();
@@ -291,14 +298,18 @@ public class SpaceController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		UploadInfo uploadInfo = new UploadInfo();
+		uploadInfo.setInfo(imageName);
 		if (flag) {
 			response.setContentType("text/html;charset=gb2312");
 			response.setStatus(200);
+			uploadInfo.setStatus(1);
 		} else {
 			response.setContentType("text/html;charset=gb2312");
 			response.setStatus(302);
+			uploadInfo.setStatus(0);
 		}
-		return "test";
+		return uploadInfo;
 	}
 
 	@RequestMapping(value = "/{spaceName}/delete", method = RequestMethod.GET)

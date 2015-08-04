@@ -55,6 +55,13 @@ public class SpaceDaoImpl extends BaseDao implements ISpaceDao {
         }
 
         @Override
+        public List<Space> load(int uid, int num) {
+                String hql = "from Space as space where space.user.uid = ?";
+                Query query = query(hql).setInteger(0, uid).setMaxResults(num);
+                return query.list();
+        }
+        
+        @Override
         public void update(Space space) {
                 update(space);
         }
