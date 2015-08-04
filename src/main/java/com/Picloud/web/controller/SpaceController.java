@@ -96,7 +96,7 @@ public class SpaceController {
                 List<Space> ss = mSpaceDaoImpl.load(LoginUser.getUid());
                 List<SpaceWithImage> spaces = new ArrayList<SpaceWithImage>();
                 for(int i = 0; i < ss.size(); i++){
-                        List<Image> images = mImageDaoImpl.getOtherImages(String.valueOf(ss.get(i).getSid()), "", 1);
+                        List<Image> images = mImageDaoImpl.getFive(String.valueOf(ss.get(i).getSid()));
                         SpaceWithImage spaceWithImage = new SpaceWithImage(ss.get(i), images);
                         spaces.add(spaceWithImage);
                 }
@@ -583,7 +583,6 @@ public class SpaceController {
                                 throw new ProcessException("请输入正确的参数！");
                         }
                 }
-
                 return "redirect:/space/" + spaceId;
         }
 }

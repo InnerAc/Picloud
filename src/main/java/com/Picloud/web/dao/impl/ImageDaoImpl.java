@@ -141,6 +141,13 @@ public class ImageDaoImpl implements IImageDao {
 			return otherImages.subList(0, num);
 		}
 	}
+
+        @Override
+        public List<Image> getFive(String spaceId) {
+                ResultScanner rs = mHbaseOperationImpl.getFive(spaceId);
+                List<Image> otherImages =  mListMapping.imageListMapping(rs);
+                return otherImages;
+        }
 	
 
 }

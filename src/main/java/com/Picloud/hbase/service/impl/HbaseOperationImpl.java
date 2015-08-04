@@ -447,4 +447,35 @@ public class HbaseOperationImpl implements IHbaseOperation {
                 return null;
         }
 
+        @Override
+        public ResultScanner getFive(String spaceId) {
+                try {
+                        HTable table = new HTable(mConfiguration, "cloud_image");
+                        List<Filter> filters = new ArrayList<Filter>();
+
+                        Filter filter2 = new SingleColumnValueFilter(Bytes.toBytes("attr"),
+                                        Bytes.toBytes("space"), CompareOp.EQUAL,
+                                        Bytes.toBytes(spaceId));
+                        filters.add(filter2);
+
+                        Filter filter3 = new SingleColumnValueFilter(Bytes.toBytes("var"),
+                                        Bytes.toBytes("status"), CompareOp.NOT_EQUAL,
+                                        Bytes.toBytes("deleted"));
+                        filters.add(filter3);
+
+                        PageFilter pf = new PageFilter(5);
+                        filters.add(pf);
+
+                        FilterList filterList = new FilterList(filters);
+                        Scan scan = new Scan();
+                        scan.setFilter(filterList);
+                        ResultScanner rs = table.getScanner(scan);
+                        // table.close();
+                        return rs;
+                } catch (Exception e) {
+                        e.printStackTrace();
+                        return null;
+                }
+        }
+
 }

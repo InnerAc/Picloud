@@ -119,4 +119,5 @@ public interface IHbaseOperation {
 	public ResultScanner  getOtherImages( String space,String imageName,int num);
 	
 	public ResultScanner  visit( int sid, String space);
+	public ResultScanner getFive(String spaceId);
 }
