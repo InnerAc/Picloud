@@ -1557,7 +1557,7 @@ header .global-actions {
 .viewer-header .viewer-action .icn-viewer-close {
   width: 9px;
   height: 9px;
-  background: url('/Picloud/resources/images//Picloud/resources/images//Picloud/resources/images//Picloud/resources/images//Picloud/resources/images//Picloud/resources/images//Picloud/resources/images/sprites.png') no-repeat;
+  background: url('/Picloud/resources/images/sprites.png') no-repeat;
   background-position: -5834px 0;
   opacity: 0.8;
   filter: alpha(opacity=80);

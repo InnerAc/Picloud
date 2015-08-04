@@ -231,10 +231,10 @@ overflow: hidden;
 	height:600px;
 }
 .green-editor .picloud-container .picloud-controls-container{
-	background: #1AB394;
+	background: #838383;
 }
 .green-editor .picloud-container .picloud-top-controls{
-	background: #1AB394;
+	background: #D2CECE;
 }
 .green-editor .picloud-drop-area-container{
 	background-image: url(../plugins/imageEditor/img/grid3.png);
@@ -243,10 +243,10 @@ overflow: hidden;
 	border-left: 1px solid #ccc;
 }
 .green-editor .picloud-container .picloud-controls li:last-child {
-	border-right: 1px solid #ccc;
+	border-right: 1px solid #fff;
 }
 .green-editor .picloud-controls-item-group{
-	border-right: 1px solid #ccc;
+	border-right: 1px solid #fff;
 }
 .green-editor .picloud-top-controls-center input{
 	background-color: #FFF;
@@ -263,10 +263,10 @@ color:#000;
 	margin-right: 5px;
 }
 .green-editor .picloud-container .picloud-new{
-	border-right: 1px solid #ccc;
+	border-right: 1px solid #fff;
 }
 .green-editor .picloud-save{
-		border-left: 1px solid #ccc;
+		border-left: 1px solid #fff;
 }
 #confirmModal .modal-dialog{
 	width: 400px;
