@@ -11,6 +11,7 @@ public interface ISpaceDao {
 	public void delete(int sid);
 	public Space find(int sid);
 	public List<Space> load(int uid);
+	public List<Space> load(int uid, int num);
 	public void update(Space space);
 	public List<Image> search(int uid, String space, String subStr);
 	public Space getByName(String name);
