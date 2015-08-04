@@ -271,21 +271,23 @@ public class SpaceController {
 		final String LocalPath = PropertiesUtil.getValue("localUploadPath")+ "/"
 				+ String.valueOf(loginUser.getUid()) + '/' + spaceKey + '/';
 		boolean flag = false;
+		String imageName = null;
+		FileItem  imageItem = null;
 		try {
-
 			while (iter.hasNext()) {
-
 				FileItem item = (FileItem) iter.next();
 				if (item.isFormField()) {
-					String temp = item.getString();
-					System.out.println(temp);
+					System.out.println(item.getName() + item.getFieldName() + item.getString());
+					if(item.getFieldName().equals("fileName")){
+						imageName = item.getString();
+					}
 				} else {
-					ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
-					flag = imageWriter.write(item, String.valueOf(loginUser.getUid()),
-							spaceKey, LocalPath);
+					imageItem = item;
 				}
-
 			}
+			ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
+			flag = imageWriter.write(imageItem, imageName,String.valueOf(loginUser.getUid()),
+					spaceKey, LocalPath);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

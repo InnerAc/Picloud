@@ -31,10 +31,10 @@
                       <div class="photo">
                         <div class="photo-wrap">
                             <div class="photo-img">
-                            <a href=""><img src="2.png" alt=""></a></div>
+                            <a href="${ROOT }/server/${image.key}/view"><img src="${ROOT}/process/${image.key}/scale[198,-]" alt=""></a></div>
                             <div class="photo-info">
                                 <div class="photo-name">
-                                    <a href="1">${image.name}</a>
+                                    <a href="${ROOT }/server/${image.key}/view">${image.name}</a>
                                 </div>
                                 <div class="photo-meta">
                                     <span class="icn-timer"></span>6 mins ago <span class="icn-storage"></span>244kb
@@ -46,6 +46,7 @@
                 </div>
             </div>
             </div>
+            <div id="space" data-space="${space.sid}"></div>
                 </section>
     <div class="clearfix"></div>
 			<jsp:include page="../common/footer.jsp" />
@@ -55,7 +56,7 @@
 	<script type="text/javascript" src="${PLUGIN}/uploadify/jquery.Huploadify.js"></script>
 	<script>
     $(function() {
-
+		var sid = $('#space').attr('data-space');
         $(".photo").click(function() {
             if ($(this).hasClass('active')) {
                 $(this).removeClass('active');
@@ -64,7 +65,7 @@
                 $(this).addClass('active').append('<div class="clicked"><span class="icn-tick"></span></div>');
             }
         });
-
+		
         var up = $('#upload').Huploadify({
         auto:true,
         fileTypeExts:'*.jpg;*.png;*.gif;*.bmp',
@@ -75,38 +76,15 @@
         showUploadedPercent:true,//是否实时显示上传的百分比，如20%
         showUploadedSize:true,
         removeTimeout:9999999,
-        uploader:'upload',
+        uploader:'' + sid + '/upload',
         onUploadStart:function(){
-            //up.settings('formData', {aaaaa:'1111111',bb:'2222'});
-            up.Huploadify('settings','formData', {aaaaa:'1111111',bb:'2222'});
         },
         onUploadSuccess:function(file){
             //alert('上传成功');
         },
         onUploadComplete:function(){
-            //alert('上传完成');
+            console.log('上传完成')
         },
-        /*getUploadedSize:function(file){
-            var data = {
-                data : {
-                    fileName : file.name,
-                    lastModifiedDate : file.lastModifiedDate.getTime()
-                }
-            };
-            var url = 'http://49.4.132.173:8080/admin/uploadfile/index/';
-            var uploadedSize = 0;
-            $.ajax({
-                url : url,
-                data : data,
-                async : false,
-                type : 'POST',
-                success : function(returnData){
-                    returnData = JSON.parse(returnData);
-                    uploadedSize = returnData.uploadedSize;
-                }
-            });
-            return uploadedSize;
-        }   */  
     });
 });
 

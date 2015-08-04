@@ -356,7 +356,6 @@ $.fn.Huploadify = function(opts){
 					  if (xhr.readyState == 4) {
 					  	fileObj.uploadOver = true;
 						  if (xhr.status == 200) {
-								var returnData = xhr.responseText ? JSON.parse(xhr.responseText) : {} ;
 								//将文件块数据更新到本地记录
 								if(option.breakPoints){
 									//更新已上传文件大小，保存到本地

@@ -63,6 +63,13 @@ public class Image {
 
 	}
 	
+	public Image(FileItem item, String name) throws Exception{
+		this.name = name;
+		this.size = Double.toString((double) item.getSize() /1024 /1024);
+		this.type = this.name.substring(this.name.lastIndexOf(".")+1);
+		this.createTime = JspUtil.getCurrentDateStr();		
+	}
+	
 	//构造方法 File
 	public Image(File file) throws Exception {
 		this.name = file.getName();

@@ -64,7 +64,7 @@ public class ImageWriter {
 		this.mMapfileHandler = infoDaoImpl.getmMapfileHandler();
 	}
 
-	public boolean write(FileItem item, String uid, String space)
+	public boolean write(FileItem item, String name,String uid, String space)
 			throws Exception {
 		Image image = searchFile(item, uid);
 		boolean flag;
@@ -75,14 +75,14 @@ public class ImageWriter {
 		double fileLength = (double) item.getSize() / 1024 / 1024;
 		// 文件大小判断
 		if (fileLength > mSystemConfig.getMaxFileSize()) {
-			flag = uploadToHdfs(item, uid, space);
+			flag = uploadToHdfs(item, name,uid, space);
 		} else {
-			flag = uploadToLocal(item, uid, space);
+			flag = uploadToLocal(item,name, uid, space);
 		}
 		return flag;
 	}
 
-	public boolean write(FileItem item, String uid, String space,String LocalPath)
+	public boolean write(FileItem item,String name, String uid, String space,String LocalPath)
 			throws Exception {
 		Image image = searchFile(item, uid);
 		boolean flag;
@@ -93,9 +93,9 @@ public class ImageWriter {
 		double fileLength = (double) item.getSize() / 1024 / 1024;
 		// 文件大小判断
 		if (fileLength > mSystemConfig.getMaxFileSize()) {
-			flag = uploadToHdfs(item, uid, space);
+			flag = uploadToHdfs(item, name,uid, space);
 		} else {
-			flag = uploadToLocal(item, uid, space);
+			flag = uploadToLocal(item,name, uid, space);
 		}
 		//检查文件夹大小
 		double maxSyncSize = mSystemConfig.getMaxSyncSize();
@@ -147,7 +147,7 @@ public class ImageWriter {
 	 *            HDFS中文件夹名
 	 * @return
 	 */
-	public boolean uploadToHdfs(FileItem item, String uid, String space) {
+	public boolean uploadToHdfs(FileItem item,String name, String uid, String space) {
 		try {
 			boolean flag = false;
 			// HDFS文件名
@@ -161,7 +161,7 @@ public class ImageWriter {
 			String width = Integer.toString(bufferedImage.getWidth());
 			String height = Integer.toString(bufferedImage.getHeight());
 			// 更新数据库
-			updateHbase(item, "HdfsLargeFile", hdfsPath, uid, space, width,
+			updateHbase(item, name,"HdfsLargeFile", hdfsPath, uid, space, width,
 					height);
 			return flag;
 		} catch (Exception e) {
@@ -240,14 +240,14 @@ public class ImageWriter {
 	 *            本地文件对象
 	 * @return
 	 */
-	public boolean uploadToLocal(FileItem item, String uid, String space) {
+	public boolean uploadToLocal(FileItem item,String name, String uid, String space) {
 		try {
 
 			// 本地目录为“根目录/用户名/时间戳"
-			final String LocalUidPath = PropertiesUtil.getValue("systemPath")
-					+ LOCAL_UPLOAD_ROOT + "/" + uid + '/';
+			final String LocalUidPath = PropertiesUtil.getValue("localUploadPath")
+					+ "/" + uid + '/';
 			final String LocalPath = LocalUidPath + '/' + space + '/';
-
+			
 			// 文件是否存在
 			File LocalUidDir = new File(LocalUidPath);
 			if (!LocalUidDir.exists()) {
@@ -259,20 +259,19 @@ public class ImageWriter {
 			if (!LocalDir.exists()) {
 				LocalDir.mkdir();
 			}
-			String fileName = item.getName();
 			BufferedImage bufferedImage = ImageIO.read(item.getInputStream());
 			String width = Integer.toString(bufferedImage.getWidth());
 			String height = Integer.toString(bufferedImage.getHeight());
 			// 测试
 			System.out.println(width);
-			File file = new File(LocalPath, fileName);
+			File file = new File(LocalPath, name);
 			if (file.exists()) {
 				System.out.println("Local file exists!");
 				return false;
 			} else {
 				item.write(file);
 			}
-			updateHbase(item, "LocalFile", LocalPath, uid, space, width, height);
+			updateHbase(item,name, "LocalFile", LocalPath, uid, space, width, height);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -364,10 +363,10 @@ public class ImageWriter {
 	 * @param space
 	 * @throws Exception
 	 */
-	public void updateHbase(FileItem item, String status, String path,
+	public void updateHbase(FileItem item,String name, String status, String path,
 			String uid, String spaceKey, String width, String height)
 			throws Exception {
-		Image image = new Image(item);
+		Image image = new Image(item,name);
 		image.setKey(EncryptUtil.imageEncryptKey(image.getName(), uid));
 		image.setStatus(status);
 		image.setPath(path);
