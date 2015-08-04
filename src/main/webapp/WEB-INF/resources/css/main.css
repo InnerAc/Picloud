@@ -488,7 +488,7 @@ body {
   background-color: #f8f8f8;
 }
 .btn-blue {
-  color: #fff;
+  color: #fff !important;
   background-color: #43a6eb;
   border-color: #3793d3;
 }
