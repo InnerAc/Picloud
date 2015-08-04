@@ -11,4 +11,6 @@ public interface IUserDao {
         public User validate(String email);
         public void addImage(int uid, int imageNum, double imageSize);
         public void reduceImage(int uid, int imageNum, double imageSize);
+        public void updateTextLogo(int uid, String text);
+        public void updateImageLogo(int uid, String image);
 }
