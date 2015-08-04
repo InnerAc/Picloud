@@ -585,7 +585,8 @@ public class ProcessController {
 		
 		User loginUser = (User) session.getAttribute("LoginUser");
 		Image image = mImageDaoImpl.find(imageKey);
-		ImageReader imageReader = new ImageReader(infoDaoImpl);		byte[] buffer = imageReader.readPicture(imageKey);
+		ImageReader imageReader = new ImageReader(infoDaoImpl);		
+		byte[] buffer = imageReader.readPicture(imageKey);
 		GraphicMagick gm = new GraphicMagick(buffer, image.getType());
 		byte[] bufferOut = gm.textWaterMask(text, fontSize, color, startX, startY,alpha);
 		
