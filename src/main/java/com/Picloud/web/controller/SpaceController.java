@@ -47,6 +47,7 @@ import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PageInfo;
 import com.Picloud.web.model.ThreeDImage;
+import com.Picloud.web.model.UploadInfo;
 import com.Picloud.web.model.Visit;
 import com.Picloud.web.thread.SyncThread;
 
@@ -261,7 +262,8 @@ public class SpaceController {
 	 * @throws FileUploadException
 	 */
 	@RequestMapping(value = "/{spaceKey}/upload", method = RequestMethod.POST)
-	public String upload(@PathVariable String spaceKey,
+	@ResponseBody
+	public UploadInfo upload(@PathVariable String spaceKey,
 			HttpServletRequest request, HttpServletResponse response,
 			HttpSession session) throws FileUploadException {
 		FileItemFactory factory = new DiskFileItemFactory();
@@ -292,14 +294,18 @@ public class SpaceController {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		UploadInfo uploadInfo = new UploadInfo();
+		uploadInfo.setInfo(imageName);
 		if (flag) {
 			response.setContentType("text/html;charset=gb2312");
 			response.setStatus(200);
+			uploadInfo.setStatus(1);
 		} else {
 			response.setContentType("text/html;charset=gb2312");
 			response.setStatus(302);
+			uploadInfo.setStatus(0);
 		}
-		return "test";
+		return uploadInfo;
 	}
 
 	@RequestMapping(value = "/{spaceName}/delete", method = RequestMethod.GET)
