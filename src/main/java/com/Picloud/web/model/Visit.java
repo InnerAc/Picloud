@@ -1,5 +1,6 @@
 package com.Picloud.web.model;
 
+import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.JspUtil;
 
 public class Visit {
@@ -12,15 +13,15 @@ public class Visit {
         public Visit() {
                 super();
         }
-        //务必使用此构造方法，其中，key由space和image的key拼成
-        public Visit(String key, String space, String image, 
+        //务必使用此构造方法
+        public Visit(int sid, String space, String image, 
                         String ip) {
                 super();
                 try {
                         String max = "99999999999999999";
                         double d1 =   Double.parseDouble(max);
                         double d2 = Double.parseDouble(JspUtil.getCurrentDateMS());
-                        this.key = key+String.valueOf(d1-d2);
+                        this.key = EncryptUtil.spaceEncryptKey(sid, space)+String.valueOf(d1-d2);
                 } catch (Exception e) {
                         e.printStackTrace();
                 }

@@ -41,18 +41,32 @@ public class UserDaoImpl extends BaseDao implements IUserDao {
         }
 
         @Override
-        public void updateSpaceNum(int uid) {
+        public void addSpaceNum(int uid) {
                 String hql = "update User as user set user.spaceNum = user.spaceNum + 1 where user.uid = ?";
                 Query query = query(hql).setInteger(0, uid);
                 query.executeUpdate();
         }
 
         @Override
-        public void updateImage(int uid, int imageNum, double imageSize) {
+        public void addImage(int uid, int imageNum, double imageSize) {
                 String hql = "update User as user set user.imageNum = user.imageNum + ?, user.imageTotalSize = user.imageTotalSize + ? where user.uid = ?";
                 Query query = query(hql).setInteger(0, imageNum).setDouble(1, imageSize).setInteger(2, uid);
                 query.executeUpdate();
                 
+        }
+
+        @Override
+        public void reduceSpaceNum(int uid) {
+                String hql = "update User as user set user.spaceNum = user.spaceNum - 1 where user.uid = ?";
+                Query query = query(hql).setInteger(0, uid);
+                query.executeUpdate();
+        }
+
+        @Override
+        public void reduceImage(int uid, int imageNum, double imageSize) {
+                String hql = "update User as user set user.imageNum = user.imageNum - ?, user.imageTotalSize = user.imageTotalSize - ? where user.uid = ?";
+                Query query = query(hql).setInteger(0, imageNum).setDouble(1, imageSize).setInteger(2, uid);
+                query.executeUpdate();
         }
 
 }

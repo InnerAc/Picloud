@@ -58,11 +58,11 @@
                             </div>
                         </li>  
                         <li class="space-li">
-                            <form action="" class="new-space">
-                                <input type="text"  placeholder="请输入空间名字"/>
-                                <textarea name="" id="" placeholder="请输入空间描述"></textarea>
+                           <sf:form method="post" modelAttribute="space" action="add" class="new-space">
+                                <sf:input path="name" type="text"  placeholder="请输入空间名字"/>
+                                <sf:textarea path="description" id="" placeholder="请输入空间描述"></sf:textarea>
                                 <button class="btn btn-blue">添加</button>
-                            </form>
+                            </sf:form>
                             <div class="space-footer">
                                 <span class="time">right now</span>
                             </div>

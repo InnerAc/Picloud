@@ -31,6 +31,8 @@ import com.Picloud.config.SystemConfig;
 import com.Picloud.exception.HdImageException;
 import com.Picloud.exception.PanoImageException;
 import com.Picloud.hdfs.HdfsHandler;
+import com.Picloud.hibernate.dao.impl.SpaceDaoImpl;
+import com.Picloud.hibernate.entities.Space;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.HdCut;
 import com.Picloud.image.HdImageCut;
@@ -44,12 +46,10 @@ import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.LogDaoImpl;
 import com.Picloud.web.dao.impl.PanoImageDao;
-import com.Picloud.web.dao.impl.SpaceDaoImpl;
 import com.Picloud.web.model.HdImage;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PanoImage;
-import com.Picloud.web.model.Space;
 import com.Picloud.web.model.ThreeDImage;
 
 @Controller
@@ -89,8 +89,8 @@ public class HDController {
                                 .valueOf(loginUser.getUid()));
                 model.addAttribute("hdImages", hdImages);
 
-                List<Space> spaces = spaceDaoImpl.load(String.valueOf(loginUser
-                                .getUid()));
+                List<Space> spaces = spaceDaoImpl.load(loginUser
+                                .getUid());
                 model.addAttribute("spaces", spaces);
 
                 Log log = new Log(String.valueOf(loginUser.getUid()),

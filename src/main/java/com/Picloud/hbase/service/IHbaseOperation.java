@@ -117,4 +117,6 @@ public interface IHbaseOperation {
  	 * @return
  	 */
 	public ResultScanner  getOtherImages( String space,String imageName,int num);
+	
+	public ResultScanner  visit( int sid, String space);
 }

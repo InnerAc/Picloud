@@ -8,6 +8,7 @@ import com.Picloud.hdfs.HarfileHandler;
 import com.Picloud.hdfs.HdfsHandler;
 import com.Picloud.hdfs.MapfileHandler;
 import com.Picloud.hdfs.SequencefileHandler;
+import com.Picloud.hibernate.dao.impl.SpaceDaoImpl;
 import com.Picloud.hibernate.dao.impl.UserDaoImpl;
 
 @Repository

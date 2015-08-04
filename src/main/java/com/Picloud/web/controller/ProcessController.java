@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import com.Picloud.config.SystemConfig;
 import com.Picloud.exception.ProcessException;
 import com.Picloud.exception.UserException;
+import com.Picloud.hibernate.dao.impl.SpaceDaoImpl;
 import com.Picloud.hibernate.dao.impl.UserDaoImpl;
+import com.Picloud.hibernate.entities.Space;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.GraphicMagick;
 import com.Picloud.image.ImageReader;
@@ -35,10 +37,8 @@ import com.Picloud.utils.PropertiesUtil;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.LogDaoImpl;
-import com.Picloud.web.dao.impl.SpaceDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
-import com.Picloud.web.model.Space;
 
 @Controller
 @RequestMapping("/process")
@@ -74,7 +74,7 @@ public class ProcessController {
 		model.addAttribute("action", "缩放" );
 
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
+		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
 		model.addAttribute("spaces",spaces);
 		return "process/scale";
 	}
@@ -85,7 +85,7 @@ public class ProcessController {
 		model.addAttribute("action", "裁剪");
 		
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
+		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
 		model.addAttribute("spaces",spaces);
 		return "process/crop";
 	}
@@ -96,7 +96,7 @@ public class ProcessController {
 		model.addAttribute("action", "图片水印");
 		
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
+		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
 		model.addAttribute("spaces",spaces);
 		return "process/watermark";
 	}
@@ -107,7 +107,7 @@ public class ProcessController {
 		model.addAttribute("action", "文字水印");
 		
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
+		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
 		model.addAttribute("spaces",spaces);
 		return "process/watermark";
 	}

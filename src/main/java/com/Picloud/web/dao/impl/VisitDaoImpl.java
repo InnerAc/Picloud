@@ -1,5 +1,7 @@
 package com.Picloud.web.dao.impl;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -26,10 +28,15 @@ public class VisitDaoImpl implements IVisitDao {
                 if(visit == null){
                         return;
                 }
-                mHbaseOperationImpl.insertData("cloud_visit", visit.getKey(), "attr", "space", visit.getSpace());
-                mHbaseOperationImpl.insertData("cloud_visit", visit.getKey(), "attr", "image", visit.getImage());
-                mHbaseOperationImpl.insertData("cloud_visit", visit.getKey(), "attr", "time", visit.getTime());
-                mHbaseOperationImpl.insertData("cloud_visit", visit.getKey(), "attr", "ip", visit.getIp());
+                mHbaseOperationImpl.insertData("cloud_visits", visit.getKey(), "attr", "space", visit.getSpace());
+                mHbaseOperationImpl.insertData("cloud_visits", visit.getKey(), "attr", "image", visit.getImage());
+                mHbaseOperationImpl.insertData("cloud_visits", visit.getKey(), "attr", "time", visit.getTime());
+                mHbaseOperationImpl.insertData("cloud_visits", visit.getKey(), "attr", "ip", visit.getIp());
+        }
+
+        @Override
+        public List<Visit> get(int sid, String space) {
+                return mListMapping.visitListMapping(mHbaseOperationImpl.visit(sid, space));
         }
 
 }

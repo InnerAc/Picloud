@@ -31,7 +31,9 @@ import org.springframework.web.multipart.MultipartFile;
 import com.Picloud.config.SystemConfig;
 import com.Picloud.exception.SpaceException;
 import com.Picloud.exception.ThreeDImageException;
+import com.Picloud.hibernate.dao.impl.SpaceDaoImpl;
 import com.Picloud.hibernate.dao.impl.UserDaoImpl;
+import com.Picloud.hibernate.entities.Space;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.ImageWriter;
 import com.Picloud.utils.JspUtil;
@@ -39,12 +41,12 @@ import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.PropertiesUtil;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
-import com.Picloud.web.dao.impl.SpaceDaoImpl;
+import com.Picloud.web.dao.impl.VisitDaoImpl;
 import com.Picloud.web.model.Image;
 import com.Picloud.web.model.Log;
 import com.Picloud.web.model.PageInfo;
-import com.Picloud.web.model.Space;
 import com.Picloud.web.model.ThreeDImage;
+import com.Picloud.web.model.Visit;
 import com.Picloud.web.thread.SyncThread;
 
 @Controller
@@ -61,6 +63,8 @@ public class SpaceController {
 	private SystemConfig systemConfig;
 	@Autowired
 	private InfoDaoImpl infoDaoImpl;
+	@Autowired
+	private VisitDaoImpl visitDaoImpl;
 
 	private static int pageNum = 6+1;
 
@@ -79,7 +83,7 @@ public class SpaceController {
 		model.addAttribute("action", "图片空间");
 
 		User LoginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(String.valueOf(LoginUser.getUid())));
+		List<Space> spaces = mSpaceDaoImpl.load(LoginUser.getUid());
 		model.addAttribute("spaces", spaces);
 		return "space/list";
 	}
@@ -105,19 +109,17 @@ public class SpaceController {
 			return "space/list";
 		}
 
-		String key = EncryptUtil.spaceEncryptKey(space.getName(),
-		                String.valueOf(String.valueOf(LoginUser.getUid())));
-		if (mSpaceDaoImpl.find(key) != null) {
+		Space s = mSpaceDaoImpl.getByName(space.getName());
+		if (s != null) {
 			throw new SpaceException("该空间已存在！");
 		}
-		space.setKey(key);
-		space.setUid(String.valueOf(String.valueOf(LoginUser.getUid())));
-		mSpaceDaoImpl.add(space);
+		
+		User u = mUserDaoImpl.find(LoginUser.getUid());
+		Space s1 = new Space(u, space.getName(), space.getDescription(), 0, 0);
+		mSpaceDaoImpl.add(s1);
 
 		String spaceNum = String.valueOf(LoginUser.getSpaceNum());
-		mUserDaoImpl.updateSpaceNum(LoginUser.getUid());
-//		LoginUser.setSpaceNum(Integer.parseInt(spaceNum) + 1);
-//		mUserDaoImpl.update(LoginUser);
+		mUserDaoImpl.addSpaceNum(LoginUser.getUid());
 		return "redirect:spaces";
 	}
 
@@ -137,8 +139,8 @@ public class SpaceController {
 		model.addAttribute("action", "图片空间");
 
 		User loginUser = (User) session.getAttribute("LoginUser");
-		Space space = mSpaceDaoImpl.find(spaceKey);
-		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
+		Space space = mSpaceDaoImpl.find(Integer.parseInt(spaceKey));
+		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
 		PageInfo pi = (PageInfo) session.getAttribute("imagePagePnfo");
 		 if(pi == null){
 			 pi = new PageInfo();
@@ -178,7 +180,7 @@ public class SpaceController {
 		model.addAttribute("action", "上传图片");
 
 		User loginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(loginUser.getUid()));
+		List<Space> spaces = mSpaceDaoImpl.load(loginUser.getUid());
 		model.addAttribute("spaces", spaces);
 		return "space/upload";
 	}
@@ -242,7 +244,7 @@ public class SpaceController {
 		model.addAttribute("module", module);
 		model.addAttribute("action", "上传图片");
 
-		Space space = mSpaceDaoImpl.find(spaceKey);
+		Space space = mSpaceDaoImpl.find(Integer.parseInt(spaceKey));
 		model.addAttribute("activeSpace", space);
 		model.addAttribute(space);
 		return "space/upload";
@@ -305,15 +307,7 @@ public class SpaceController {
 		model.addAttribute("activeSpace", spaceName);
 
 		User LoginUser = (User) session.getAttribute("LoginUser");
-//		String key = spaceName + "_" + String.valueOf(LoginUser.getUid());
-		String key;
-		try {
-			key = EncryptUtil.spaceEncryptKey(spaceName, String.valueOf(LoginUser.getUid()));
-			mSpaceDaoImpl.delete(key);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		mSpaceDaoImpl.delete(spaceName, LoginUser.getUid());
 		
 		return "redirect:/space/spaces";
 	}
@@ -334,7 +328,7 @@ public class SpaceController {
 	@ResponseBody
 	public Space show(@PathVariable String spaceKey) {
 		Space space = new Space();
-		space = mSpaceDaoImpl.find(spaceKey);
+		space = mSpaceDaoImpl.find(Integer.parseInt(spaceKey));
 		return space;
 	}
 
@@ -361,7 +355,7 @@ public class SpaceController {
 	@ResponseBody
 	public List<Space> getAllSpace(HttpSession session) {
 		User LoginUser = (User) session.getAttribute("LoginUser");
-		List<Space> spaces = mSpaceDaoImpl.load(String.valueOf(LoginUser.getUid()));
+		List<Space> spaces = mSpaceDaoImpl.load(LoginUser.getUid());
 		return spaces;
 	}
 
@@ -434,10 +428,18 @@ public class SpaceController {
 		model.addAttribute("module", module);
 		model.addAttribute("action", "图片空间");
 		User LoginUser = (User) session.getAttribute("LoginUser");
-		List<Image> images = mSpaceDaoImpl.search(String.valueOf(LoginUser.getUid()), spaceKey, key);
-		Space space = mSpaceDaoImpl.find(spaceKey);
+		List<Image> images = mSpaceDaoImpl.search(LoginUser.getUid(), spaceKey, key);
+		Space space = mSpaceDaoImpl.find(Integer.parseInt(spaceKey));
 		model.addAttribute("images", images);
 		model.addAttribute("space", space);
 		return "space/show";
 	}
+	
+	       @RequestMapping(value = "test/{sid}/{space}", method = RequestMethod.GET)
+	        public String test(@PathVariable int sid, @PathVariable String space, Model model,
+	                        HttpSession session) {
+	               List<Visit> visits = visitDaoImpl.get(sid, space);
+	               System.out.println(visits.size());
+	                return "space/show";
+	        }
 }
