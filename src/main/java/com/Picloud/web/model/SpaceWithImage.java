@@ -7,6 +7,7 @@ import com.Picloud.hibernate.entities.Space;
 public class SpaceWithImage {
         
         private Space space;
+        
         private List<Image> images;
         public SpaceWithImage() {
                 super();
