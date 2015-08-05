@@ -15,7 +15,7 @@ import com.Picloud.web.dao.impl.LogDaoImpl;
 import com.Picloud.web.model.Image;
 
 @Service
-public class ImageOfLine {
+public class ImageOffLine {
         @Autowired
         private InfoDaoImpl infoDaoImpl;
         @Autowired
@@ -29,7 +29,7 @@ public class ImageOfLine {
         @Autowired
         private LogDaoImpl mLogDaoImpl;
         
-        public ImageOfLine() {
+        public ImageOffLine() {
                 super();
         }
         

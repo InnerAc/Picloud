@@ -25,6 +25,7 @@ import com.Picloud.hibernate.entities.User;
 import com.Picloud.utils.JspUtil;
 import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.PropertiesUtil;
+import com.Picloud.utils.StringSplit;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.LogDaoImpl;
@@ -46,6 +47,7 @@ public class ImageWriter {
 	private SpaceDaoImpl mSpaceDaoImpl;
 	private HdfsHandler mHdfsHandler;
 	private MapfileHandler mMapfileHandler;
+        private ImageOffLine imageOfLine;
 
 	public ImageWriter() {
 		super();
@@ -63,6 +65,19 @@ public class ImageWriter {
 		this.mHdfsHandler = infoDaoImpl.getmHdfsHandler();
 		this.mMapfileHandler = infoDaoImpl.getmMapfileHandler();
 	}
+	
+	       public ImageWriter(InfoDaoImpl infoDaoImpl, ImageOffLine imageOfLine) {
+	                this.infoDaoImpl = infoDaoImpl;
+	                this.mSystemConfig = infoDaoImpl.getmSystemConfig();
+	                this.mHdfsHandler = infoDaoImpl.getmHdfsHandler();
+	                this.mImageDaoImpl = infoDaoImpl.getmImageDaoImpl();
+	                this.mUserDaoImpl = infoDaoImpl.getmUserDaoImpl();
+	                this.mLogDaoImpl = infoDaoImpl.getmLogDaoImpl();
+	                this.mSpaceDaoImpl = infoDaoImpl.getmSpaceDaoImpl();
+	                this.mHdfsHandler = infoDaoImpl.getmHdfsHandler();
+	                this.mMapfileHandler = infoDaoImpl.getmMapfileHandler();
+	                this.imageOfLine = imageOfLine;
+	        }
 
 	public boolean write(FileItem item, String name,String uid, String space)
 			throws Exception {
@@ -404,7 +419,19 @@ public class ImageWriter {
 		// 更新空间和用户信息
 		mUserDaoImpl.addImage(user.getUid(), 1, d1+d2);
 		mSpaceDaoImpl.addStorage(space.getSid(), d1+d2);
-
+		
+		if(space.getOperation() == null)
+		        return;
+                List<String> strs = StringSplit.stringSplit(space.getOperation(), ";");
+                int num[] = {0,0,0,0,0,0};
+                for(int i = 0; i < strs.size(); i++){
+                        int index = Integer.parseInt(strs.get(i));
+                        num[index] = 1;
+                }
+                System.out.println(imageOfLine);
+                System.out.println(image.getKey());
+                System.out.println(user.getNickname());
+                imageOfLine.offLine(num, image.getKey(),user);
 	}
 
 	/**

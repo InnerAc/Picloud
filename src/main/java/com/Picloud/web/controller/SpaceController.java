@@ -39,13 +39,14 @@ import com.Picloud.hibernate.dao.impl.UserDaoImpl;
 import com.Picloud.hibernate.entities.Space;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.GraphicMagick;
-import com.Picloud.image.ImageOfLine;
+import com.Picloud.image.ImageOffLine;
 import com.Picloud.image.ImageReader;
 import com.Picloud.image.ImageUpdate;
 import com.Picloud.image.ImageWriter;
 import com.Picloud.utils.JspUtil;
 import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.PropertiesUtil;
+import com.Picloud.utils.StringSplit;
 import com.Picloud.web.dao.impl.ImageDaoImpl;
 import com.Picloud.web.dao.impl.InfoDaoImpl;
 import com.Picloud.web.dao.impl.LogDaoImpl;
@@ -78,7 +79,7 @@ public class SpaceController {
         @Autowired
         private LogDaoImpl mLogDaoImpl;
         @Autowired
-        private ImageOfLine imageOfLine;
+        private ImageOffLine imageOfLine;
         
         private static int pageNum = 6 + 1;
 
@@ -334,7 +335,7 @@ public class SpaceController {
                                         imageItem = item;
                                 }
                         }
-                        ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
+                        ImageWriter imageWriter = new ImageWriter(infoDaoImpl, imageOfLine);
                         flag = imageWriter.write(imageItem, imageName,
                                         String.valueOf(loginUser.getUid()),
                                         spaceKey, LocalPath);
@@ -614,17 +615,25 @@ public class SpaceController {
         public String offLine(@PathVariable int spaceId, String operation,
                         Model model, HttpSession session,
                         HttpServletResponse response) throws Exception {
-                User loginUser = (User) session.getAttribute("LoginUser");
-                String text = loginUser.getTextLogo(); 
-                String logo = loginUser.getImageLogo();
-                ImageReader imageReader = new ImageReader(infoDaoImpl);
-                List<Image> images = mImageDaoImpl
-                                .load(String.valueOf(spaceId));
-                int num[] = {1,1,0,0,1,1};
-                for (int i = 0; i < images.size(); i++) {
-                        Image image = images.get(i);
-                        imageOfLine.offLine(num, image.getKey(),loginUser);
+                System.out.println(operation);
+                mSpaceDaoImpl.updateOperation(spaceId, operation);
+                List<String> strs = StringSplit.stringSplit(operation, ";");
+                int num[] = {0,0,0,0,0,0};
+                for(int i = 0; i < strs.size(); i++){
+                        int index = Integer.parseInt(strs.get(i));
+                        num[index] = 1;
                 }
+//                User loginUser = (User) session.getAttribute("LoginUser");
+//                String text = loginUser.getTextLogo(); 
+//                String logo = loginUser.getImageLogo();
+//                ImageReader imageReader = new ImageReader(infoDaoImpl);
+//                List<Image> images = mImageDaoImpl
+//                                .load(String.valueOf(spaceId));
+//                int num[] = {1,1,0,0,1,1};
+//                for (int i = 0; i < images.size(); i++) {
+//                        Image image = images.get(i);
+//                        imageOfLine.offLine(num, image.getKey(),loginUser);
+//                }
                 return "redirect:/space/" + spaceId;
         }
 }

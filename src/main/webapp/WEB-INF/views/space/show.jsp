@@ -63,12 +63,12 @@
               <input type="text" name="operation"  style="display:none" id="offline-param"/>
                 <label class="control-label">可选操作</label>              
                   <ul class="connected list">
-				      <li data-op="1">缩放</li>
-				      <li data-op="2">裁剪</li>
-				      <li data-op="3">图片水印</li>
-				      <li data-op="4">文字水印</li>
-				      <li data-op="5">Lomo滤镜</li>
-				      <li data-op="6">灰度化</li>
+				      <li data-op="0">缩放</li>
+				      <li data-op="1">裁剪</li>
+				      <li data-op="2">图片水印</li>
+				      <li data-op="3">文字水印</li>
+				      <li data-op="4">Lomo滤镜</li>
+				      <li data-op="5">灰度化</li>
 				    </ul>
 				    </div>
               <div class="form-group">
