@@ -47,9 +47,8 @@
             </div>
             </div>
             <div id="space" data-space="${space.sid}"></div>
-                </section>
+    </section>
     <div class="clearfix"></div>
-			<jsp:include page="../common/footer.jsp" />
 			 <!-- Modal -->
     <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
       <div class="modal-dialog hd-dialog">
@@ -59,7 +58,7 @@
             <h4 class="modal-title" id="myModalLabel">定制操作序列</h4>
           </div>
           <div class="modal-body">
-            <form class="picture-overview" action="${ROOT}/hd/add" method="post">
+            <form id="offline-form" class="picture-overview" action="${ROOT}/space/offLine/${space.sid}" method="post">
               <div class="form-group">
                 <label class="control-label">可选操作</label>              
                   <ul class="connected list">
@@ -80,7 +79,7 @@
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-            <button type="submit" class="btn jet-button btn-primary" id="offline-btn">确认</button>
+            <button type="button" class="btn jet-button btn-primary" id="offline-btn">确认</button>
           </div>
           </form>
         </div>
@@ -124,7 +123,6 @@
         },
     });
         
-        $(function() {
             $('.connected').sortable({
               connectWith: '.connected',
               items: ':not(.disabled)'
@@ -139,11 +137,10 @@
                 if(i == 1)
                   options += op;
                 else
-                  options += '-' + op;          
+                  options += ';' + op;          
               }
             });
-            console.log(options);
-          });
+            $('#offline-form').submit();
 });
 
 </script>
