@@ -69,4 +69,18 @@ public class UserDaoImpl extends BaseDao implements IUserDao {
                 query.executeUpdate();
         }
 
+        @Override
+        public void updateTextLogo(int uid, String text) {
+               String hql = "update User as user set user.textLogo = ? where user.uid = ?";
+               Query query = query(hql).setString(0, text).setInteger(1, uid);
+               query.executeUpdate();
+        }
+        
+        @Override
+        public void updateImageLogo(int uid, String image) {
+                String hql = "update User as user set user.imageLogo = ? where user.uid = ?";
+                Query query = query(hql).setString(0, image).setInteger(1, uid);
+                query.executeUpdate();
+        }
+
 }

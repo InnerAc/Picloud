@@ -39,6 +39,7 @@ import com.Picloud.hibernate.dao.impl.UserDaoImpl;
 import com.Picloud.hibernate.entities.Space;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.image.GraphicMagick;
+import com.Picloud.image.ImageOfLine;
 import com.Picloud.image.ImageReader;
 import com.Picloud.image.ImageUpdate;
 import com.Picloud.image.ImageWriter;
@@ -76,9 +77,10 @@ public class SpaceController {
         private VisitDaoImpl visitDaoImpl;
         @Autowired
         private LogDaoImpl mLogDaoImpl;
+        @Autowired
+        private ImageOfLine imageOfLine;
+        
         private static int pageNum = 6 + 1;
-        
-        
 
         /**
          * 查看所有空间
@@ -97,9 +99,11 @@ public class SpaceController {
                 User LoginUser = (User) session.getAttribute("LoginUser");
                 List<Space> ss = mSpaceDaoImpl.load(LoginUser.getUid());
                 List<SpaceWithImage> spaces = new ArrayList<SpaceWithImage>();
-                for(int i = 0; i < ss.size(); i++){
-                        List<Image> images = mImageDaoImpl.getFive(String.valueOf(ss.get(i).getSid()));
-                        SpaceWithImage spaceWithImage = new SpaceWithImage(ss.get(i), images);
+                for (int i = 0; i < ss.size(); i++) {
+                        List<Image> images = mImageDaoImpl.getFive(String
+                                        .valueOf(ss.get(i).getSid()));
+                        SpaceWithImage spaceWithImage = new SpaceWithImage(
+                                        ss.get(i), images);
                         spaces.add(spaceWithImage);
                 }
                 model.addAttribute("spaces", spaces);
@@ -286,62 +290,72 @@ public class SpaceController {
                 return "space/upload";
         }
 
-    	/**
-    	 * 上传图片
-    	 * 
-    	 * @param space
-    	 *            图片所在空间
-    	 * @param attachs
-    	 *            图片附件数组
-    	 * @throws Exception 
-    	 */
-    	@RequestMapping(value = "/{spaceKey}/upload", method = RequestMethod.POST)
-    	@ResponseBody
-    	public UploadInfo upload(@PathVariable String spaceKey,
-    			HttpServletRequest request, HttpServletResponse response,
-    			HttpSession session) throws Exception {
-    		FileItemFactory factory = new DiskFileItemFactory();
-    		ServletFileUpload upload = new ServletFileUpload(factory);
-    		List items = upload.parseRequest(request);
-    		Iterator iter = items.iterator();
-    		User loginUser = (User) session.getAttribute("LoginUser");
-    		final String LocalPath = PropertiesUtil.getValue("localUploadPath")+ "/"
-    				+ String.valueOf(loginUser.getUid()) + '/' + spaceKey + '/';
-    		boolean flag = false;
-    		String imageName = null;
-    		FileItem  imageItem = null;
-    		try {
-    			while (iter.hasNext()) {
-    				FileItem item = (FileItem) iter.next();
-    				if (item.isFormField()) {
-    					System.out.println(item.getName() + item.getFieldName() + item.getString());
-    					if(item.getFieldName().equals("fileName")){
-    						imageName = item.getString();
-    					}
-    				} else {
-    					imageItem = item;
-    				}
-    			}
-    			ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
-    			flag = imageWriter.write(imageItem, imageName,String.valueOf(loginUser.getUid()),
-    					spaceKey, LocalPath);
-    		} catch (Exception e) {
-    			e.printStackTrace();
-    		}
-    		UploadInfo uploadInfo = new UploadInfo();
-    		
-    		uploadInfo.setInfo(EncryptUtil.imageEncryptKey(imageName, String.valueOf(loginUser.getUid())));
-    		if (flag) {
-    			response.setContentType("text/html;charset=gb2312");
-    			response.setStatus(200);
-    			uploadInfo.setStatus(1);
-    		} else {
-    			response.setContentType("text/html;charset=gb2312");
-    			response.setStatus(302);
-    			uploadInfo.setStatus(0);
-    		}
-    		return uploadInfo;
-    	}
+        /**
+         * 上传图片
+         * 
+         * @param space
+         *                图片所在空间
+         * @param attachs
+         *                图片附件数组
+         * @throws Exception
+         */
+        @RequestMapping(value = "/{spaceKey}/upload", method = RequestMethod.POST)
+        @ResponseBody
+        public UploadInfo upload(@PathVariable String spaceKey,
+                        HttpServletRequest request,
+                        HttpServletResponse response, HttpSession session)
+                        throws Exception {
+                FileItemFactory factory = new DiskFileItemFactory();
+                ServletFileUpload upload = new ServletFileUpload(factory);
+                List items = upload.parseRequest(request);
+                Iterator iter = items.iterator();
+                User loginUser = (User) session.getAttribute("LoginUser");
+                final String LocalPath = PropertiesUtil
+                                .getValue("localUploadPath")
+                                + "/"
+                                + String.valueOf(loginUser.getUid())
+                                + '/'
+                                + spaceKey + '/';
+                boolean flag = false;
+                String imageName = null;
+                FileItem imageItem = null;
+                try {
+                        while (iter.hasNext()) {
+                                FileItem item = (FileItem) iter.next();
+                                if (item.isFormField()) {
+                                        System.out.println(item.getName()
+                                                        + item.getFieldName()
+                                                        + item.getString());
+                                        if (item.getFieldName().equals(
+                                                        "fileName")) {
+                                                imageName = item.getString();
+                                        }
+                                } else {
+                                        imageItem = item;
+                                }
+                        }
+                        ImageWriter imageWriter = new ImageWriter(infoDaoImpl);
+                        flag = imageWriter.write(imageItem, imageName,
+                                        String.valueOf(loginUser.getUid()),
+                                        spaceKey, LocalPath);
+                } catch (Exception e) {
+                        e.printStackTrace();
+                }
+                UploadInfo uploadInfo = new UploadInfo();
+
+                uploadInfo.setInfo(EncryptUtil.imageEncryptKey(imageName,
+                                String.valueOf(loginUser.getUid())));
+                if (flag) {
+                        response.setContentType("text/html;charset=gb2312");
+                        response.setStatus(200);
+                        uploadInfo.setStatus(1);
+                } else {
+                        response.setContentType("text/html;charset=gb2312");
+                        response.setStatus(302);
+                        uploadInfo.setStatus(0);
+                }
+                return uploadInfo;
+        }
 
         @RequestMapping(value = "/{spaceName}/delete", method = RequestMethod.GET)
         public String delete(@PathVariable String spaceName, Model model,
@@ -564,18 +578,52 @@ public class SpaceController {
                 for (int i = 0; i < images.size(); i++) {
                         Image image = images.get(i);
                         byte[] buffer = imageReader.readPicture(image.getKey());
-                        GraphicMagick gm = new GraphicMagick(buffer, image.getType());
-                        byte[] bufferOut = gm.textWaterMask(text, fontSize, color, startX, startY,alpha);
-                        
+                        GraphicMagick gm = new GraphicMagick(buffer,
+                                        image.getType());
+                        byte[] bufferOut = gm.textWaterMask(text, fontSize,
+                                        color, startX, startY, alpha);
+
                         if (bufferOut != null) {
-                                ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
-                                imageUpdate.updateImage(bufferOut, String.valueOf(loginUser.getUid()), image.getSpace(),image.getKey());
-                                Log log=new Log(String.valueOf(loginUser.getUid()),loginUser.getNickname() +"按照坐标："+startX+"，"+startY+ "大小："+fontSize+"颜色："+color+"添加了水印文字"+text);
+                                ImageUpdate imageUpdate = new ImageUpdate(
+                                                infoDaoImpl);
+                                imageUpdate.updateImage(bufferOut, String
+                                                .valueOf(loginUser.getUid()),
+                                                image.getSpace(), image
+                                                                .getKey());
+                                Log log = new Log(String.valueOf(loginUser
+                                                .getUid()),
+                                                loginUser.getNickname()
+                                                                + "按照坐标："
+                                                                + startX + "，"
+                                                                + startY
+                                                                + "大小："
+                                                                + fontSize
+                                                                + "颜色：" + color
+                                                                + "添加了水印文字"
+                                                                + text);
                                 mLogDaoImpl.add(log);
                                 response.setStatus(200);
                         } else {
                                 throw new ProcessException("请输入正确的参数！");
                         }
+                }
+                return "redirect:/space/" + spaceId;
+        }
+
+        @RequestMapping(value = "/offLine/{spaceId}", method = RequestMethod.GET)
+        public String offLine(@PathVariable int spaceId, String operation,
+                        Model model, HttpSession session,
+                        HttpServletResponse response) throws Exception {
+                User loginUser = (User) session.getAttribute("LoginUser");
+                String text = loginUser.getTextLogo(); 
+                String logo = loginUser.getImageLogo();
+                ImageReader imageReader = new ImageReader(infoDaoImpl);
+                List<Image> images = mImageDaoImpl
+                                .load(String.valueOf(spaceId));
+                int num[] = {1,1,0,0,1,1};
+                for (int i = 0; i < images.size(); i++) {
+                        Image image = images.get(i);
+                        imageOfLine.offLine(num, image.getKey(),loginUser);
                 }
                 return "redirect:/space/" + spaceId;
         }
