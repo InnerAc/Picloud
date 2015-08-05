@@ -68,7 +68,7 @@ public class UserController {
 		user.setLastLogin(new Date());
 
 		session.setAttribute("LoginUser", user);
-		return "redirect:../index";
+		return "redirect:/space/spaces";
 	}
 
 	@RequestMapping(value = "/logout", method = RequestMethod.GET)

@@ -19,7 +19,7 @@ import javax.servlet.http.HttpSession;
 @WebFilter("/LoginInterceptor")
 public class LoginInterceptor implements Filter {
 
-	 String[] IGNORE_PAGE = new String[] { "login.jsp", "register.jsp","/login","/register","/resources","/server","/process"};  
+	 String[] IGNORE_PAGE = new String[] { "login.jsp", "register.jsp","/login","/register","/resources","/server","/process", "/space"};  
 
     public LoginInterceptor() {
         // TODO Auto-generated constructor stub
@@ -49,7 +49,7 @@ public class LoginInterceptor implements Filter {
         	{
         		String message = "请先登录";
         		session.setAttribute("LOGIN_MSG", message);
-        		res.sendRedirect("/Picloud/login.jsp");
+        		res.sendRedirect("/Picloud/views/login.jsp");
         	}
         	
         }

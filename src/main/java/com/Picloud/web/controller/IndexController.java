@@ -35,6 +35,9 @@ public class IndexController {
 		model.addAttribute("module",module);
 		
 		User user=(User) session.getAttribute("LoginUser");
+		if(user == null){
+		        return "/usr/login";
+		}
 		String yesterday = JspUtil.getPereviousDayMS();
 		String today = JspUtil.getCurrentDateMS();
 		

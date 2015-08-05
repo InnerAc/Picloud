@@ -90,7 +90,7 @@ public class ImageOffLine {
                 byte[] buffer = imageReader.readPicture(imageKey);
                 GraphicMagick gm = new GraphicMagick(buffer, "jpg");
                 String logoSrc = PropertiesUtil.getValue("imagePath") + logo;
-                byte[] bufferOut = gm.imgWaterMask(logoSrc, 100, 100, 0, 0, 2);
+                byte[] bufferOut = gm.imgWaterMask(logoSrc, 100, 100, 10, 10, 100);
                 if (bufferOut != null) {
                         Image image = mImageDaoImpl.find(imageKey);
                         ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
@@ -107,7 +107,7 @@ public class ImageOffLine {
                 ImageReader imageReader = new ImageReader(infoDaoImpl);         
                 byte[] buffer = imageReader.readPicture(imageKey);
                 GraphicMagick gm = new GraphicMagick(buffer, image.getType());
-                byte[] bufferOut = gm.textWaterMask(text, 10, "#ffffff", 20, 20,2);
+                byte[] bufferOut = gm.textWaterMask(text, 40, "000000", 10, 10,100);
                 if (bufferOut != null) {
                         ImageUpdate imageUpdate=new ImageUpdate(infoDaoImpl);
                         imageUpdate.updateImage(bufferOut, String.valueOf(uid), image.getSpace(),imageKey);
