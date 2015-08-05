@@ -62,7 +62,7 @@ public class LogDaoImpl implements ILogDao{
 	 */
 	@Override
 	public List<Log> logPage(String uid, String row, int num) {
-		ResultScanner	rs = mHbaseOperationImpl.logPage(uid, row, num);
+		ResultScanner rs = mHbaseOperationImpl.logPage(uid, row, num);
 		return mListMapping.logListMapping(rs);
 	}
 

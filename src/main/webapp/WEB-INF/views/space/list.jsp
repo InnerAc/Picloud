@@ -39,7 +39,7 @@
 			                                </div>
 			                            </div>
 			                            <div class="space-footer">
-			                                <span class="time">${jt.formatDate(space.space.time)} </span>
+			                                <span class="time">${jt.format(space.space.time)} </span>
 			                            </div>
 			                        </li>                       			
                        			</c:when>
@@ -58,7 +58,7 @@
 		                                </div>
 		                            </div>
 		                            <div class="space-footer">
-		                                <span class="time">${space.space.time}</span>
+		                                <span class="time">${jt.format(space.space.time)}</span>
 		                            </div>
 		                        </li>                                           			
                        			</c:otherwise>
