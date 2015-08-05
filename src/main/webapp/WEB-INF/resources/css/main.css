@@ -1411,7 +1411,7 @@ header .global-actions {
   color: #717d82;
 }
 .settings-wrapper .custom-logo {
-  width: 368px;
+  width:568px;
   margin: 20px 0;
 }
 .settings-wrapper .custom-logo .custom-logo-wrapper {
@@ -1845,4 +1845,7 @@ header .global-actions {
   width: 118px;
   height: 32px;
   cursor: pointer;
-}}
+}
+.image-logo .form-group{
+	width:300px;
+}

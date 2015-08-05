@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.Picloud.exception.UserException;
+import com.Picloud.hibernate.dao.impl.SpaceDaoImpl;
 import com.Picloud.hibernate.dao.impl.UserDaoImpl;
+import com.Picloud.hibernate.entities.Space;
 import com.Picloud.hibernate.entities.User;
 import com.Picloud.utils.EncryptUtil;
 import com.Picloud.utils.JspUtil;
@@ -37,6 +39,8 @@ public class UserController {
 	private UserDaoImpl mUserDaoImpl;
 	@Autowired
 	private LogDaoImpl mLogDaoImpl;
+    @Autowired
+    private SpaceDaoImpl mSpaceDaoImpl;
 	private String module = "用户中心";
 	private static int pageNum = 20 + 1;
 	
@@ -108,9 +112,12 @@ public class UserController {
 	 * 个人信息修改页
 	 */
 	@RequestMapping(value = "/account", method = RequestMethod.GET)
-	public String update(Model model, @ModelAttribute("user") User user) {
+	public String update(Model model, @ModelAttribute("user") User user,HttpSession session) {
+		User LoginUser = (User) session.getAttribute("LoginUser");
+		List<Space> spaces = mSpaceDaoImpl.load(LoginUser.getUid());
 		model.addAttribute("action", "帐号管理");
 		model.addAttribute("module", module);
+		model.addAttribute("spaces", spaces);
 		return "user/update";
 	}
 
@@ -136,6 +143,20 @@ public class UserController {
 		return "redirect:/user/update";
 	}
 
+	/**
+	 * 修改个人信息
+	 */
+	@RequestMapping(value = "/updateLogo", method = RequestMethod.POST)
+	public String updateLogo(Model model,String imageLogo,String textLogo,HttpSession session) {
+		model.addAttribute("action", "帐号管理");
+		model.addAttribute("module", module);
+
+		User LoginUser = (User) session.getAttribute("LoginUser");
+		mUserDaoImpl.updateImageLogo(LoginUser.getUid(), imageLogo);
+		mUserDaoImpl.updateTextLogo(LoginUser.getUid(), textLogo);
+		return "redirect:/user/account";
+	}
+	
 	/**
 	 * 查看个人日志
 	 */
