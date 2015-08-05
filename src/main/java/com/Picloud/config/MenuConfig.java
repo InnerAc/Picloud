@@ -31,7 +31,7 @@ public class MenuConfig  extends HttpServlet{
 		basicModules.add(new Module("space", "图片服务器", "link", "space/spaces"));
 		basicModules.add(new Module("basic", "高清展示", "eye", "hd/list"));
 		basicModules.add(new Module("basic", "全景展示", "video-camera", "pano/list"));
-		basicModules.add(new Module("basic", "数据中心", "line-chart", "space/spaces"));
+		basicModules.add(new Module("basic", "数据中心", "line-chart", "user/data"));
 		
 		personalModules.add(new Module("user", "个人中心", "user", "user/account"));
 		personalModules.add(new Module("Log", "日志", "newspaper-o", "user/log/0"));

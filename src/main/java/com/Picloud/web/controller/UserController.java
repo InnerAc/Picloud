@@ -190,6 +190,15 @@ public class UserController {
 		return "user/log";
 	}
 
+	@RequestMapping(value = "/data", method = RequestMethod.GET)
+	public String data( HttpSession session,
+			Model model) {
+		model.addAttribute("action", "数据中心");
+		model.addAttribute("module", module);
+		
+		return "user/data";
+	}
+	
 	@ExceptionHandler(value = (UserException.class))
 	public String handlerException(UserException e, HttpServletRequest req) {
 		req.setAttribute("e", e);
