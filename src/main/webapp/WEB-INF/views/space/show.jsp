@@ -37,7 +37,7 @@
                                     <a href="${ROOT }/server/${image.key}/view">${image.name}</a>
                                 </div>
                                 <div class="photo-meta">
-                                    <span class="icn-timer"></span>${image.createTime}<span class="icn-storage"></span>${jt.cutLength(image.size*1000) }KB
+                                    <span class="icn-timer"></span>${jt.formatForImage(image.createTime) }<span class="icn-storage"></span>${jt.cutLength(image.size*1000) }KB
                                 </div>
                             </div>
                         </div>

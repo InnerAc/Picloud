@@ -103,4 +103,11 @@ public class SpaceDaoImpl extends BaseDao implements ISpaceDao {
                 query.executeUpdate();
         }
 
+        @Override
+        public void updateOperation(int sid, String operation) {
+                String hql = "update Space as space set space.operation = ? where space.sid = ?";
+                Query query = query(hql).setString(0, operation).setInteger(1, sid);
+                query.executeUpdate();
+        }
+
 }
