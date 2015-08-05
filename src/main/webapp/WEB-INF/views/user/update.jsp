@@ -90,7 +90,7 @@
                     
                 <div class="form-group clearfix">
                     <label for="cdhp">文字Logo</label>
-                    <input type="text" class="form-control input-lg l" id="cdhp" name="cdhp" value="" placeholder="您需要加在图片上的文字">
+                    <input type="text" class="form-control input-lg l" id="cdhp" name="cdhp" value="${LoginUser.textLogo } " placeholder="您需要加在图片上的文字">
                     <span class="notes r">您可以使用您的域名或您的网名作为Logo.</span>
                   </div>
                   <button class="btn btn-white blockUI distxts" type="button">Update</button>
