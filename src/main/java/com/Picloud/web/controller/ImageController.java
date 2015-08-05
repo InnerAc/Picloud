@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -97,6 +98,38 @@ public class ImageController {
 			out.println("Please input the correct image name.");
 		}
 	}
+	
+	@RequestMapping(value="download/{imageKey}",method=RequestMethod.GET)  
+	public void download(@PathVariable String imageKey,HttpServletResponse response) throws Exception {  
+		ImageReader imageReader = new ImageReader(infoDaoImpl);
+		byte[] buffer = imageReader.readPicture(imageKey);
+		Image image = imageDaoImpl.find(imageKey);
+		
+		if (buffer != null) {
+			// 输出byte为图片
+			InputStream imageIn = new ByteArrayInputStream(buffer);
+			BufferedInputStream bis = new BufferedInputStream(imageIn);// 输入缓冲流
+			OutputStream output = response.getOutputStream();
+			BufferedOutputStream bos = new BufferedOutputStream(output);// 输出缓冲流
+			response.setHeader("Content-Disposition", "attachment; filename=" + image.getName());  
+			response.setContentType("application/octet-stream; charset=utf-8"); 
+			byte data[] = new byte[4096];// 缓冲字节数
+			int size = 0;
+			size = bis.read(data);
+			while (size != -1) {
+				bos.write(data, 0, size);
+				size = bis.read(data);
+			}
+			bis.close();
+			bos.flush();// 清空输出缓冲流
+			bos.close();
+
+			output.close();
+		} else {
+			PrintWriter out = response.getWriter();
+			out.println("Please input the correct image name.");
+		}
+	}  
 	
 	/**
 	 * 查看图片（html）

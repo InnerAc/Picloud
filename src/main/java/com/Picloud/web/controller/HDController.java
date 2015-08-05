@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.PrintWriter;
+import java.lang.ProcessBuilder.Redirect;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -118,7 +119,7 @@ public class HDController {
                 Log log = new Log(String.valueOf(loginUser.getUid()), loginUser.getNickname()
                                 + "删除高清图片" + hdImage.getName());
                 mLogDaoImpl.add(log);
-                return "hd/list";
+                return "redirect:/hd/list";
         }
 
         /**

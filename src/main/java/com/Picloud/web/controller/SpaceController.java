@@ -159,7 +159,7 @@ public class SpaceController {
                         p = Integer.parseInt(page);
                 }
                 model.addAttribute("module", module);
-                model.addAttribute("action", "图片空间");
+                model.addAttribute("action", "图片空间查看");
 
                 User loginUser = (User) session.getAttribute("LoginUser");
                 Space space = mSpaceDaoImpl.find(Integer.parseInt(spaceKey));

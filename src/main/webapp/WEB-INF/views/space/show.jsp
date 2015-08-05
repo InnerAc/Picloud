@@ -37,7 +37,7 @@
                                     <a href="${ROOT }/server/${image.key}/view">${image.name}</a>
                                 </div>
                                 <div class="photo-meta">
-                                    <span class="icn-timer"></span>${jt.getStrTime(image.createTime) }<span class="icn-storage"></span>${jt.cutLength4(image.size) }KB
+                                    <span class="icn-timer"></span>${jt.getStrTime(image.createTime) }<span class="icn-storage"></span>${jt.cutLength(image.size*1000) }KB
                                 </div>
                             </div>
                         </div>
@@ -50,10 +50,47 @@
                 </section>
     <div class="clearfix"></div>
 			<jsp:include page="../common/footer.jsp" />
+			 <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog hd-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">取消</span></button>
+            <h4 class="modal-title" id="myModalLabel">定制操作序列</h4>
+          </div>
+          <div class="modal-body">
+            <form class="picture-overview" action="${ROOT}/hd/add" method="post">
+              <div class="form-group">
+                <label class="control-label">可选操作</label>              
+                  <ul class="connected list">
+				      <li data-op="1">缩放</li>
+				      <li data-op="2">裁剪</li>
+				      <li data-op="3">图片水印</li>
+				      <li data-op="4">文字水印</li>
+				      <li data-op="5">Lomo滤镜</li>
+				      <li data-op="6">灰度化</li>
+				    </ul>
+				    </div>
+              <div class="form-group">
+                <label class="control-label">操作序列</label>   				    
+				    <ul class="connected list no2">
+				      <li class="highlight disabled" >请拖拽操作于此</li>
+				    </ul>
+				   </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            <button type="submit" class="btn jet-button btn-primary" id="offline-btn">确认</button>
+          </div>
+          </form>
+        </div>
+      </div>
+    </div>
 	<script type="text/javascript"
-		src="${RESOURCES }/js/jquery-1.11.1.min.js"></script>
+		src="${RESOURCES }/js/jquery-2.0.0.min.js"></script>
 	<script type="text/javascript" src="${RESOURCES }/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="${PLUGIN}/uploadify/jquery.Huploadify.js"></script>
+		<script type="text/javascript" src="${PLUGIN}/sortable/jquery.sortable.min.js"></script>
 	<script>
     $(function() {
 		var sid = $('#space').attr('data-space');
@@ -86,6 +123,27 @@
             console.log('上传完成')
         },
     });
+        
+        $(function() {
+            $('.connected').sortable({
+              connectWith: '.connected',
+              items: ':not(.disabled)'
+            });
+          });
+          $('#offline-btn').click(function(){
+            var list = $('.no2').children('li');
+            var options = "";
+            $(list).each(function(i){
+              var op = $(this).attr("data-op");
+              if(op){
+                if(i == 1)
+                  options += op;
+                else
+                  options += '-' + op;          
+              }
+            });
+            console.log(options);
+          });
 });
 
 </script>

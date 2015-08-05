@@ -25,20 +25,22 @@
                     <div class="dropdown-detail">${LoginUser.email }</div>
                 </li>
                 <li role="presentation" class="divider"></li>
-                <li><a href="/settings">Settings</a></li>
-                    <li><a href="/install" target="_blank">Install</a></li>
+                <li><a href="${ROOT}/user/account">Account</a></li>
                   <li id="feedback" class="feedback_popup"><a>Feedback</a></li>
               <li><a href="${ROOT }/user/logout">Logout</a></li>
             </ul>
         </div>
         </div>
         <div class="global-actions r">
-            <div id="upload"></div>
+            <div id="upload" class="l"></div>
+            <c:if test="${action eq '图片空间查看'}">
+            <button type="button" class="btn btn-default  l" data-toggle="modal" data-target="#myModal" style="margin-left:10px;">操作定制</button>
+            </c:if>
         </div>
         <div class="search-box r">
-            <form action="">
+            <form action="${ROOT}/space/11/search" >
                 <span class="icn-search"></span>
-                <input type="text" placeholder="Search...">
+                <input type="text" placeholder="Search..." name="key">
             </form>
         </div>                     
     </header>

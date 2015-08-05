@@ -96,7 +96,16 @@
                   <button class="btn btn-white blockUI distxts" type="button">Update</button>
                 </form>
                 </div>
-
+				<div class="setting-item">
+	                    <form action="" class="group">
+                        	<h3>防盗链</h3>		
+                <div class="form-group clearfix">
+                    <label for="cdhp">Refer</label>
+                    <input type="text" class="form-control input-lg l" id="cdhp" name="cdhp" value="" placeholder="请输入Refer信息">
+                    <span class="notes r">允许使用图片的地址</span>
+                  </div>                        	
+                        </form>	
+				</div>
                 </div>
             </div>            
             </div>

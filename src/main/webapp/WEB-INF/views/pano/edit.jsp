@@ -12,17 +12,14 @@
 <link rel="stylesheet" href="${RESOURCES}/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${PLUGIN}/chosen/chosen.css" />
 <link rel="stylesheet" href="${PLUGIN}/step/jquery.steps.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/common.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/appcenter.css" />
+<link rel="stylesheet" href="${RESOURCES}/css/main.css" />
 </head>
 <body>
-	<div class="wrap">
 		<jsp:include page="../common/header.jsp" />
-		<div class="page-wrapper">
-			<jsp:include page="../common/navbar.jsp" />
-			<jsp:include page="../common/breadcrumb.jsp" />
+ <div class="content">
+            <div class="content-wrap">
 			<div class="wrapper wrapper-content animated fadeInDown">
-  <block name="content">
+
   				<c:if test="${not empty editMsg}">
 	    			<div class="alert alert-info alert-dismissable">
 						<button aria-hidden="true" data-dismiss="alert" class="close"
@@ -34,16 +31,11 @@
 					<div class="col-md-12">
 						<div class="ibox ">
 							<div class="ibox-title">
-								<h5>全景项目编辑</h5>
-								<div class="ibox-tools">
-									<a class="collapse-link"><i class="fa fa-chevron-up"></i></a> <a
-										class="close-link"><i class="fa fa-times"></i></a>
-								</div>
+								<h3>全景项目编辑</h3>
 							</div>
 							<div class="ibox-content" style="display: block;">
 								<div class="project row">
 									<div class="col-lg-12">
-										<h2>项目名称</h2>
 										<div class="row">
 											<div class="col-md-5">
 												<dl class="dl-horizontal">
@@ -81,7 +73,7 @@
 															<c:if test="${not empty panoImage.name}">
 															<c:set value="${finish+25}" var="finish"/>
 														</c:if>																																						
-														<div class="progress progress-striped active m-b-sm">
+														<div class="progress progress-striped active m-b-sm" style="height:25px;">
 															<div style="width: ${finish}%;" class="progress-bar"></div>
 														</div>
 														<small>全景完成度 <strong>${finish}%</strong>.
@@ -245,9 +237,9 @@
 					</div>
 				</div>
 <div id="url_base" style="display: none">${IP}${ROOT}</div>
-  </block>
-		</div>
-		<jsp:include page="../common/footer.jsp" />
+    </section>
+    <div class="clearfix"></div>
+			<jsp:include page="../common/footer.jsp" />
 	</div>
 	</div>
 	<script type="text/javascript"
