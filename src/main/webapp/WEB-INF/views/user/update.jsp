@@ -138,7 +138,7 @@
 		//url定义
 		var url_base = $('#url_base').html();
 		var val_default = $('#spaces_select').val();
-
+		url_base = "http://192.168.1.101:8080/Picloud";
 		//select定义
 		var img_chosen = $(".chosen-select");
 		var img_default = img_chosen.attr("data-default");
