@@ -37,7 +37,7 @@
                                     <a href="${ROOT }/server/${image.key}/view">${image.name}</a>
                                 </div>
                                 <div class="photo-meta">
-                                    <span class="icn-timer"></span>${jt.getStrTime(image.createTime) }<span class="icn-storage"></span>${jt.cutLength(image.size*1000) }KB
+                                    <span class="icn-timer"></span>${image.createTime}<span class="icn-storage"></span>${jt.cutLength(image.size*1000) }KB
                                 </div>
                             </div>
                         </div>
@@ -60,6 +60,7 @@
           <div class="modal-body">
             <form id="offline-form" class="picture-overview" action="${ROOT}/space/offLine/${space.sid}" method="post">
               <div class="form-group">
+              <input type="text" name="operation"  style="display:none" id="offline-param"/>
                 <label class="control-label">可选操作</label>              
                   <ul class="connected list">
 				      <li data-op="1">缩放</li>
@@ -140,6 +141,7 @@
                   options += ';' + op;          
               }
             });
+            $('#offline-param').val(options);
             $('#offline-form').submit();
 });
 

@@ -81,16 +81,17 @@
                         <h5 class="notes" style="width: auto; margin-left: 0;">为了更好的显示效果，您可以使用透明的PNG格式图片。</h5>
                         <div class="custom-logo clearfix">
                         <label for="user-email">图片Logo </label>
-                        <div id="avatar" class="custom-logo-wrapper folder-page pull-left"><img src="${RESOURCES }/images/logo4.png" style=" " class="my_uploads_ custom_brand_image ab-center folder default-logo-dimensions logo folder-page img-responsive"></div>
+                        <div  class="custom-logo-wrapper folder-page pull-left"><img id="image-logo" src="${RESOURCES }/images/logo4.png" style=" " class="my_uploads_ custom_brand_image ab-center folder default-logo-dimensions logo folder-page img-responsive"></div>
                         <div class="pull-right clear_avatar">
                         <span class="btn btn-default change_custom_brand_image" data-type="folder">Upload Logo</span>
+                        <input type="file" name="imageLogo" id="upload-image-logo"  onChange="loadImageFile(this)";>
                         <span class="hide">or <a href="javascript:void();" class="clear_custom_brand_image" data-type="folder">remove logo</a></span>
                     </div>
                     </div>
                     
                 <div class="form-group clearfix">
                     <label for="cdhp">文字Logo</label>
-                    <input type="text" class="form-control input-lg l" id="cdhp" name="cdhp" value="${LoginUser.textLogo } " placeholder="您需要加在图片上的文字">
+                    <input type="text" class="form-control input-lg l" id="cdhp" name="textLogo" value="${LoginUser.textLogo } " placeholder="您需要加在图片上的文字">
                     <span class="notes r">您可以使用您的域名或您的网名作为Logo.</span>
                   </div>
                   <button class="btn btn-white blockUI distxts" type="button">Update</button>
@@ -119,5 +120,33 @@
 		src="${RESOURCES }/js/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="${RESOURCES }/js/bootstrap.min.js"></script>
 	<script type="text/javascript" src="${RESOURCES }/js/common.js"></script>
+	<script>
+	function loadImageFile(input){
+		var path = $(input).val();
+		var pos = path.lastIndexOf(".");   
+	    var lastname = path.substring(pos, path.length)   
+		if (lastname.toLowerCase() == ".jpg" || lastname.toLowerCase() == ".png" || lastname.toLowerCase() == ".gif") {   
+			var objUrl = getObjectURL(input.files[0]) ;
+			if (objUrl) {
+				$("#image-logo").attr("src", objUrl) ;
+			}  
+	    } else{
+	        alert("您上传的文件类型为" + lastname + "，必须为图片类型才可作为头像！");   
+	        return false;     	
+	    }
+	}
+	
+	function getObjectURL(file) {
+		var url = null ; 
+		if (window.createObjectURL!=undefined) { // basic
+			url = window.createObjectURL(file) ;
+		} else if (window.URL!=undefined) { // mozilla(firefox)
+			url = window.URL.createObjectURL(file) ;
+		} else if (window.webkitURL!=undefined) { // webkit or chrome
+			url = window.webkitURL.createObjectURL(file) ;
+		}
+		return url ;
+	}
+	</script>
 </body>
 </html>
