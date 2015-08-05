@@ -9,6 +9,7 @@
 <title>${TITLE}</title>
 <link rel="stylesheet" href="${RESOURCES}/font/css/font-awesome.min.css" />
 <link rel="stylesheet" href="${RESOURCES}/css/bootstrap.min.css" />
+<link rel="stylesheet" href="${PLUGIN}/chosen/chosen.css" />
 <link rel="stylesheet" href="${RESOURCES}/css/main.css" />
 </head>
 <body>
@@ -75,18 +76,28 @@
                           </div>                        
                 </div>
                 <div class="setting-item custom-logo">
-                    <form action="" class="group">
+                    <form action="${ROOT}/user/updateLogo" method="post" class="group">
                         <h3>个人Logo</h3>
                         <h5>上传你个人的Logo,  这样你可以快捷地使用添加水印的功能</h5>
                         <h5 class="notes" style="width: auto; margin-left: 0;">为了更好的显示效果，您可以使用透明的PNG格式图片。</h5>
                         <div class="custom-logo clearfix">
                         <label for="user-email">图片Logo </label>
-                        <div  class="custom-logo-wrapper folder-page pull-left"><img id="image-logo" src="${RESOURCES }/images/logo4.png" style=" " class="my_uploads_ custom_brand_image ab-center folder default-logo-dimensions logo folder-page img-responsive"></div>
-                        <div class="pull-right clear_avatar">
-                        <span class="btn btn-default change_custom_brand_image" data-type="folder">Upload Logo</span>
-                        <input type="file" name="imageLogo" id="upload-image-logo"  onChange="loadImageFile(this)";>
-                        <span class="hide">or <a href="javascript:void();" class="clear_custom_brand_image" data-type="folder">remove logo</a></span>
-                    </div>
+                        <div  class="custom-logo-wrapper folder-page pull-left"><img id="image-logo" src="${RESOURCES }/images/logo4.png" style=" " class="my_uploads_ custom_brand_image ab-center folder default-logo-dimensions  folder-page img-responsive"></div>
+              	<div class="r image-logo">
+              <div class="form-group">
+                <label class="control-label">选择空间</label>
+                <select class="form-control  jet-input" name="account" id='spaces_select'>
+                  <c:forEach items="${spaces}" var="space">
+                    <option value="${space.sid}">${space.name}</option>
+                  </c:forEach>
+               </select>
+              </div>
+                  <div class="form-group">
+                <label class="control-label">选择图片</label>
+                <select data-placeholder="请选择图片" name='imageLogo' class="chosen-select form-control jet-input"tabindex="-1" id='pictures_select'>
+                 </select>
+              </div>
+              </div>
                     </div>
                     
                 <div class="form-group clearfix">
@@ -94,7 +105,7 @@
                     <input type="text" class="form-control input-lg l" id="cdhp" name="textLogo" value="${LoginUser.textLogo } " placeholder="您需要加在图片上的文字">
                     <span class="notes r">您可以使用您的域名或您的网名作为Logo.</span>
                   </div>
-                  <button class="btn btn-white blockUI distxts" type="button">Update</button>
+                  <button class="btn btn-white blockUI distxts" type="submit">Update</button>
                 </form>
                 </div>
 				<div class="setting-item">
@@ -112,6 +123,7 @@
             </div>
         </div>
     </section>
+    <div id="url_base" style="display: none">${IP}${ROOT}</div>
     <div class="clearfix"></div>
 			<jsp:include page="../common/footer.jsp" />
 		</div>
@@ -119,34 +131,59 @@
 	<script type="text/javascript"
 		src="${RESOURCES }/js/jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="${RESOURCES }/js/bootstrap.min.js"></script>
+			<script type="text/javascript" src="${PLUGIN}/chosen/chosen.jquery.js"></script>
 	<script type="text/javascript" src="${RESOURCES }/js/common.js"></script>
 	<script>
-	function loadImageFile(input){
-		var path = $(input).val();
-		var pos = path.lastIndexOf(".");   
-	    var lastname = path.substring(pos, path.length)   
-		if (lastname.toLowerCase() == ".jpg" || lastname.toLowerCase() == ".png" || lastname.toLowerCase() == ".gif") {   
-			var objUrl = getObjectURL(input.files[0]) ;
-			if (objUrl) {
-				$("#image-logo").attr("src", objUrl) ;
-			}  
-	    } else{
-	        alert("您上传的文件类型为" + lastname + "，必须为图片类型才可作为头像！");   
-	        return false;     	
-	    }
-	}
-	
-	function getObjectURL(file) {
-		var url = null ; 
-		if (window.createObjectURL!=undefined) { // basic
-			url = window.createObjectURL(file) ;
-		} else if (window.URL!=undefined) { // mozilla(firefox)
-			url = window.URL.createObjectURL(file) ;
-		} else if (window.webkitURL!=undefined) { // webkit or chrome
-			url = window.webkitURL.createObjectURL(file) ;
+	$(document).ready(function(){
+		//url定义
+		var url_base = $('#url_base').html();
+		var val_default = $('#spaces_select').val();
+
+		//select定义
+		var img_chosen = $(".chosen-select");
+		var img_default = img_chosen.attr("data-default");
+		var img_select = $('#pictures_select');
+		
+		select_reload(getJsonUrl(val_default));
+		img_chosen.chosen();
+		
+		//select 重新加载方法
+		function select_reload(url){
+			$.getJSON(url, function(json){
+				if(json) {
+		 		 	var options = '<option></option>';
+				 	$.each(json,function(n,value){
+				 		if(value.name == img_default)
+							options += '<option selected="selected">' + value.name + '</option>';
+				 		else	
+				 			options += '<option value=' + value.key + '>' + value.name + '</option>';
+				 	});
+				 	img_select.html(options);
+				 	img_chosen.trigger("chosen:updated");			
+				 } else {
+				 	img_select.html('<option></option>');
+				 	img_chosen.trigger("chosen:updated");
+				 }
+			});	
 		}
-		return url ;
-	}
+		
+		//添加chosen-select事件,加载相应的图片option
+		$('#spaces_select').change(function(){
+			var val = $(this).val();
+			url = url_base + "/space/" + val +"/images.json";
+			select_reload(getJsonUrl(val));
+		});
+		
+		//获取空间图片json地址
+		function getJsonUrl(val){
+			return url_base + "/space/" + val +"/images.json";
+		}
+		
+		img_chosen.chosen().change(function(){
+			image_name = $(this).val();
+			$('#image-logo').attr("src",url_base + "/server/" + image_name);
+		});
+	});
 	</script>
 </body>
 </html>

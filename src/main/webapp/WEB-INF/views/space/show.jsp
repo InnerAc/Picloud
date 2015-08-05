@@ -47,6 +47,7 @@
             </div>
             </div>
             <div id="space" data-space="${space.sid}"></div>
+            
     </section>
     <div class="clearfix"></div>
 			 <!-- Modal -->
