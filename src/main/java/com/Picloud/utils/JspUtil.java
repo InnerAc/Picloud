@@ -74,6 +74,10 @@ public class JspUtil {
         private static long toYears(long date) {  
             return toMonths(date) / 365L;  
         }  
+        
+        public static String formatForImage(String date) throws Exception{
+                return format(formatString(getStrTime(date)));
+        }
 
         /**
          * 获取年月日字符串
