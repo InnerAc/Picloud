@@ -34,7 +34,7 @@
                   <div class="button-group">
                       <button class="btn btn-default">Link</button>
                       <button class="btn btn-default" data-toggle="modal" data-target="#imageEditor" id="openEditor">Edit</button>
-                      <button class="btn btn-blue">Download</button>
+                      <a  href="${ROOT}/server/download/${image.key}" class="btn btn-blue">Download</a>
                     <a href="${ROOT}/space/${space.sid}" id="viewer_close" class="btn btn-link"><span class="icn-viewer-close"></span></a>
                   </div>
                   
@@ -55,7 +55,7 @@
           </div>
 
         </div>
-        <div class="viewer-footer clearfix">
+        <div class="viewer-footer clearfix hide" style="display:none">
           <a href="#" id="list_arrow_left" class="list-arrow-wrapper l"><span class="icn-list-back ab-center"></span></a>
           <a href="#" id="list_toggle" class="r list-toggle"><span class="icn-hide-list ab-center"></span></a>
           <a href="#" id="list_arrow_right" class="list-arrow-wrapper r"><span class="icn-list-next ab-center"></span></a>

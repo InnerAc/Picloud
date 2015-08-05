@@ -11,27 +11,17 @@
 <link rel="stylesheet" href="${RESOURCES}/font/css/font-awesome.min.css" />
 <link rel="stylesheet" href="${RESOURCES}/css/bootstrap.min.css" />
 <link rel="stylesheet" href="${PLUGIN}/chosen/chosen.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/common.css" />
-<link rel="stylesheet" href="${RESOURCES}/css/appcenter.css" />
+<link rel="stylesheet" href="${RESOURCES}/css/main.css" />
 </head>
 <body>
-	<div class="wrap">
-		<jsp:include page="../common/header.jsp" />
-		<div class="page-wrapper">
-			<jsp:include page="../common/navbar.jsp" />
-			<jsp:include page="../common/breadcrumb.jsp" />
-			<div class="wrapper wrapper-content animated fadeInDown">
-  <block name="content">
+<jsp:include page="../common/header.jsp" />
+
+ <div class="content">
+            <div class="content-wrap">
+            <h3>高清展示列表</h3>
     <div class="row">
       <div class="col-md-12">
         <div class="ibox float-e-margins">
-          <div class="ibox-title">
-            <h5>高清展示 <small>高清图片列表</small></h5>
-          <div class="ibox-tools">
-                <a class="collapse-link"><i class="fa fa-chevron-up"></i></a>
-                <a class="close-link"><i class="fa fa-times"></i></a>
-          </div>
-          </div>
           <div class="ibox-content" style="display: block;">
             <div class="project-list">
               <table class="table table-hover">
@@ -78,7 +68,7 @@
                 <label class="control-label">选择空间</label>
                 <select class="form-control  jet-input" name="account" id='spaces_select'>
                   <c:forEach items="${spaces}" var="space">
-                    <option value="${space.key}">${space.name}</option>
+                    <option value="${space.sid}">${space.name}</option>
                   </c:forEach>
                </select>
               </div>
@@ -97,11 +87,9 @@
       </div>
     </div>
 <div id="url_base" style="display: none">${IP}${ROOT}</div>
-  </block>
 		</div>
-		<jsp:include page="../common/footer.jsp" />
-	</div>
-	</div>
+    <div class="clearfix"></div>
+		</div>
 	<script type="text/javascript"
 		src="${RESOURCES }/js/jquery-1.11.1.min.js"></script>
 		<script type="text/javascript" src="${PLUGIN}/chosen/chosen.jquery.js"></script>

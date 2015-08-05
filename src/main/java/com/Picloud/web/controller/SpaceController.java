@@ -163,7 +163,7 @@ public class SpaceController {
                         p = Integer.parseInt(page);
                 }
                 model.addAttribute("module", module);
-                model.addAttribute("action", "图片空间");
+                model.addAttribute("action", "图片空间查看");
 
                 User loginUser = (User) session.getAttribute("LoginUser");
                 Space space = mSpaceDaoImpl.find(Integer.parseInt(spaceKey));
@@ -610,7 +610,7 @@ public class SpaceController {
                 return "redirect:/space/" + spaceId;
         }
 
-        @RequestMapping(value = "/offLine/{spaceId}", method = RequestMethod.GET)
+        @RequestMapping(value = "/offLine/{spaceId}", method = RequestMethod.POST)
         public String offLine(@PathVariable int spaceId, String operation,
                         Model model, HttpSession session,
                         HttpServletResponse response) throws Exception {

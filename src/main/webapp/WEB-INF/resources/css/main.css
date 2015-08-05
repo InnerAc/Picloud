@@ -1803,3 +1803,34 @@ header .global-actions {
   height: 16px;
   width: 9px;
 }
+.chosen-container{
+	width:320px !important;
+}
+
+      .connected li, .sortable li, .exclude li, .handles li {
+      list-style: none;
+      border: 1px solid #CCC;
+      background: #F6F6F6;
+      font-family: "Tahoma";
+      display: inline-block;
+      float: left;
+      color: #1C94C4;
+      margin: 5px;
+      padding: 5px;
+       cursor: move;
+    }
+    ul.connected{
+      display: block;
+      clear: both;
+      min-height:35px;
+    }
+    .highlight{
+    	border:none !important;
+    	background:#fff !important;
+    }
+    .no2{
+    	min-width:200px;
+    	padding:10px;
+    	border:1px dashed #ddd;
+    	min-height:60px !important;
+    }
