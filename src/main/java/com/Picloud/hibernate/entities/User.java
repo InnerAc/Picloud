@@ -1,6 +1,6 @@
 package com.Picloud.hibernate.entities;
 
-// Generated 2015-8-4 20:15:39 by Hibernate Tools 3.4.0.CR1
+// Generated 2015-8-5 8:55:17 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import java.util.HashSet;

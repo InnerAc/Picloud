@@ -1,6 +1,6 @@
 package com.Picloud.hibernate.entities;
 
-// Generated 2015-8-4 18:21:49 by Hibernate Tools 3.4.0.CR1
+// Generated 2015-8-5 8:55:17 by Hibernate Tools 3.4.0.CR1
 
 import java.util.Date;
 import javax.persistence.Column;
@@ -30,6 +30,7 @@ public class Space implements java.io.Serializable {
         private int number;
         private Date time;
         private String cover;
+        private String operation;
 
         public Space() {
         }
@@ -45,7 +46,8 @@ public class Space implements java.io.Serializable {
         }
 
         public Space(User user, String name, String description,
-                        double storage, int number, Date time, String cover) {
+                        double storage, int number, Date time, String cover,
+                        String operation) {
                 this.user = user;
                 this.name = name;
                 this.description = description;
@@ -53,6 +55,7 @@ public class Space implements java.io.Serializable {
                 this.number = number;
                 this.time = time;
                 this.cover = cover;
+                this.operation = operation;
         }
 
         @Id
@@ -129,6 +132,15 @@ public class Space implements java.io.Serializable {
 
         public void setCover(String cover) {
                 this.cover = cover;
+        }
+
+        @Column(name = "operation")
+        public String getOperation() {
+                return this.operation;
+        }
+
+        public void setOperation(String operation) {
+                this.operation = operation;
         }
 
 }

@@ -18,4 +18,5 @@ public interface ISpaceDao {
 	public void delete(String name, int uid);
         public void addStorage(int key, double imageSize);
         public void reduceStorage(int key, double imageSize);
+        public void updateOperation(int sid, String operation);
 }
