@@ -3,6 +3,7 @@ package com.Picloud.utils;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import sun.misc.BASE64Encoder;
 
 public class ByteUtil {
 	public static byte[] inputStreamToByte(InputStream in) throws IOException{
@@ -15,5 +16,12 @@ public class ByteUtil {
         byte b[] = bos.toByteArray();  
         bos.close(); 
         return b;
+	}
+	/*
+	* 将图片字节流转换成Base64格式
+	*/
+	public String imageToBase64(byte[] source){
+		BASE64Encoder encoder = new BASE64Encoder();
+		return encoder.encode(source);
 	}
 }
